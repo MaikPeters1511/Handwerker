@@ -1,0 +1,102 @@
+// Ensure the paper view feels like a document
+.print-view {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  h1 {
+      font-family: inherit;
+  }
+}
+// Remove default input styles
+input.input-ghost, textarea.textarea-ghost {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    &:focus {
+        background-color: rgba(243, 244, 246, 0.5) !important;
+        outline: none !important;
+    }
+    &::placeholder {
+        color: #d1d5db;
+    }
+}
+
+@media print {
+  // Verstecke die gesamte App-Umgebung und Sidebar
+  nav, aside, .navbar, .sidebar, .w-full.lg\:w-96 {
+    display: none !important;
+  }
+
+  // Setze den Hintergrund auf Weiß und entferne Scrollbalken
+  body {
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  // Container-Resets für volle Breite
+  .flex.flex-col.lg\:flex-row {
+    display: block !important;
+    height: auto !important;
+    background: white !important;
+  }
+
+  .flex-1 {
+    padding: 0 !important;
+    overflow: visible !important;
+    background: white !important;
+  }
+
+  // Die "Print-View" (das Papier) als einzige sichtbare Komponente
+  .print-view {
+    position: static !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    margin: 0 auto !important;
+    padding: 15mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: white !important;
+  }
+
+  // Entferne alle interaktiven Dokumenten-Elemente (Buttons, Dropdowns)
+  .btn,
+  .btn-circle,
+  .dropdown,
+  .loading,
+  button,
+  input[type="checkbox"] {
+    display: none !important;
+  }
+
+  // Inputs wie normalen Text formatieren
+  input, textarea, select {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    color: black !important;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  // Verstecke Browser-spezifische Icons (z.B. Kalender-Icon bei Datum)
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none !important;
+  }
+
+  // Leere Felder/Platzhalter im Druck unsichtbar machen
+  ::placeholder {
+    color: transparent !important;
+  }
+
+  // Farben im Druck erzwingen
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}

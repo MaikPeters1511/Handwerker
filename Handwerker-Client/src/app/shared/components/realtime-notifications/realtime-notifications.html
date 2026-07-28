@@ -1,0 +1,43 @@
+@if (signalrService.notifications().length > 0 || signalrService.lowStockAlerts().length > 0) {
+  <div class="fixed bottom-4 right-4 z-50 w-96 max-h-96 overflow-y-auto space-y-2">
+    <!-- Connection Status -->
+    @if (!signalrService.isConnected()) {
+      <div class="alert alert-warning shadow-lg">
+        <span>⚠️ Echtzeit-Verbindung getrennt</span>
+      </div>
+    }
+
+    <!-- Low Stock Alerts -->
+    @for (alert of signalrService.lowStockAlerts(); track alert.articleId + alert.warehouseName) {
+      <div class="alert alert-error shadow-lg">
+        <div class="flex flex-col">
+          <span class="font-bold">⚠️ Niedriger Lagerbestand</span>
+          <span>{{ alert.articleName }}</span>
+          <span class="text-sm">Lager: {{ alert.warehouseName }}</span>
+          <span class="text-sm">Bestand: {{ alert.currentStock }} (Min: {{ alert.minStockLevel }})</span>
+        </div>
+      </div>
+    }
+
+    <!-- General Notifications -->
+    @for (notification of signalrService.notifications(); track notification.timestamp) {
+      <div class="alert shadow-lg" [class.alert-info]="getTypeColor(notification.type) === 'blue'"
+                                   [class.alert-success]="getTypeColor(notification.type) === 'green'"
+                                   [class.alert-warning]="getTypeColor(notification.type) === 'yellow'"
+                                   [class.alert-error]="getTypeColor(notification.type) === 'red'">
+        <div class="flex flex-col">
+          <span class="font-bold">{{ notification.title }}</span>
+          <span class="text-sm">{{ notification.message }}</span>
+          <span class="text-xs opacity-70">{{ notification.timestamp | date:'HH:mm:ss' }}</span>
+        </div>
+      </div>
+    }
+
+    <!-- Clear Button -->
+    <div class="flex justify-end">
+      <button class="btn btn-sm btn-ghost" (click)="clearAll()">
+        Alle schließen
+      </button>
+    </div>
+  </div>
+}

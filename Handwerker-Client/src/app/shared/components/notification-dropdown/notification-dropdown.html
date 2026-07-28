@@ -1,0 +1,119 @@
+﻿<div class="dropdown dropdown-end">
+  <!-- Bell Icon Button mit Badge -->
+  <button
+    class="btn btn-ghost btn-circle"
+    (click)="toggleDropdown($event)"
+    [attr.aria-label]="'notifications.title' | translate"
+    [attr.aria-expanded]="isOpen()">
+    <div class="indicator">
+      <i class="fa-solid fa-bell text-xl"></i>
+      @if (notificationService.unreadCount() > 0) {
+        <span class="badge badge-sm badge-primary indicator-item">
+          {{ notificationService.unreadCount() }}
+        </span>
+      }
+    </div>
+  </button>
+
+  <!-- Dropdown Content -->
+  @if (isOpen()) {
+    <div
+      class="absolute right-0 mt-3 z-[100] card card-compact w-96 max-h-[32rem] p-2 shadow-2xl bg-base-300 rounded-box"
+      role="menu"
+      aria-label="Benachrichtigungen"
+      (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="card-body">
+      <div class="flex justify-between items-center mb-2">
+        <h3 class="font-bold text-lg">{{ 'notifications.title' | translate }}</h3>
+        @if (notificationService.notifications().length > 0) {
+          <button
+            class="btn btn-xs btn-ghost"
+            (click)="markAllAsRead()"
+            [attr.aria-label]="'notifications.markAllRead' | translate">
+            {{ 'notifications.markAllRead' | translate }}
+          </button>
+        }
+      </div>
+
+      <!-- Loading State -->
+      @if (isLoading()) {
+        <div class="flex justify-center p-4">
+          <span class="loading loading-spinner loading-md"></span>
+        </div>
+      }
+
+      <!-- Empty State -->
+      @if (!isLoading() && notificationService.notifications().length === 0) {
+        <div class="text-center p-8 text-base-content/60">
+          <i class="fa-solid fa-bell-slash text-4xl mb-2"></i>
+          <p>{{ 'notifications.empty' | translate }}</p>
+        </div>
+      }
+
+      <!-- Notification List -->
+      @if (!isLoading() && notificationService.notifications().length > 0) {
+        <div class="overflow-y-auto max-h-96 -mx-2">
+          @for (notification of notificationService.notifications(); track notification.id) {
+            <div
+              class="p-3 hover:bg-base-200 rounded-lg cursor-pointer transition-colors"
+              [class.bg-base-100]="!notification.isRead"
+              [class.opacity-60]="notification.isRead"
+              (click)="markAsRead(notification, $event)"
+              role="menuitem"
+              tabindex="0"
+              (keydown.enter)="markAsRead(notification, $event)"
+              (keydown.space)="markAsRead(notification, $event)">
+
+              <div class="flex gap-3">
+                <!-- Icon -->
+                <div class="flex-shrink-0">
+                  <i
+                    class="fa-solid {{ getIcon(notification.type) }} text-xl"
+                    [class]="getIconColor(notification.type)">
+                  </i>
+                </div>
+
+                <!-- Content -->
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm break-words">{{ notification.message }}</p>
+                  <div class="flex items-center justify-between mt-1">
+                      <span class="text-xs text-base-content/60">
+                        {{ formatTime(notification.createdAt) }}
+                      </span>
+                    @if (!notification.isRead) {
+                      <span class="badge badge-primary badge-xs">Neu</span>
+                    }
+                  </div>
+                </div>
+
+                <!-- Delete Button -->
+                <div class="flex-shrink-0">
+                  <button
+                    class="btn btn-ghost btn-xs btn-circle"
+                    (click)="deleteNotification(notification.id, $event)"
+                    [attr.aria-label]="'notifications.delete' | translate">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Footer -->
+      @if (notificationService.notifications().length > 0) {
+        <div class="divider my-2"></div>
+        <button
+          routerLink="/notifications"
+          class="btn btn-sm btn-ghost btn-block"
+          (click)="closeDropdown()">
+          {{ 'notifications.showAll' | translate }}
+        </button>
+      }
+    </div>
+  </div>
+  }
+</div>

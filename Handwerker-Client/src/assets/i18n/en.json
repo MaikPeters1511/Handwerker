@@ -1,0 +1,1025 @@
+{
+  "app": {
+    "title": "Craftsman App",
+    "copyright": "Copyright © 2026 - Craftsman App"
+  },
+  "welcome": {
+    "title": "Welcome",
+    "description": "Welcome to the Craftsman App"
+  },
+  "general": {
+    "actions": "Actions",
+    "delete": "Delete",
+    "deleteRow": "Are you sure you want to delete this entry",
+    "close": "Close"
+  },
+  "months": {
+    "1": "January",
+    "2": "February",
+    "3": "March",
+    "4": "April",
+    "5": "May",
+    "6": "June",
+    "7": "July",
+    "8": "August",
+    "9": "September",
+    "10": "October",
+    "11": "November",
+    "12": "December"
+  },
+  "nav": {
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile",
+    "theme": "Theme",
+    "menu": "Menu",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "procurement": "Procurement",
+    "suppliers": "Suppliers",
+    "provider": "Suppliers",
+    "assortment": "Assortment",
+    "products": "Products",
+    "services": "Services",
+    "wages": "Wages",
+    "customerCare": "Customer Care",
+    "customers": "Customers",
+    "offers": "Offers",
+    "orders": "Orders",
+    "invoices": "Invoices",
+    "recipients": "Customers",
+    "employees": "Employees",
+    "team": "Team",
+    "company": "Company",
+    "permissions": "Permissions",
+    "documents": "Documents",
+    "masterData": "Settings",
+    "account": "Account",
+    "roleDashboard": "Role Permissions"
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "subtitle": "Here is an overview of your craftsman management",
+    "stats": {
+      "offers": "Offers",
+      "invoices": "Invoices",
+      "products": "Products",
+      "recipients": "Customers",
+      "createOffer": "Create Offer",
+      "createInvoice": "Create Invoice",
+      "createProduct": "Add Product",
+      "createRecipient": "Add Customer"
+    },
+    "tasks": {
+      "title": "My Tasks",
+      "empty": "No open tasks yet",
+      "create": "Create New Task"
+    },
+    "chart": {
+      "title": "Documents Created in Last 6 Months",
+      "offers": "Offers",
+      "invoices": "Invoices",
+      "empty": "No data available for the last 6 months"
+    },
+    "amounts": {
+      "title": "Invoice Amounts of Last 6 Months",
+      "empty": "No invoices yet",
+      "totalNet": "Net",
+      "totalTax": "Tax",
+      "totalGross": "Gross"
+    },
+    "invoiceStats": {
+      "title": "Invoice Statistics",
+      "empty": "No statistics available yet",
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "totalAmount": "Total Amount",
+      "paidAmount": "Paid Amount",
+      "unpaidAmount": "Unpaid Amount"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Customize your application to your preferences",
+    "design": {
+      "title": "Design & Appearance",
+      "selectTheme": "Select theme"
+    },
+    "language": {
+      "title": "Language",
+      "select": "Select language"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "email": "Email Notifications",
+      "emailDesc": "Receive updates via email",
+      "push": "Push Notifications",
+      "pushDesc": "Enable browser notifications",
+      "sms": "SMS Notifications",
+      "smsDesc": "Important updates via SMS"
+    },
+    "email": {
+      "title": "Email Settings",
+      "to": "To (Recipient)",
+      "toDesc": "Recipient's email address",
+      "subject": "Subject",
+      "subjectPlaceholder": "Test email from Handwerker App",
+      "body": "Message",
+      "bodyPlaceholder": "Enter your message here...",
+      "send": "Send Email",
+      "sending": "Sending...",
+      "sendSuccess": "Email sent successfully! Check Mailpit (http://localhost:8025)",
+      "sendError": "Error sending email",
+      "requiredFields": "Please fill in all fields",
+      "mailpitHint": "Test emails are sent to Mailpit. Open http://localhost:8025 to view them."
+    },
+    "invoice": {
+      "title": "Invoice Settings",
+      "prefix": "Invoice Prefix",
+      "nextNumber": "Next Invoice Number",
+      "taxRate": "Tax Rate (%)",
+      "currency": "Currency"
+    },
+    "actions": {
+      "save": "Save Settings",
+      "reset": "Reset",
+      "saved": "Settings saved"
+    },
+    "saved": "Settings saved",
+    "error": "Save failed. Please try again.",
+    "account": {
+      "title": "Account Information",
+      "username": "Username",
+      "email": "Email",
+      "name": "Name",
+      "firstName": "First Name",
+      "lastName": "Last Name"
+    },
+    "elasticsearch": {
+      "title": "Search Settings (Elasticsearch)",
+      "enabled": "Enable Elasticsearch Search",
+      "enabledDesc": "Use Elasticsearch for faster and more accurate product search",
+      "realtimeEnabled": "Enable Realtime Search",
+      "realtimeDesc": "Search automatically while typing (Debounce 300ms)",
+      "fuzziness": "Fuzziness (Fuzzy Matching)",
+      "fuzzinessDesc": "Tolerance for typos in search",
+      "fuzziness0": "Exact Match (0)",
+      "fuzziness1": "1 Character Tolerance",
+      "fuzziness2": "2 Character Tolerance",
+      "fuzzinessAuto": "Automatic (AUTO)",
+      "minScore": "Minimum Relevance Score",
+      "minScoreDesc": "Minimum rating for search results (0-1, lower = more results)"
+    },
+    "profile": {
+      "title": "Edit Profile",
+      "subtitle": "Manage your personal information",
+      "profileImage": "Profile Picture",
+      "uploadImage": "Upload Image",
+      "changeImage": "Change Image",
+      "removeImage": "Remove Image",
+      "accountDetails": "Account Details",
+      "firstName": "First Name",
+      "firstNameRequired": "First name is required",
+      "lastName": "Last Name",
+      "lastNameRequired": "Last name is required",
+      "email": "Email",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "phoneNumber": "Phone Number",
+      "phoneNumberPlaceholder": "+1 123 456789",
+      "gender": "Gender",
+      "genderPlaceholder": "Please select",
+      "genderMale": "Male",
+      "genderFemale": "Female",
+      "genderOther": "Other",
+      "genderPreferNot": "Prefer not to say",
+      "country": "Country",
+      "countryPlaceholder": "Please select",
+      "countryDE": "Germany",
+      "countryAT": "Austria",
+      "countryCH": "Switzerland",
+      "countryUS": "United States",
+      "countryGB": "United Kingdom",
+      "countryFR": "France",
+      "address": "Address",
+      "addressPlaceholder": "Street, ZIP, City",
+      "updateProfile": "Update Profile",
+      "updating": "Updating...",
+      "updateSuccess": "Profile updated successfully",
+      "updateError": "Error updating profile",
+      "loadError": "Error loading profile",
+      "noChanges": "No changes to save"
+    },
+    "roleDashboard": {
+      "title": "Role Permissions",
+      "subtitle": "Define which navigation areas are visible for each user role.",
+      "roles": "Roles",
+      "selectRoleHint": "Select a role from the list to edit its permissions.",
+      "sectionsFor": "Visible sections for",
+      "selectAll": "Select all",
+      "selectNone": "Dashboard only",
+      "addRole": "Add role",
+      "addFromKeycloak": "Add role from Keycloak",
+      "addManual": "Add role manually",
+      "selectRole": "Select role",
+      "rolePlaceholder": "e.g. employee",
+      "deleteRole": "Delete role",
+      "adminHint": "Administrators always have access to all areas.",
+      "save": "Save permissions",
+      "saved": "Saved"
+    }
+  },
+  "profile": {
+    "title": "User Profile",
+    "name": "Name",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "username": "Username",
+    "roles": "Roles",
+    "notAvailable": "Not available",
+    "noRoles": "No roles assigned",
+    "noData": "No profile data available.",
+    "form": {
+      "title": "Edit Profile",
+      "loading": "Loading profile...",
+      "saving": "Saving...",
+      "profileImage": "Profile Image",
+      "uploadImage": "Upload Image",
+      "imageHint": "Max. 2MB, JPG or PNG",
+      "invalidImageType": "Please select an image (JPG, PNG)",
+      "imageTooLarge": "Image is too large (max. 2MB)",
+      "accountDetails": "Account Details",
+      "firstName": "First Name",
+      "firstNameRequired": "First name is required",
+      "firstNameMinLength": "First name must be at least 2 characters",
+      "lastName": "Last Name",
+      "lastNameRequired": "Last name is required",
+      "lastNameMinLength": "Last name must be at least 2 characters",
+      "email": "Email",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "phoneNumber": "Phone Number",
+      "gender": "Gender",
+      "genderNotSpecified": "Not specified",
+      "genderMale": "Male",
+      "genderFemale": "Female",
+      "genderOther": "Other",
+      "country": "Country",
+      "countryPlaceholder": "Select country",
+      "countryHint": "ISO code (e.g. DE, AT, CH)",
+      "address": "Address",
+      "addressPlaceholder": "Street, ZIP, City",
+      "updateProfile": "Update Profile",
+      "saveSuccess": "Profile saved successfully",
+      "saveError": "Error saving profile",
+      "loadError": "Error loading profile"
+    }
+  },
+  "products": {
+    "title": "Manage Products",
+    "subtitle": "Search, edit and create products.",
+    "newProduct": "New Product",
+    "editMode": "Edit Product",
+    "createMode": "Create New Product",
+    "editBadge": "Edit Mode",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "save": "Save",
+    "search": {
+      "label": "Search Product",
+      "placeholder": "Enter name or article number..."
+    },
+    "masterData": {
+      "title": "Master Data",
+      "articleNumber": "Article Number",
+      "articleNumberPlaceholder": "e.g. ART-001",
+      "name": "Name",
+      "namePlaceholder": "Product name",
+      "nameRequired": "Name is required",
+      "unit": "Unit",
+      "unitPlaceholder": "piece, m, kg...",
+      "description": "Description",
+      "descriptionPlaceholder": "Detailed product description..."
+    },
+    "pricing": {
+      "title": "Pricing",
+      "quantity": "Quantity",
+      "quantityRequired": "Valid quantity required",
+      "unitPrice": "Unit Price (Net)",
+      "priceRequired": "Price required",
+      "position": "Position",
+      "taxRate": "Tax Rate (%)",
+      "discount": "Discount (%)"
+    },
+    "calculation": {
+      "title": "Calculation",
+      "taxAmount": "Tax Amount",
+      "discountAmount": "Discount Amount",
+      "totalNet": "Total Net",
+      "totalGross": "Total Gross"
+    },
+    "toast": {
+      "created": "Product successfully created",
+      "updated": "Product successfully updated",
+      "errorSave": "Error saving",
+      "errorCreate": "Error creating",
+      "validationError": "Please fill in all required fields correctly. Invalid fields"
+    },
+    "actions": {
+      "endEdit": "End Editing",
+      "reset": "Reset",
+      "saveChanges": "Save Changes",
+      "createProduct": "Create Product"
+    }
+  },
+  "recipients": {
+    "title": "Customer Management",
+    "subtitle": "Manage your customers and invoice recipients",
+    "newRecipient": "New Customer",
+    "editMode": "Edit Customer",
+    "createMode": "Create New Customer",
+    "editBadge": "Edit Mode",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "deleting": "Deleting...",
+    "search": {
+      "label": "Search Customer",
+      "placeholder": "Search by name, customer number or email..."
+    },
+    "masterData": {
+      "title": "Master Data",
+      "customerNumber": "Customer Number",
+      "customerNumberPlaceholder": "e.g. C-12345",
+      "salutation": "Salutation",
+      "salutationPlaceholder": "Please select...",
+      "salutationMr": "Mr.",
+      "salutationMs": "Ms.",
+      "salutationCompany": "Company",
+      "salutationDiverse": "Diverse",
+      "name": "Name / Company",
+      "nameRequired": "Name is a required field",
+      "namePlaceholder": "John Doe or Sample Company Ltd.",
+      "contactPerson": "Contact Person",
+      "contactPersonPlaceholder": "e.g. Attn: Mr. Smith"
+    },
+    "address": {
+      "title": "Address",
+      "street": "Street",
+      "streetPlaceholder": "123 Main Street",
+      "addressLine2": "Address Line 2",
+      "addressLine2Placeholder": "e.g. Rear building, c/o",
+      "zipCode": "ZIP Code",
+      "zipCodePlaceholder": "12345",
+      "city": "City",
+      "cityPlaceholder": "Sample City",
+      "country": "Country",
+      "countryPlaceholder": "Germany"
+    },
+    "contact": {
+      "title": "Contact Information",
+      "email": "Email",
+      "emailPlaceholder": "mail@example.com",
+      "emailInvalid": "Please enter a valid email address",
+      "phone": "Phone",
+      "phonePlaceholder": "+49 123 456789"
+    },
+    "toast": {
+      "created": "Customer successfully created",
+      "updated": "Customer successfully updated",
+      "deleted": "Customer successfully deleted",
+      "errorSave": "Error saving",
+      "errorCreate": "Error creating",
+      "errorDelete": "Error deleting",
+      "validationError": "Please fill in all required fields correctly. Invalid fields",
+      "close": "Close"
+    },
+    "actions": {
+      "save": "Save",
+      "saveChanges": "Save Changes",
+      "create": "Create Customer",
+      "delete": "Delete",
+      "endEdit": "End Editing",
+      "reset": "Reset"
+    }
+  },
+  "providers": {
+    "title": "Supplier Management",
+    "subtitle": "Manage your suppliers and service providers",
+    "newProvider": "New Supplier",
+    "editMode": "Edit Supplier",
+    "createMode": "Create New Supplier",
+    "editBadge": "Edit Mode",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "deleting": "Deleting...",
+    "search": {
+      "label": "Search Supplier",
+      "placeholder": "Search by name, company or email...",
+      "results": "Search Results"
+    },
+    "masterData": {
+      "title": "Master Data",
+      "name": "Name / Contact Person",
+      "nameRequired": "Name is a required field",
+      "namePlaceholder": "John Doe",
+      "company": "Company Name",
+      "companyPlaceholder": "e.g. Sample Company Ltd."
+    },
+    "address": {
+      "title": "Address",
+      "street": "Street",
+      "streetPlaceholder": "123 Main Street",
+      "zipCode": "ZIP Code",
+      "zipCodePlaceholder": "12345",
+      "city": "City",
+      "cityPlaceholder": "Sample City"
+    },
+    "contact": {
+      "title": "Contact Information",
+      "email": "Email",
+      "emailPlaceholder": "mail@example.com",
+      "emailInvalid": "Please enter a valid email address",
+      "phone": "Phone",
+      "phonePlaceholder": "+49 123 456789",
+      "website": "Website",
+      "websitePlaceholder": "https://www.example.com"
+    },
+    "tax": {
+      "title": "Tax Information",
+      "taxId": "VAT ID",
+      "taxIdPlaceholder": "DE123456789",
+      "taxNumber": "Tax Number",
+      "taxNumberPlaceholder": "12/345/67890",
+      "commercialRegister": "Commercial Register",
+      "commercialRegisterPlaceholder": "HRB 12345",
+      "registerCourt": "Register Court",
+      "registerCourtPlaceholder": "District Court Sample City"
+    },
+    "bank": {
+      "title": "Bank Details",
+      "name": "Bank Name",
+      "namePlaceholder": "Sample Bank",
+      "iban": "IBAN",
+      "ibanPlaceholder": "DE89 3704 0044 0532 0130 00",
+      "bic": "BIC",
+      "bicPlaceholder": "COBADEFFXXX",
+      "plz": "Bank ZIP Code",
+      "plzPlaceholder": "12345",
+      "ort": "Bank City",
+      "ortPlaceholder": "Sample City"
+    },
+    "toast": {
+      "created": "Supplier successfully created",
+      "updated": "Supplier successfully updated",
+      "deleted": "Supplier successfully deleted",
+      "errorSave": "Error saving",
+      "errorCreate": "Error creating",
+      "errorDelete": "Error deleting",
+      "validationError": "Please fill in all required fields correctly. Invalid fields",
+      "close": "Close"
+    },
+    "actions": {
+      "save": "Save",
+      "saveChanges": "Save Changes",
+      "create": "Create Supplier",
+      "delete": "Delete",
+      "endEdit": "End Editing",
+      "reset": "Reset"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "unread": "Unread",
+    "markAllRead": "Mark all as read",
+    "showAll": "Show all",
+    "empty": "No notifications",
+    "delete": "Delete notification",
+    "deleteConfirm": "Really delete this notification?",
+    "clearAll": "Clear all",
+    "clearAllConfirm": "Really delete all notifications?"
+  },
+  "company": {
+    "title": "Company Management",
+    "subtitle": "Manage your company information and bank details",
+    "listTitle": "Companies",
+    "emptyList": "No companies available",
+    "logoAndBasicInfo": "Logo & Basic Information",
+    "logo": "Company Logo",
+    "noLogo": "No logo uploaded",
+    "removeLogo": "Remove",
+    "companyName": "Company Name *",
+    "companyNamePlaceholder": "e.g. Sample Company Ltd.",
+    "taxId": "Tax Number / VAT ID",
+    "taxIdPlaceholder": "e.g. DE123456789",
+    "address": "Address",
+    "street": "Street & Number",
+    "streetPlaceholder": "e.g. Main Street 123",
+    "zip": "ZIP",
+    "zipPlaceholder": "e.g. 12345",
+    "city": "City",
+    "cityPlaceholder": "e.g. Berlin",
+    "country": "Country",
+    "countryPlaceholder": "e.g. Germany",
+    "contact": "Contact",
+    "email": "Email",
+    "emailPlaceholder": "info@company.com",
+    "phone": "Phone",
+    "phonePlaceholder": "+49 123 456789",
+    "bankDetails": "Bank Details",
+    "bankDetailsHint": "These details will appear on your invoices and documents.",
+    "bankName": "Bank Name",
+    "bankNamePlaceholder": "e.g. Berlin Sparkasse",
+    "iban": "IBAN",
+    "ibanPlaceholder": "DE89 3704 0044 0532 0130 00",
+    "ibanHint": "International Bank Account Number",
+    "bic": "BIC / SWIFT",
+    "bicPlaceholder": "COBADEFFXXX",
+    "bicHint": "Business Identifier Code (8 or 11 characters)",
+    "actions": {
+      "new": "New",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete Company"
+    }
+  },
+  "installationWizard": {
+    "title": "Setup Wizard",
+    "steps": {
+      "welcome": "Welcome",
+      "user": "User",
+      "company": "Company",
+      "suppliers": "Suppliers",
+      "finish": "Finish"
+    },
+    "welcome": {
+      "title": "Welcome to Handwerker!",
+      "description": "This app helps you manage your craft business efficiently. Set up your profile in a few steps to get started right away.",
+      "features": {
+        "invoices": {
+          "title": "Invoices",
+          "desc": "Create and manage offers & invoices in a flash."
+        },
+        "inventory": {
+          "title": "Inventory & Products",
+          "desc": "Keep track of your materials and assortment."
+        },
+        "contacts": {
+          "title": "Customers & Suppliers",
+          "desc": "Manage all contacts centrally in one place."
+        }
+      }
+    },
+    "userData": {
+      "title": "User Data",
+      "description": "Enter your personal information.",
+      "salutation": "Salutation",
+      "salutationPlaceholder": "Please select",
+      "mr": "Mr.",
+      "ms": "Ms.",
+      "diverse": "Diverse",
+      "firstName": "First Name",
+      "firstNameRequired": "First name is required",
+      "lastName": "Last Name",
+      "lastNameRequired": "Last name is required",
+      "email": "Email",
+      "emailPlaceholder": "Your email address",
+      "phone": "Phone",
+      "phonePlaceholder": "Your phone number",
+      "profileImage": "Profile Image",
+      "uploadImage": "Upload Image",
+      "imageHint": "Max. 2MB (JPG, PNG)",
+      "titleField": "Title"
+    },
+    "companyData": {
+      "title": "Company Data",
+      "description": "Information about your craft business.",
+      "name": "Company Name",
+      "nameRequired": "Company name is required",
+      "namePlaceholder": "e.g. Sample Company Ltd.",
+      "street": "Street",
+      "streetRequired": "Street is required",
+      "streetNr": "Nr.",
+      "zipCode": "ZIP Code",
+      "zipCodeRequired": "ZIP code is required",
+      "city": "City",
+      "cityRequired": "City is required",
+      "phone": "Phone",
+      "phoneRequired": "Phone is required",
+      "email": "Email",
+      "emailRequired": "Email is required",
+      "commercialRegister": "Commercial Register",
+      "registerCourt": "Register Court",
+      "taxId": "VAT Start ID",
+      "taxNumber": "Tax Number",
+      "logo": "Company Logo",
+      "vatExemption": "VAT Exemption",
+      "vatExemptionHint": "Small business regulation etc.",
+      "contactLegal": "Contact & Legal",
+      "bankDetails": "Bank Details",
+      "bankName": "Bank Name",
+      "iban": "IBAN",
+      "bic": "BIC"
+    },
+    "suppliers": {
+      "title": "Suppliers",
+      "description": "Select the suppliers you want to work with.",
+      "itemsSelected": "Suppliers selected",
+      "searchPlaceholder": "Search suppliers...",
+      "empty": "No suppliers found",
+      "select": "Select",
+      "name": "Name",
+      "company": "Company",
+      "city": "City",
+      "email": "Email"
+    },
+    "final": {
+      "title": "Almost done!",
+      "description": "Just a few more details.",
+      "industry": "What industry are you in?",
+      "referralSource": "How did you hear about us?",
+      "referralPlaceholder": "Please select...",
+      "avvTitle": "Data Processing Agreement (DPA)",
+      "avvDesc": "To use our service, we need your consent to the DPA according to GDPR.",
+      "avAgreement": "I have read and agree to the DPA."
+    },
+    "buttons": {
+      "start": "Let's go",
+      "next": "Next",
+      "back": "Back",
+      "finish": "Finish",
+      "save": "Save"
+    }
+  },
+  "offers": {
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "converted": "Converted"
+    },
+    "detail": {
+      "title": "Offer",
+      "selectCompany": "Select Company",
+      "selectCompanyPlaceholder": "Your Company, Sample Street 1, 12345 Sample City",
+      "change": "Change",
+      "searchCustomer": "+ Search Customer...",
+      "offerNumber": "Offer Number",
+      "offerDate": "Offer Date",
+      "validUntil": "Valid Until",
+      "customer": "Customer",
+      "customerNumber": "Customer Number",
+      "projectPlaceholder": "Customer Project (Commission)",
+      "introPlaceholder": "Introductory text...",
+      "table": {
+        "pos": "Pos.",
+        "quantity": "Qty",
+        "unit": "Unit",
+        "description": "Description",
+        "unitPrice": "Price (net)",
+        "discount": "Discount %",
+        "totalNet": "Amount (net)",
+        "empty": "No items recorded yet",
+        "itemPlaceholder": "Item name..."
+      },
+      "actions": {
+        "addPosition": "Add Position",
+        "searchProduct": "Search Product",
+        "searchProductPlaceholder": "Product name...",
+        "importShop": "Import items from Shop",
+        "exportShop": "Export items to Shop"
+      },
+      "totalGross": "Total",
+      "vatExempt": "*VAT-exempt services according to § 19 UStG",
+      "payment": {
+        "duePrefix": "The invoice is due by ",
+        "dueSuffix": " (Invoice amount: ",
+        "closeParen": ").",
+        "skontoPrefix": "Discount of ",
+        "skontoMiddle": "% can be taken until ",
+        "skontoSuffix": " (Discount amount: ",
+        "paymentAmount": " - Payment amount: ",
+        "selectTerms": "Select Payment Terms"
+      },
+      "outroPlaceholder": "Closing text...",
+      "sidebar": {
+        "inProgress": "In Progress",
+        "tracking": "Offer Tracking",
+        "createdOn": "Created on",
+        "status": "Acceptance Status",
+        "statusRequired": "Status is required",
+        "resubmission": "Resubmission",
+        "notes": "Document Notes",
+        "customerInfo": "Customer Information",
+        "noCustomer": "No customer selected.",
+        "paymentTerms": "Payment Terms",
+        "orderInfo": "Order Information",
+        "deliveryDate": "Delivery Date",
+        "shippingMethod": "Shipping Method"
+      },
+      "buttons": {
+        "save": "Save",
+        "print": "Print",
+        "pdf": "PDF",
+        "more": "More",
+        "cancel": "Cancel"
+      }
+    }
+  },
+  "invoices": {
+    "paymentTerms": {
+      "immediate": "Payable immediately without deduction",
+      "net14": "14 days net",
+      "net30": "30 days net",
+      "discount10": "10 days 2% discount, 30 days net"
+    },
+    "list": {
+      "title": "Invoices",
+      "actions": {
+        "convertFromOffer": "From Offer",
+        "newInvoice": "New Invoice",
+        "createInvoice": "Create Invoice"
+      },
+      "search": {
+        "label": "Search invoices",
+        "placeholder": "Search by invoice number, customer..."
+      },
+      "filters": {
+        "all": "All",
+        "paid": "Paid",
+        "unpaid": "Open"
+      },
+      "loading": "Loading invoices...",
+      "empty": {
+        "title": "No invoices found",
+        "noResultsFor": "No invoices found for",
+        "createFirst": "Create your first invoice"
+      },
+      "table": {
+        "invoiceNumber": "Invoice No.",
+        "date": "Date",
+        "dueDate": "Due date",
+        "customer": "Customer",
+        "amountNet": "Amount (Net)",
+        "amountGross": "Amount (Gross)",
+        "status": "Status"
+      },
+      "badges": {
+        "overdue": "Overdue",
+        "paid": "Paid",
+        "unpaid": "Open"
+      },
+      "summary": {
+        "total": "Total",
+        "paid": "Paid",
+        "unpaid": "Open"
+      },
+      "aria": {
+        "view": "View invoice",
+        "edit": "Edit invoice",
+        "delete": "Delete invoice"
+      },
+      "confirm": {
+        "deletePrefix": "Do you really want to delete invoice",
+        "deleteSuffix": "?"
+      },
+      "prompt": {
+        "offerId": "Please enter the offer ID to convert into an invoice:"
+      },
+      "success": {
+        "convertPrefix": "Invoice",
+        "convertMiddle": "was successfully created from offer",
+        "convertSuffix": "."
+      },
+      "errors": {
+        "loadFailed": "Failed to load invoices",
+        "deleteFailed": "Failed to delete invoice",
+        "invalidOfferId": "Invalid offer ID",
+        "convertFailed": "Conversion failed. Please check the offer ID."
+      }
+    },
+    "detail": {
+      "title": {
+        "new": "New Invoice",
+        "edit": "Edit Invoice",
+        "view": "View Invoice"
+      },
+      "idLabel": "ID:",
+      "loading": "Loading...",
+      "sections": {
+        "invoiceInfo": "Invoice Information",
+        "recipient": "Invoice Recipient",
+        "provider": "Service Provider",
+        "positions": "Line Items",
+        "texts": "Texts"
+      },
+      "fields": {
+        "invoiceNumber": "Invoice Number",
+        "invoiceNumberPlaceholder": "Generated automatically...",
+        "invoiceNumberHelp": "Generated automatically from your settings",
+        "customerNumber": "Customer Number",
+        "customerNumberPlaceholder": "C-12345",
+        "invoiceDate": "Invoice Date",
+        "dueDate": "Due Date",
+        "servicePeriod": "Service Period",
+        "servicePeriodPlaceholder": "January 2026",
+        "paymentTerms": "Payment Terms",
+        "isPaid": "Invoice has been paid",
+        "recipientSearch": "Search customer",
+        "recipientSearchPlaceholder": "Name, customer number or email",
+        "providerSelect": "Select company",
+        "providerPlaceholder": "-- Please select --",
+        "productNamePlaceholder": "Product name",
+        "productUnitPlaceholder": "pcs.",
+        "introText": "Intro text",
+        "introPlaceholder": "Invoice intro text...",
+        "outroText": "Closing text",
+        "outroPlaceholder": "Invoice closing text..."
+      },
+      "table": {
+        "position": "Pos.",
+        "name": "Description",
+        "quantity": "Qty",
+        "unit": "Unit",
+        "unitPrice": "Unit Price",
+        "taxRate": "VAT %",
+        "net": "Net",
+        "gross": "Gross"
+      },
+      "totals": {
+        "net": "Total Net:",
+        "tax": "VAT:",
+        "gross": "Total Amount:"
+      },
+      "validation": {
+        "invoiceDate": "Please enter a valid date",
+        "dueDate": "Please enter a date",
+        "required": "Required field",
+        "recipientRequired": "Please select a recipient",
+        "providerRequired": "Please select a provider",
+        "minOnePosition": "Please add at least one line item."
+      },
+      "empty": {
+        "noPositions": "No line items added"
+      },
+      "actions": {
+        "edit": "Edit",
+        "back": "Back",
+        "cancel": "Cancel",
+        "addPosition": "Add line item",
+        "create": "Create invoice",
+        "saveChanges": "Save changes"
+      },
+      "aria": {
+        "removePosition": "Remove line item"
+      },
+      "defaults": {
+        "introText": "Thank you for your order. We hereby invoice as follows:"
+      },
+      "logs": {
+        "sendingInvoiceData": "Sending invoice data:",
+        "errorDetails": "Error details:",
+        "invoicePayload": "Invoice payload was:",
+        "validationErrors": "Validation errors:"
+      },
+      "success": {
+        "created": "Invoice created successfully",
+        "updated": "Invoice updated successfully"
+      },
+      "errors": {
+        "loadNextNumberFailed": "Failed to load next invoice number",
+        "loadFailed": "Failed to load invoice",
+        "invalidForm": "Please check your entries. Fields marked in red are required.",
+        "missingRecipientOrProviderDebug": "Recipient or provider not found",
+        "selectRecipientAndProvider": "Please select a recipient and provider",
+        "incompleteBankDataDebug": "Incomplete bank data in company",
+        "incompleteBankData": "The selected company has incomplete bank data. Please complete the bank details in company data.",
+        "createFailed": "Failed to create invoice",
+        "updateFailed": "Failed to update invoice",
+        "validationPrefix": "Validation errors:",
+        "unknown": "Unknown error"
+      }
+    }
+  },
+  "users": {
+    "title": "Employees",
+    "subtitle": "Manage your employees and access rights",
+    "username": "Username",
+    "firstname": "First Name",
+    "lastname": "Last Name",
+    "email": "Email",
+    "emailverified": "Email verified",
+    "enabled": "Active",
+    "create": "Create employee",
+    "update": "Edit employee",
+    "delete": "Delete employee",
+    "general": "General",
+    "roles": "Roles",
+    "close": "Close",
+    "save": "Save"
+  },
+  "validation": {
+    "required": "is required",
+    "email": "is not a valid email address"
+  },
+  "services": {
+    "title": "Services",
+    "subtitle": "Manage your service catalog",
+    "newService": "New Service",
+    "editMode": "Edit Service",
+    "createMode": "Create New Service",
+    "editBadge": "Editing",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "save": "Save",
+    "search": {
+      "label": "Search Service",
+      "placeholder": "Enter name or service number..."
+    },
+    "masterData": {
+      "title": "Master Data",
+      "serviceNumber": "Service Number",
+      "name": "Name",
+      "namePlaceholder": "e.g. Installation",
+      "nameRequired": "Name is required",
+      "description": "Description",
+      "descriptionPlaceholder": "Description of the service",
+      "unit": "Unit",
+      "unitPlaceholder": "e.g. hr, flat rate, m²",
+      "unitPrice": "Price per Unit",
+      "unitPriceRequired": "Price is required",
+      "taxRate": "Tax %",
+      "isActive": "Active"
+    },
+    "toast": {
+      "created": "Service was created successfully",
+      "updated": "Service was updated successfully",
+      "errorSave": "Error saving",
+      "errorCreate": "Error creating",
+      "validationError": "Please check your input",
+      "deleted": "Service was deleted",
+      "errorDelete": "Error deleting"
+    },
+    "actions": {
+      "endEdit": "End Editing",
+      "reset": "Reset",
+      "saveChanges": "Save Changes",
+      "createService": "Create Service",
+      "delete": "Delete"
+    },
+    "list": {
+      "title": "All Services",
+      "empty": "No services created yet.",
+      "inactive": "Inactive"
+    }
+  },
+  "wages": {
+    "title": "Wages",
+    "subtitle": "Manage your wage type catalog",
+    "newWageType": "New Wage Type",
+    "editMode": "Edit Wage Type",
+    "createMode": "Create New Wage Type",
+    "editBadge": "Editing",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "search": {
+      "label": "Search Wage Type",
+      "placeholder": "Enter name or wage type number..."
+    },
+    "masterData": {
+      "title": "Master Data",
+      "wageNumber": "Wage Type Number",
+      "name": "Name",
+      "namePlaceholder": "e.g. Skilled Worker",
+      "nameRequired": "Name is required",
+      "description": "Description",
+      "descriptionPlaceholder": "Description of the wage type",
+      "hourlyRate": "Hourly Rate",
+      "hourlyRateRequired": "Hourly rate is required",
+      "taxRate": "Tax %",
+      "isActive": "Active"
+    },
+    "toast": {
+      "created": "Wage type was created successfully",
+      "updated": "Wage type was updated successfully",
+      "errorSave": "Error saving",
+      "errorCreate": "Error creating",
+      "validationError": "Please check your input",
+      "deleted": "Wage type was deleted",
+      "errorDelete": "Error deleting"
+    },
+    "actions": {
+      "endEdit": "End Editing",
+      "reset": "Reset",
+      "saveChanges": "Save Changes",
+      "createWageType": "Create Wage Type",
+      "delete": "Delete"
+    },
+    "list": {
+      "title": "All Wage Types",
+      "empty": "No wage types created yet.",
+      "inactive": "Inactive"
+    }
+  }
+}

@@ -1,0 +1,245 @@
+<div class="w-full max-w-full">
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+    <div>
+        <h1 class="text-3xl font-bold tracking-tight">{{ 'recipients.title' | translate }}</h1>
+        <p class="text-base-content/70 mt-1">{{ 'recipients.subtitle' | translate }}</p>
+    </div>
+    <button class="btn btn-primary shadow-lg" (click)="addNewRecipient()" aria-label="{{ 'recipients.newRecipient' | translate }}">
+      <i class="fa-solid fa-plus"></i> {{ 'recipients.newRecipient' | translate }}
+    </button>
+  </div>
+
+  <!-- Search Section -->
+  <div class="form-control w-full max-w-xl relative mb-8 z-20">
+    <label class="label">
+      <span class="label-text font-semibold">{{ 'recipients.search.label' | translate }}</span>
+    </label>
+    <div class="relative">
+        <i class="fa-solid fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-base-content/50"></i>
+        <input
+        type="text"
+        aria-label="{{ 'recipients.search.label' | translate }}"
+        [placeholder]="'recipients.search.placeholder' | translate"
+        class="input input-bordered w-full pl-10 shadow-sm focus:input-primary transition-all"
+        (input)="onSearchInput($event)"
+        [value]="searchTerm()"
+        />
+    </div>
+
+    <!-- Autocomplete Dropdown -->
+    @if (showDropdown() && searchResults().length > 0) {
+      <ul class="menu bg-base-100 w-full rounded-box shadow-xl absolute top-full mt-2 z-50 max-h-60 overflow-y-auto border border-base-300" role="listbox" aria-label="{{ 'recipients.search.results' | translate }}">
+        @for (recipient of searchResults(); track recipient.id) {
+          <li>
+            <a (click)="selectRecipient(recipient)" class="hover:bg-base-200" role="option" tabindex="0" aria-selected="false">
+              <div class="flex flex-col">
+                <span class="font-bold">{{ recipient.name }}</span>
+                <span class="text-xs text-base-content/70">{{ recipient.customerNumber }} - {{ recipient.city }}</span>
+              </div>
+            </a>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+  <div class="card bg-base-100 shadow-xl border border-base-200 w-full">
+    <div class="card-body p-6 md:p-8">
+      <div class="flex justify-between items-center pb-4 border-b border-base-200 mb-6">
+          <h2 class="card-title text-xl">
+            {{ isEditing() ? ('recipients.editMode' | translate) : ('recipients.createMode' | translate) }}
+          </h2>
+          <div class="flex gap-2 items-center">
+            @if (isEditing()) {
+              <div class="badge badge-accent badge-outline">{{ 'recipients.editBadge' | translate }}</div>
+              @if (isSaving()) {
+                <span class="loading loading-spinner loading-sm text-primary"></span>
+                <span class="text-sm text-base-content/70">{{ 'recipients.saving' | translate }}</span>
+              }
+              @if (!isSaving() && lastSaved()) {
+                <div class="flex items-center gap-1 text-success text-sm">
+                  <i class="fa-solid fa-check"></i>
+                  <span>{{ 'recipients.saved' | translate }}</span>
+                </div>
+              }
+              <button
+                type="button"
+                class="btn btn-error btn-sm shadow-md"
+                (click)="deleteRecipient()"
+                [disabled]="isDeleting()">
+                <i class="fa-solid fa-trash mr-2"></i>
+                {{ isDeleting() ? ('recipients.deleting' | translate) : ('recipients.actions.delete' | translate) }}
+              </button>
+              <button
+                type="submit"
+                form="recipient-form"
+                class="btn btn-primary btn-sm shadow-md"
+                [disabled]="isSaving()">
+                <i class="fa-solid fa-save mr-2"></i>
+                {{ 'recipients.actions.save' | translate }}
+              </button>
+            }
+          </div>
+      </div>
+
+      <form id="recipient-form" [formGroup]="recipientForm" (ngSubmit)="saveRecipient()" class="space-y-8">
+
+        <!-- Stammdaten -->
+        <div class="bg-base-50/50 rounded-xl p-2 md:p-0">
+            <h3 class="font-semibold text-lg mb-4 text-base-content/80 flex items-center gap-2">
+              <i class="fa-solid fa-user text-primary"></i> {{ 'recipients.masterData.title' | translate }}
+            </h3>
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+            <div class="form-control">
+                <label class="label"><span class="label-text font-medium">{{ 'recipients.masterData.customerNumber' | translate }}</span></label>
+                <input type="text" formControlName="customerNumber" class="input input-bordered focus:input-primary w-full" [placeholder]="'recipients.masterData.customerNumberPlaceholder' | translate" />
+            </div>
+
+            <div class="form-control">
+                <label class="label"><span class="label-text font-medium">{{ 'recipients.masterData.salutation' | translate }}</span></label>
+                <select formControlName="salutation" class="select select-bordered focus:select-primary w-full">
+                  <option value="">{{ 'recipients.masterData.salutationPlaceholder' | translate }}</option>
+                  <option value="Herr">{{ 'recipients.masterData.salutationMr' | translate }}</option>
+                  <option value="Frau">{{ 'recipients.masterData.salutationMs' | translate }}</option>
+                  <option value="Firma">{{ 'recipients.masterData.salutationCompany' | translate }}</option>
+                  <option value="Divers">{{ 'recipients.masterData.salutationDiverse' | translate }}</option>
+                </select>
+            </div>
+
+            <div class="form-control">
+                <label class="label"><span class="label-text font-medium">{{ 'recipients.masterData.name' | translate }} *</span></label>
+                <input type="text" formControlName="name" class="input input-bordered focus:input-primary w-full"
+                    [class.input-error]="recipientForm.get('name')?.invalid && recipientForm.get('name')?.touched"
+                    [placeholder]="'recipients.masterData.namePlaceholder' | translate" />
+                @if (recipientForm.get('name')?.invalid && recipientForm.get('name')?.touched) {
+                <div class="label pb-0">
+                    <span class="label-text-alt text-error">{{ 'recipients.masterData.nameRequired' | translate }}</span>
+                </div>
+                }
+            </div>
+
+            <div class="form-control">
+                <label class="label"><span class="label-text font-medium">{{ 'recipients.masterData.contactPerson' | translate }}</span></label>
+                <input type="text" formControlName="contactPerson" class="input input-bordered focus:input-primary w-full" [placeholder]="'recipients.masterData.contactPersonPlaceholder' | translate" />
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Adresse -->
+        <div class="bg-base-50/50 rounded-xl p-2 md:p-0">
+             <h3 class="font-semibold text-lg mb-4 text-base-content/80 flex items-center gap-2">
+               <i class="fa-solid fa-location-dot text-primary"></i> {{ 'recipients.address.title' | translate }}
+             </h3>
+             <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+              <div class="form-control xl:col-span-2">
+                 <label class="label"><span class="label-text font-medium">{{ 'recipients.address.street' | translate }}</span></label>
+                 <input type="text" formControlName="street" class="input input-bordered focus:input-primary w-full" [placeholder]="'recipients.address.streetPlaceholder' | translate" />
+              </div>
+
+              <div class="form-control xl:col-span-2">
+                 <label class="label"><span class="label-text font-medium">{{ 'recipients.address.addressLine2' | translate }}</span></label>
+                 <input type="text" formControlName="addressLine2" class="input input-bordered focus:input-primary w-full" [placeholder]="'recipients.address.addressLine2Placeholder' | translate" />
+              </div>
+
+              <div class="form-control">
+                 <label class="label"><span class="label-text font-medium">{{ 'recipients.address.zipCode' | translate }}</span></label>
+                 <input type="text" formControlName="zipCode" class="input input-bordered focus:input-primary w-full" [placeholder]="'recipients.address.zipCodePlaceholder' | translate" />
+              </div>
+
+               <div class="form-control">
+                 <label class="label"><span class="label-text font-medium">{{ 'recipients.address.city' | translate }}</span></label>
+                 <input type="text" formControlName="city" class="input input-bordered focus:input-primary w-full" [placeholder]="'recipients.address.cityPlaceholder' | translate" />
+              </div>
+
+              <div class="form-control xl:col-span-2">
+                 <label class="label"><span class="label-text font-medium">{{ 'recipients.address.country' | translate }}</span></label>
+                 <input type="text" formControlName="country" class="input input-bordered focus:input-primary w-full" [placeholder]="'recipients.address.countryPlaceholder' | translate" />
+              </div>
+
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Kontaktdaten -->
+        <div class="bg-base-50/50 rounded-xl p-2 md:p-0">
+          <h3 class="font-semibold text-lg mb-4 text-base-content/80 flex items-center gap-2">
+            <i class="fa-solid fa-address-book text-primary"></i> {{ 'recipients.contact.title' | translate }}
+          </h3>
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+            <div class="form-control">
+               <label class="label"><span class="label-text font-medium">{{ 'recipients.contact.email' | translate }}</span></label>
+               <input type="email" formControlName="email" class="input input-bordered focus:input-primary w-full"
+                   [class.input-error]="recipientForm.get('email')?.invalid && recipientForm.get('email')?.touched"
+                   [placeholder]="'recipients.contact.emailPlaceholder' | translate" />
+               @if (recipientForm.get('email')?.invalid && recipientForm.get('email')?.touched) {
+                 <div class="label pb-0">
+                     <span class="label-text-alt text-error">{{ 'recipients.contact.emailInvalid' | translate }}</span>
+                 </div>
+               }
+            </div>
+
+            <div class="form-control">
+               <label class="label"><span class="label-text font-medium">{{ 'recipients.contact.phone' | translate }}</span></label>
+               <input type="tel" formControlName="phone" class="input input-bordered focus:input-primary w-full" [placeholder]="'recipients.contact.phonePlaceholder' | translate" />
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card-actions justify-end mt-8 pt-6 border-t border-base-200 gap-4">
+          <button type="button" class="btn btn-ghost" (click)="addNewRecipient()">
+            @if (isEditing()) {
+              <i class="fa-solid fa-times mr-2"></i>
+              {{ 'recipients.actions.endEdit' | translate }}
+            } @else {
+              {{ 'recipients.actions.reset' | translate }}
+            }
+          </button>
+          <button type="submit" class="btn btn-primary px-8 min-w-[150px] shadow-md" [disabled]="isSaving()">
+            <i class="fa-solid fa-save mr-2"></i>
+            @if (isEditing()) {
+              {{ 'recipients.actions.saveChanges' | translate }}
+            } @else {
+              {{ 'recipients.actions.create' | translate }}
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notifications -->
+<div class="toast toast-top toast-end z-50">
+  @if (saveSuccess()) {
+    <div class="alert alert-success shadow-lg flex gap-4" role="status" aria-live="polite">
+      <i class="fa-solid fa-circle-check text-xl"></i>
+      <span>{{ successMessage() }}</span>
+      <button
+        class="btn btn-sm btn-ghost btn-circle"
+        (click)="saveSuccess.set(false)"
+        [attr.aria-label]="'recipients.toast.close' | translate">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  }
+
+  @if (saveError(); as err) {
+    <div class="alert alert-error shadow-lg flex gap-4" role="alert" aria-live="assertive">
+      <i class="fa-solid fa-circle-exclamation text-xl"></i>
+      <span>{{ err }}</span>
+      <button
+        class="btn btn-sm btn-ghost btn-circle"
+        (click)="saveError.set(null)"
+        [attr.aria-label]="'recipients.toast.close' | translate">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  }
+</div>

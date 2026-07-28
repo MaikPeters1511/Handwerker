@@ -1,0 +1,195 @@
+<div class="container mx-auto p-6">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">{{ 'invoices.list.title' | translate }}</h1>
+    <div class="flex items-center gap-2">
+      <button
+        (click)="onConvertFromOffer()"
+        class="btn btn-outline"
+        type="button"
+        [attr.aria-label]="'invoices.list.actions.convertFromOffer' | translate">
+        <i class="fa-solid fa-repeat mr-2"></i>
+        {{ 'invoices.list.actions.convertFromOffer' | translate }}
+      </button>
+      <button
+        (click)="onCreate()"
+        class="btn btn-primary"
+        type="button"
+        [attr.aria-label]="'invoices.list.actions.newInvoice' | translate">
+        <i class="fa-solid fa-plus mr-2"></i>
+        {{ 'invoices.list.actions.newInvoice' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Search & Filter -->
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <!-- Search -->
+    <div class="flex-1">
+      <label for="search-input" class="sr-only">{{ 'invoices.list.search.label' | translate }}</label>
+      <input
+        id="search-input"
+        type="text"
+        [placeholder]="'invoices.list.search.placeholder' | translate"
+        (input)="onSearchChange($event)"
+        class="input input-bordered w-full"
+        [attr.aria-label]="'invoices.list.search.label' | translate" />
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="tabs tabs-boxed" role="tablist">
+      <button
+        [class.tab-active]="filter() === 'all'"
+        (click)="onFilterChange('all')"
+        class="tab"
+        type="button"
+        role="tab"
+        [attr.aria-selected]="filter() === 'all'">
+        {{ 'invoices.list.filters.all' | translate }}
+      </button>
+      <button
+        [class.tab-active]="filter() === 'paid'"
+        (click)="onFilterChange('paid')"
+        class="tab"
+        type="button"
+        role="tab"
+        [attr.aria-selected]="filter() === 'paid'">
+        {{ 'invoices.list.filters.paid' | translate }}
+      </button>
+      <button
+        [class.tab-active]="filter() === 'unpaid'"
+        (click)="onFilterChange('unpaid')"
+        class="tab"
+        type="button"
+        role="tab"
+        [attr.aria-selected]="filter() === 'unpaid'">
+        {{ 'invoices.list.filters.unpaid' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="flex justify-center items-center py-12" role="status">
+      <span class="loading loading-spinner loading-lg"></span>
+      <span class="sr-only">{{ 'invoices.list.loading' | translate }}</span>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!loading() && filteredInvoices().length === 0) {
+    <div class="text-center py-12">
+      <div class="text-6xl mb-4">📄</div>
+      <h2 class="text-2xl font-semibold mb-2">{{ 'invoices.list.empty.title' | translate }}</h2>
+      <p class="text-base-content/70 mb-4">
+        @if (searchTerm()) {
+          {{ 'invoices.list.empty.noResultsFor' | translate }} "{{ searchTerm() }}"
+        } @else {
+          {{ 'invoices.list.empty.createFirst' | translate }}
+        }
+      </p>
+      @if (!searchTerm()) {
+        <button
+          (click)="onCreate()"
+          class="btn btn-primary"
+          type="button">
+          <i class="fa-solid fa-plus mr-2"></i>
+          {{ 'invoices.list.actions.createInvoice' | translate }}
+        </button>
+      }
+    </div>
+  }
+
+  <!-- Table -->
+  @if (!loading() && filteredInvoices().length > 0) {
+    <div class="overflow-x-auto">
+      <table class="table table-zebra w-full">
+        <thead>
+          <tr>
+            <th>{{ 'invoices.list.table.invoiceNumber' | translate }}</th>
+            <th>{{ 'invoices.list.table.date' | translate }}</th>
+            <th>{{ 'invoices.list.table.dueDate' | translate }}</th>
+            <th>{{ 'invoices.list.table.customer' | translate }}</th>
+            <th>{{ 'invoices.list.table.amountNet' | translate }}</th>
+            <th>{{ 'invoices.list.table.amountGross' | translate }}</th>
+            <th>{{ 'invoices.list.table.status' | translate }}</th>
+            <th class="text-right">{{ 'general.actions' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (invoice of filteredInvoices(); track invoice.id) {
+            <tr [class.bg-error/10]="isOverdue(invoice)">
+              <td class="font-semibold">{{ invoice.invoiceNumber }}</td>
+              <td>{{ formatDate(invoice.invoiceDate) }}</td>
+              <td>
+                {{ formatDate(invoice.dueDate) }}
+                @if (isOverdue(invoice)) {
+                  <span class="badge badge-error badge-sm ml-2">{{ 'invoices.list.badges.overdue' | translate }}</span>
+                }
+              </td>
+              <td>
+                <div class="font-medium">{{ invoice.recipient.name }}</div>
+                <div class="text-sm text-base-content/70">{{ invoice.customerNumber }}</div>
+              </td>
+              <td>{{ formatCurrency(invoice.totalNet) }}</td>
+              <td class="font-semibold">{{ formatCurrency(invoice.totalGross) }}</td>
+              <td>
+                @if (invoice.isPaid) {
+                  <span class="badge badge-success">{{ 'invoices.list.badges.paid' | translate }}</span>
+                } @else {
+                  <span class="badge badge-warning">{{ 'invoices.list.badges.unpaid' | translate }}</span>
+                }
+              </td>
+              <td class="text-right">
+                <div class="flex gap-2 justify-end">
+                  <button
+                    (click)="onView(invoice.id)"
+                    class="btn btn-sm btn-ghost"
+                    type="button"
+                    [attr.aria-label]="('invoices.list.aria.view' | translate) + ' ' + invoice.invoiceNumber">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                  <button
+                    (click)="onEdit(invoice.id)"
+                    class="btn btn-sm btn-ghost"
+                    type="button"
+                    [attr.aria-label]="('invoices.list.aria.edit' | translate) + ' ' + invoice.invoiceNumber">
+                    <i class="fa-solid fa-pen"></i>
+                  </button>
+                  <button
+                    (click)="onDelete(invoice.id, invoice.invoiceNumber)"
+                    class="btn btn-sm btn-ghost text-error"
+                    type="button"
+                    [attr.aria-label]="('invoices.list.aria.delete' | translate) + ' ' + invoice.invoiceNumber">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Summary -->
+    <div class="mt-6 stats stats-vertical lg:stats-horizontal shadow">
+      <div class="stat">
+        <div class="stat-title">{{ 'invoices.list.summary.total' | translate }}</div>
+        <div class="stat-value text-2xl">{{ filteredInvoices().length }}</div>
+        <div class="stat-desc">{{ 'invoices.list.title' | translate }}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">{{ 'invoices.list.summary.paid' | translate }}</div>
+        <div class="stat-value text-2xl text-success">
+          {{ paidCount() }}
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">{{ 'invoices.list.summary.unpaid' | translate }}</div>
+        <div class="stat-value text-2xl text-warning">
+          {{ unpaidCount() }}
+        </div>
+      </div>
+    </div>
+  }
+</div>

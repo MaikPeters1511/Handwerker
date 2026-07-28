@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/aspire/">
+    <Project Path="Handwerker.AppHost/Handwerker.AppHost.csproj" />
+    <Project Path="Handwerker.ServiceDefaults/Handwerker.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/backend/">
+    <Project Path="Handwerker.ApiService/Handwerker.ApiService.csproj" />
+    <Project Path="Handwerker.Application\Handwerker.Application.csproj" Type="Classic C#" />
+    <Project Path="Handwerker.Domain\Handwerker.Domain.csproj" Type="Classic C#" />
+    <Project Path="Handwerker.Infrastructure\Handwerker.Infrastructure.csproj" />
+    <Project Path="Handwerker.Tests/Handwerker.Tests.csproj" />
+  </Folder>
+  <Folder Name="/frontend/">
+    <Project Path="Handwerker-Client/Handwerker-Client.esproj" />
+  </Folder>
+  <Project Path="Handwerker.Web/Handwerker.Web.csproj" />
+  <Project Path="Handwerker.Maui/Handwerker.Maui/Handwerker.Maui.csproj" />
+</Solution>

@@ -1,0 +1,402 @@
+﻿<div class="w-full max-w-full">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h1 class="text-3xl font-bold">{{ 'company.title' | translate }}</h1>
+      <p class="text-base-content/60 mt-1">{{ 'company.subtitle' | translate }}</p>
+    </div>
+    <div class="flex gap-2">
+      <button class="btn btn-ghost" (click)="newCompany()">
+        <i class="fa-solid fa-plus"></i>
+        {{ 'company.actions.new' | translate }}
+      </button>
+      <button class="btn btn-primary" (click)="save()">
+        <i class="fa-solid fa-save"></i>
+        {{ 'company.actions.save' | translate }}
+      </button>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="flex justify-center items-center p-12">
+      <span class="loading loading-spinner loading-lg"></span>
+    </div>
+  }
+
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+    <!-- Sidebar: Company List -->
+    <div class="lg:col-span-1 sticky top-4 z-10">
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body p-4">
+          <h2 class="card-title text-lg mb-2">
+            <i class="fa-solid fa-building"></i>
+            {{ 'company.listTitle' | translate }}
+          </h2>
+          <ul class="menu menu-compact p-0">
+            @for (c of companies(); track c.id) {
+              <li>
+                <a
+                  (click)="select(c)"
+                  [class.active]="selected()?.id === c.id"
+                  class="flex items-center gap-3 py-3">
+                  @if (c.logoUrl) {
+                    <div class="avatar">
+                      <div class="w-8 h-8 rounded ring ring-primary ring-offset-base-100 ring-offset-1">
+                        <img
+                          [src]="companyService.getFullLogoUrl(c.logoUrl)"
+                          [alt]="c.name + ' Logo'"
+                          class="object-cover"
+                          loading="lazy" />
+                      </div>
+                    </div>
+                  } @else {
+                    <div class="w-8 h-8 rounded bg-base-200 flex items-center justify-center">
+                      <i class="fa-solid fa-building text-sm text-base-content/40"></i>
+                    </div>
+                  }
+                  <span class="truncate font-medium">{{ c.name }}</span>
+                </a>
+              </li>
+            }
+            @if (companies().length === 0 && !isLoading()) {
+              <li class="text-base-content/60 text-sm p-2">{{ 'company.emptyList' | translate }}</li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content: Company Form -->
+    <div class="lg:col-span-3">
+      <form (submit)="save(); $event.preventDefault()" class="space-y-6">
+
+        <!-- Error Alert -->
+        @if (uploadError()) {
+          <div role="alert" class="alert alert-error">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span>{{ uploadError() }}</span>
+            <button type="button" class="btn btn-sm btn-ghost" (click)="uploadError.set(null)">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        }
+
+        <!-- Logo & Basic Info Card -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title text-xl mb-4">
+              <i class="fa-solid fa-image"></i>
+              {{ 'company.logoAndBasicInfo' | translate }}
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- Logo Upload -->
+              <div class="md:col-span-1">
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text font-semibold">{{ 'company.logo' | translate }}</span>
+                  </label>
+
+                  @if (previewUrl()) {
+                    <div class="flex flex-col items-center gap-3">
+                      <div class="avatar">
+                        <div class="w-32 h-32 rounded-lg ring ring-primary ring-offset-base-100 ring-offset-2">
+                          <img [src]="previewUrl()" alt="Company logo preview" class="object-cover" />
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        class="btn btn-ghost btn-sm btn-error"
+                        (click)="removeSelectedFile()">
+                        <i class="fa-solid fa-trash"></i>
+                        {{ 'company.removeLogo' | translate }}
+                      </button>
+                      @if (isUploading()) {
+                        <span class="loading loading-spinner loading-sm"></span>
+                      }
+                    </div>
+                  } @else {
+                    <div class="flex flex-col items-center justify-center border-2 border-dashed border-base-300 rounded-lg p-6 h-32">
+                      <i class="fa-solid fa-cloud-arrow-up text-4xl text-base-content/40 mb-2"></i>
+                      <span class="text-sm text-base-content/60">{{ 'company.noLogo' | translate }}</span>
+                    </div>
+                  }
+
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/svg+xml"
+                    (change)="onFileSelected($event)"
+                    class="file-input file-input-bordered file-input-sm w-full mt-3"
+                    aria-label="Upload company logo" />
+
+                  @if (uploadError()) {
+                    <label class="label">
+                      <span class="label-text-alt text-error" role="alert">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        {{ uploadError() }}
+                      </span>
+                    </label>
+                  }
+                </div>
+              </div>
+
+              <!-- Company Name & Tax ID -->
+              <div class="md:col-span-2 space-y-4">
+                <div class="form-control w-full">
+                  <label class="label" for="company-name">
+                    <span class="label-text font-semibold">{{ 'company.companyName' | translate }}</span>
+                  </label>
+                  <input
+                    id="company-name"
+                    type="text"
+                    [placeholder]="'company.companyNamePlaceholder' | translate"
+                    class="input input-bordered w-full"
+                    [value]="$safeNavigationMigration(companyForm.get('name')?.value)"
+                    (input)="setControlValue('name', $event)"
+                    autocomplete="organization"
+                    required
+                  />
+                </div>
+
+                <div class="form-control w-full">
+                  <label class="label" for="tax-id">
+                    <span class="label-text font-semibold">{{ 'company.taxId' | translate }}</span>
+                  </label>
+                  <input
+                    id="tax-id"
+                    type="text"
+                    [placeholder]="'company.taxIdPlaceholder' | translate"
+                    class="input input-bordered w-full"
+                    [value]="$safeNavigationMigration(companyForm.get('taxId')?.value)"
+                    (input)="setControlValue('taxId', $event)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Address Card -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title text-xl mb-4">
+              <i class="fa-solid fa-location-dot"></i>
+              {{ 'company.address' | translate }}
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-control md:col-span-2 w-full">
+                <label class="label" for="street">
+                  <span class="label-text font-semibold">{{ 'company.street' | translate }}</span>
+                </label>
+                <input
+                  id="street"
+                  type="text"
+                  [placeholder]="'company.streetPlaceholder' | translate"
+                  class="input input-bordered w-full"
+                  [value]="$safeNavigationMigration(companyForm.get('street')?.value)"
+                  (input)="setControlValue('street', $event)"
+                  autocomplete="street-address"
+                />
+              </div>
+
+              <div class="form-control w-full">
+                <label class="label" for="zip">
+                  <span class="label-text font-semibold">{{ 'company.zip' | translate }}</span>
+                </label>
+                <input
+                  id="zip"
+                  type="text"
+                  [placeholder]="'company.zipPlaceholder' | translate"
+                  class="input input-bordered w-full"
+                  [value]="$safeNavigationMigration(companyForm.get('zipCode')?.value)"
+                  (input)="setControlValue('zipCode', $event)"
+                  autocomplete="postal-code"
+                />
+              </div>
+
+              <div class="form-control w-full">
+                <label class="label" for="city">
+                  <span class="label-text font-semibold">{{ 'company.city' | translate }}</span>
+                </label>
+                <input
+                  id="city"
+                  type="text"
+                  [placeholder]="'company.cityPlaceholder' | translate"
+                  class="input input-bordered w-full"
+                  [value]="$safeNavigationMigration(companyForm.get('city')?.value)"
+                  (input)="setControlValue('city', $event)"
+                  autocomplete="address-level2"
+                />
+              </div>
+
+              <div class="form-control md:col-span-2 w-full">
+                <label class="label" for="country">
+                  <span class="label-text font-semibold">{{ 'company.country' | translate }}</span>
+                </label>
+                <input
+                  id="country"
+                  type="text"
+                  [placeholder]="'company.countryPlaceholder' | translate"
+                  class="input input-bordered w-full"
+                  [value]="$safeNavigationMigration(companyForm.get('country')?.value)"
+                  (input)="setControlValue('country', $event)"
+                  autocomplete="country-name"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Card -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title text-xl mb-4">
+              <i class="fa-solid fa-address-book"></i>
+              {{ 'company.contact' | translate }}
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-control w-full">
+                <label class="label" for="email">
+                  <span class="label-text font-semibold">{{ 'company.email' | translate }}</span>
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  [placeholder]="'company.emailPlaceholder' | translate"
+                  class="input input-bordered w-full"
+                  [value]="$safeNavigationMigration(companyForm.get('email')?.value)"
+                  (input)="setControlValue('email', $event)"
+                  autocomplete="email"
+                />
+              </div>
+
+              <div class="form-control w-full">
+                <label class="label" for="phone">
+                  <span class="label-text font-semibold">{{ 'company.phone' | translate }}</span>
+                </label>
+                <input
+                  id="phone"
+                  type="tel"
+                  [placeholder]="'company.phonePlaceholder' | translate"
+                  class="input input-bordered w-full"
+                  [value]="$safeNavigationMigration(companyForm.get('phone')?.value)"
+                  (input)="setControlValue('phone', $event)"
+                  autocomplete="tel"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bank Details Card -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title text-xl mb-4">
+              <i class="fa-solid fa-building-columns"></i>
+              {{ 'company.bankDetails' | translate }}
+            </h2>
+
+            <div class="alert alert-info mb-4">
+              <i class="fa-solid fa-circle-info"></i>
+              <span class="text-sm">{{ 'company.bankDetailsHint' | translate }}</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-control md:col-span-2 w-full">
+                <label class="label" for="bank-name">
+                  <span class="label-text font-semibold">
+                    <i class="fa-solid fa-university mr-2"></i>
+                    {{ 'company.bankName' | translate }}
+                  </span>
+                </label>
+                <input
+                  id="bank-name"
+                  type="text"
+                  [placeholder]="'company.bankNamePlaceholder' | translate"
+                  class="input input-bordered w-full"
+                  [value]="$safeNavigationMigration(companyForm.get('bankName')?.value)"
+                  (input)="setControlValue('bankName', $event)"
+                />
+              </div>
+
+              <div class="form-control md:col-span-2 w-full">
+                <label class="label" for="iban">
+                  <span class="label-text font-semibold">
+                    <i class="fa-solid fa-credit-card mr-2"></i>
+                    {{ 'company.iban' | translate }}
+                  </span>
+                </label>
+                <input
+                  id="iban"
+                  type="text"
+                  [placeholder]="'company.ibanPlaceholder' | translate"
+                  class="input input-bordered font-mono tracking-wider uppercase w-full"
+                  [value]="$safeNavigationMigration(companyForm.get('iban')?.value)"
+                  (input)="setControlValue('iban', $event)"
+                  maxlength="34"
+                />
+                <label class="label">
+                  <span class="label-text-alt text-base-content/60">
+                    <i class="fa-solid fa-circle-info mr-1"></i>
+                    {{ 'company.ibanHint' | translate }}
+                  </span>
+                </label>
+              </div>
+
+              <div class="form-control md:col-span-2 w-full">
+                <label class="label" for="bic">
+                  <span class="label-text font-semibold">
+                    <i class="fa-solid fa-code-branch mr-2"></i>
+                    {{ 'company.bic' | translate }}
+                  </span>
+                </label>
+                <input
+                  id="bic"
+                  type="text"
+                  [placeholder]="'company.bicPlaceholder' | translate"
+                  class="input input-bordered font-mono tracking-wider uppercase w-full"
+                  [value]="$safeNavigationMigration(companyForm.get('bic')?.value)"
+                  (input)="setControlValue('bic', $event)"
+                  maxlength="11"
+                />
+                <label class="label">
+                  <span class="label-text-alt text-base-content/60">
+                    <i class="fa-solid fa-circle-info mr-1"></i>
+                    {{ 'company.bicHint' | translate }}
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-between items-center">
+          @if (selected()) {
+            <button
+              type="button"
+              class="btn btn-error btn-outline"
+              (click)="deleteSelected()">
+              <i class="fa-solid fa-trash"></i>
+              {{ 'company.actions.delete' | translate }}
+            </button>
+          } @else {
+            <div></div>
+          }
+
+          <div class="flex gap-2">
+            <button type="button" class="btn btn-ghost" (click)="newCompany()">
+              {{ 'company.actions.cancel' | translate }}
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-solid fa-save"></i>
+              {{ 'company.actions.save' | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

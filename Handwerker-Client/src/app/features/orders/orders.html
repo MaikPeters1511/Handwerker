@@ -1,0 +1,112 @@
+<div class="container mx-auto p-4">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Aufträge</h1>
+    <button class="btn btn-primary" (click)="onCreate()">
+      + Neuer Auftrag
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="flex gap-4 mb-6">
+    <input
+      type="text"
+      class="input input-bordered flex-1"
+      placeholder="Auftrag suchen..."
+      [value]="searchTerm()"
+      (input)="onSearchChange($event)"
+    />
+    <select
+      class="select select-bordered"
+      [value]="statusFilter()"
+      (change)="onStatusChange($event)">
+      <option value="all">Alle Status</option>
+      <option value="Draft">Entwurf</option>
+      <option value="Planned">Geplant</option>
+      <option value="InProgress">In Bearbeitung</option>
+      <option value="Completed">Abgeschlossen</option>
+      <option value="Invoiced">Abgerechnet</option>
+      <option value="Cancelled">Storniert</option>
+    </select>
+  </div>
+
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="flex justify-center p-8">
+      <span class="loading loading-spinner loading-lg"></span>
+    </div>
+  }
+
+  <!-- Table -->
+  @if (!loading()) {
+    <div class="overflow-x-auto">
+      <table class="table table-zebra w-full">
+        <thead>
+          <tr>
+            <th>Auftragsnr.</th>
+            <th>Datum</th>
+            <th>Kunde</th>
+            <th>Status</th>
+            <th>Priorität</th>
+            <th>Zeit</th>
+            <th>Betrag</th>
+            <th class="text-right">Aktionen</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of filteredOrders(); track order.id) {
+            <tr>
+              <td class="font-mono">{{ order.orderNumber }}</td>
+              <td>{{ order.orderDate | date:'dd.MM.yyyy' }}</td>
+              <td>
+                <div class="font-medium">{{ order.recipient.name }}</div>
+                <div class="text-sm text-gray-500">{{ order.customerNumber }}</div>
+              </td>
+              <td>
+                <span class="badge" [class.badge-info]="getStatusColor(order.status) === 'blue'"
+                                    [class.badge-success]="getStatusColor(order.status) === 'green'"
+                                    [class.badge-warning]="getStatusColor(order.status) === 'yellow'"
+                                    [class.badge-error]="getStatusColor(order.status) === 'red'"
+                                    [class.badge-ghost]="getStatusColor(order.status) === 'gray'">
+                  {{ getStatusLabel(order.status) }}
+                </span>
+              </td>
+              <td>
+                <span class="badge badge-outline" [class.badge-success]="getPriorityColor(order.priority) === 'green'"
+                                                    [class.badge-warning]="getPriorityColor(order.priority) === 'orange'"
+                                                    [class.badge-error]="getPriorityColor(order.priority) === 'red'">
+                  {{ getPriorityLabel(order.priority) }}
+                </span>
+              </td>
+              <td>
+                {{ order.actualHours }}/{{ order.estimatedHours }}h
+              </td>
+              <td>{{ formatCurrency(order.totalGross) }}</td>
+              <td class="text-right">
+                <button class="btn btn-sm btn-ghost" (click)="onView(order.id)">
+                  Anzeigen
+                </button>
+                <button class="btn btn-sm btn-ghost" (click)="onEdit(order.id)">
+                  Bearbeiten
+                </button>
+                <button class="btn btn-sm btn-error btn-outline" (click)="onDelete(order.id, order.orderNumber)">
+                  Löschen
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="text-center py-8 text-gray-500">
+                Keine Aufträge gefunden
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Summary -->
+    <div class="mt-4 text-sm text-gray-600">
+      {{ filteredOrders().length }} von {{ orders().length }} Aufträgen angezeigt
+    </div>
+  }
+</div>

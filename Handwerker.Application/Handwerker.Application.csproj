@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <UserSecretsId>13fa0464-9c1b-4336-8225-ff4f720800bb</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Handwerker.Domain\Handwerker.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="16.2.0" />
+      <PackageReference Include="Elastic.Clients.Elasticsearch" Version="9.4.2" />
+      <PackageReference Include="FluentValidation" Version="12.1.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.11" />
+      <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" Version="10.8.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.10" />
+      <PackageReference Include="Schick.Keycloak.RestApiClient" Version="26.5.7" />
+    </ItemGroup>
+
+</Project>

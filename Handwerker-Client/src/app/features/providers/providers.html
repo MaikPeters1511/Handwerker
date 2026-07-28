@@ -1,0 +1,293 @@
+﻿<div class="w-full max-w-full">
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+    <div>
+        <h1 class="text-3xl font-bold tracking-tight">{{ 'providers.title' | translate }}</h1>
+        <p class="text-base-content/70 mt-1">{{ 'providers.subtitle' | translate }}</p>
+    </div>
+    <button class="btn btn-primary shadow-lg" (click)="addNewProvider()" aria-label="{{ 'providers.newProvider' | translate }}">
+      <i class="fa-solid fa-plus"></i> {{ 'providers.newProvider' | translate }}
+    </button>
+  </div>
+
+  <!-- Search Section -->
+  <div class="form-control w-full max-w-xl relative mb-8 z-20">
+    <label class="label">
+      <span class="label-text font-semibold">{{ 'providers.search.label' | translate }}</span>
+    </label>
+    <div class="relative">
+        <i class="fa-solid fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-base-content/50"></i>
+        <input
+        type="text"
+        aria-label="{{ 'providers.search.label' | translate }}"
+        [placeholder]="'providers.search.placeholder' | translate"
+        class="input input-bordered w-full pl-10 shadow-sm focus:input-primary transition-all"
+        (input)="onSearchInput($event)"
+        [value]="searchTerm()"
+        />
+    </div>
+
+    <!-- Autocomplete Dropdown -->
+    @if (showDropdown() && searchResults().length > 0) {
+      <ul class="menu bg-base-100 w-full rounded-box shadow-xl absolute top-full mt-2 z-50 max-h-60 overflow-y-auto border border-base-300" role="listbox" aria-label="{{ 'providers.search.results' | translate }}">
+        @for (provider of searchResults(); track provider.id) {
+          <li>
+            <a (click)="selectProvider(provider)" class="hover:bg-base-200" role="option" tabindex="0" aria-selected="false">
+              <div class="flex flex-col">
+                <span class="font-bold">{{ provider.name }}</span>
+                <span class="text-xs text-base-content/70">{{ provider.company }} - {{ provider.city }}</span>
+              </div>
+            </a>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+  <div class="card bg-base-100 shadow-xl border border-base-200 w-full">
+    <div class="card-body p-6 md:p-8">
+      <div class="flex justify-between items-center pb-4 border-b border-base-200 mb-6">
+          <h2 class="card-title text-xl">
+            {{ isEditing() ? ('providers.editMode' | translate) : ('providers.createMode' | translate) }}
+          </h2>
+          <div class="flex gap-2 items-center">
+            @if (isEditing()) {
+              <div class="badge badge-accent badge-outline">{{ 'providers.editBadge' | translate }}</div>
+              @if (isSaving()) {
+                <span class="loading loading-spinner loading-sm text-primary"></span>
+                <span class="text-sm text-base-content/70">{{ 'providers.saving' | translate }}</span>
+              }
+              @if (!isSaving() && lastSaved()) {
+                <div class="flex items-center gap-1 text-success text-sm">
+                  <i class="fa-solid fa-check"></i>
+                  <span>{{ 'providers.saved' | translate }}</span>
+                </div>
+              }
+              <button
+                type="button"
+                class="btn btn-error btn-sm shadow-md"
+                (click)="deleteProvider()"
+                [disabled]="isDeleting()">
+                <i class="fa-solid fa-trash mr-2"></i>
+                {{ isDeleting() ? ('providers.deleting' | translate) : ('providers.actions.delete' | translate) }}
+              </button>
+              <button
+                type="submit"
+                form="provider-form"
+                class="btn btn-primary btn-sm shadow-md"
+                [disabled]="isSaving()">
+                <i class="fa-solid fa-save mr-2"></i>
+                {{ 'providers.actions.save' | translate }}
+              </button>
+            }
+          </div>
+      </div>
+
+      <form id="provider-form" [formGroup]="providerForm" (ngSubmit)="saveProvider()" class="space-y-8">
+
+        <!-- Stammdaten -->
+        <div class="bg-base-50/50 rounded-xl p-2 md:p-0">
+            <h3 class="font-semibold text-lg mb-4 text-base-content/80 flex items-center gap-2">
+              <i class="fa-solid fa-building text-primary"></i> {{ 'providers.masterData.title' | translate }}
+            </h3>
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+            <div class="form-control">
+                <label class="label"><span class="label-text font-medium">{{ 'providers.masterData.name' | translate }} *</span></label>
+                <input type="text" formControlName="name" class="input input-bordered focus:input-primary w-full"
+                    [class.input-error]="providerForm.get('name')?.invalid && providerForm.get('name')?.touched"
+                    [placeholder]="'providers.masterData.namePlaceholder' | translate" />
+                @if (providerForm.get('name')?.invalid && providerForm.get('name')?.touched) {
+                <div class="label pb-0">
+                    <span class="label-text-alt text-error">{{ 'providers.masterData.nameRequired' | translate }}</span>
+                </div>
+                }
+            </div>
+
+            <div class="form-control">
+                <label class="label"><span class="label-text font-medium">{{ 'providers.masterData.company' | translate }}</span></label>
+                <input type="text" formControlName="company" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.masterData.companyPlaceholder' | translate" />
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Adresse -->
+        <div class="bg-base-50/50 rounded-xl p-2 md:p-0">
+             <h3 class="font-semibold text-lg mb-4 text-base-content/80 flex items-center gap-2">
+               <i class="fa-solid fa-location-dot text-primary"></i> {{ 'providers.address.title' | translate }}
+             </h3>
+             <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+              <div class="form-control xl:col-span-2">
+                 <label class="label"><span class="label-text font-medium">{{ 'providers.address.street' | translate }}</span></label>
+                 <input type="text" formControlName="street" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.address.streetPlaceholder' | translate" />
+              </div>
+
+              <div class="form-control">
+                 <label class="label"><span class="label-text font-medium">{{ 'providers.address.zipCode' | translate }}</span></label>
+                 <input type="text" formControlName="zipCode" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.address.zipCodePlaceholder' | translate" />
+              </div>
+
+               <div class="form-control">
+                 <label class="label"><span class="label-text font-medium">{{ 'providers.address.city' | translate }}</span></label>
+                 <input type="text" formControlName="city" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.address.cityPlaceholder' | translate" />
+              </div>
+
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Kontaktdaten -->
+        <div class="bg-base-50/50 rounded-xl p-2 md:p-0">
+          <h3 class="font-semibold text-lg mb-4 text-base-content/80 flex items-center gap-2">
+            <i class="fa-solid fa-address-book text-primary"></i> {{ 'providers.contact.title' | translate }}
+          </h3>
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+            <div class="form-control">
+               <label class="label"><span class="label-text font-medium">{{ 'providers.contact.email' | translate }}</span></label>
+               <input type="email" formControlName="email" class="input input-bordered focus:input-primary w-full"
+                   [class.input-error]="providerForm.get('email')?.invalid && providerForm.get('email')?.touched"
+                   [placeholder]="'providers.contact.emailPlaceholder' | translate" />
+               @if (providerForm.get('email')?.invalid && providerForm.get('email')?.touched) {
+                 <div class="label pb-0">
+                     <span class="label-text-alt text-error">{{ 'providers.contact.emailInvalid' | translate }}</span>
+                 </div>
+               }
+            </div>
+
+            <div class="form-control">
+               <label class="label"><span class="label-text font-medium">{{ 'providers.contact.phone' | translate }}</span></label>
+               <input type="tel" formControlName="phone" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.contact.phonePlaceholder' | translate" />
+            </div>
+
+            <div class="form-control xl:col-span-2">
+               <label class="label"><span class="label-text font-medium">{{ 'providers.contact.website' | translate }}</span></label>
+               <input type="url" formControlName="website" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.contact.websitePlaceholder' | translate" />
+            </div>
+
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Steuerliche Daten -->
+        <div class="bg-base-50/50 rounded-xl p-2 md:p-0">
+          <h3 class="font-semibold text-lg mb-4 text-base-content/80 flex items-center gap-2">
+            <i class="fa-solid fa-file-invoice text-primary"></i> {{ 'providers.tax.title' | translate }}
+          </h3>
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+            <div class="form-control">
+               <label class="label"><span class="label-text font-medium">{{ 'providers.tax.taxId' | translate }}</span></label>
+               <input type="text" formControlName="taxId" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.tax.taxIdPlaceholder' | translate" />
+            </div>
+
+            <div class="form-control">
+               <label class="label"><span class="label-text font-medium">{{ 'providers.tax.taxNumber' | translate }}</span></label>
+               <input type="text" formControlName="taxNumber" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.tax.taxNumberPlaceholder' | translate" />
+            </div>
+
+            <div class="form-control">
+               <label class="label"><span class="label-text font-medium">{{ 'providers.tax.commercialRegister' | translate }}</span></label>
+               <input type="text" formControlName="commercialRegister" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.tax.commercialRegisterPlaceholder' | translate" />
+            </div>
+
+            <div class="form-control">
+               <label class="label"><span class="label-text font-medium">{{ 'providers.tax.registerCourt' | translate }}</span></label>
+               <input type="text" formControlName="registerCourt" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.tax.registerCourtPlaceholder' | translate" />
+            </div>
+
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Bankverbindung -->
+        <div class="bg-base-50/50 rounded-xl p-2 md:p-0">
+          <h3 class="font-semibold text-lg mb-4 text-base-content/80 flex items-center gap-2">
+            <i class="fa-solid fa-piggy-bank text-primary"></i> {{ 'providers.bank.title' | translate }}
+          </h3>
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+            <div class="form-control xl:col-span-2">
+               <label class="label"><span class="label-text font-medium">{{ 'providers.bank.name' | translate }}</span></label>
+               <input type="text" formControlName="bankName" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.bank.namePlaceholder' | translate" />
+            </div>
+
+            <div class="form-control">
+               <label class="label"><span class="label-text font-medium">{{ 'providers.bank.iban' | translate }}</span></label>
+               <input type="text" formControlName="bankIban" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.bank.ibanPlaceholder' | translate" />
+            </div>
+
+            <div class="form-control">
+               <label class="label"><span class="label-text font-medium">{{ 'providers.bank.bic' | translate }}</span></label>
+               <input type="text" formControlName="bankBic" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.bank.bicPlaceholder' | translate" />
+            </div>
+
+            <div class="form-control">
+               <label class="label"><span class="label-text font-medium">{{ 'providers.bank.plz' | translate }}</span></label>
+               <input type="text" formControlName="bankPlz" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.bank.plzPlaceholder' | translate" />
+            </div>
+
+            <div class="form-control">
+               <label class="label"><span class="label-text font-medium">{{ 'providers.bank.ort' | translate }}</span></label>
+               <input type="text" formControlName="bankOrt" class="input input-bordered focus:input-primary w-full" [placeholder]="'providers.bank.ortPlaceholder' | translate" />
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card-actions justify-end mt-8 pt-6 border-t border-base-200 gap-4">
+          <button type="button" class="btn btn-ghost" (click)="addNewProvider()">
+            @if (isEditing()) {
+              <i class="fa-solid fa-times mr-2"></i>
+              {{ 'providers.actions.endEdit' | translate }}
+            } @else {
+              {{ 'providers.actions.reset' | translate }}
+            }
+          </button>
+          <button type="submit" class="btn btn-primary px-8 min-w-[150px] shadow-md" [disabled]="isSaving()">
+            <i class="fa-solid fa-save mr-2"></i>
+            @if (isEditing()) {
+              {{ 'providers.actions.saveChanges' | translate }}
+            } @else {
+              {{ 'providers.actions.create' | translate }}
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notifications -->
+<div class="toast toast-top toast-end z-50">
+  @if (saveSuccess()) {
+    <div class="alert alert-success shadow-lg flex gap-4" role="status" aria-live="polite">
+      <i class="fa-solid fa-circle-check text-xl"></i>
+      <span>{{ successMessage() }}</span>
+      <button
+        class="btn btn-sm btn-ghost btn-circle"
+        (click)="saveSuccess.set(false)"
+        [attr.aria-label]="'providers.toast.close' | translate">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  }
+
+  @if (saveError(); as err) {
+    <div class="alert alert-error shadow-lg flex gap-4" role="alert" aria-live="assertive">
+      <i class="fa-solid fa-circle-exclamation text-xl"></i>
+      <span>{{ err }}</span>
+      <button
+        class="btn btn-sm btn-ghost btn-circle"
+        (click)="saveError.set(null)"
+        [attr.aria-label]="'providers.toast.close' | translate">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  }
+</div>

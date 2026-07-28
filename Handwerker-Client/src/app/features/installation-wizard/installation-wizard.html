@@ -1,0 +1,494 @@
+﻿<div class="flex flex-col h-full w-full">
+  <!-- Header & Close Button -->
+  <div class="flex justify-between items-center mb-6">
+    <h3 class="font-bold text-lg">{{ 'installationWizard.title' | translate }}</h3>
+    <button class="btn btn-ghost btn-sm btn-circle" (click)="close.emit()">
+      <i class="fa-solid fa-times text-lg"></i>
+    </button>
+  </div>
+
+  <!-- Steps Indicator -->
+  <div class="w-full mb-8 overflow-x-auto">
+    <ul class="steps w-full min-w-[500px]">
+      <li class="step cursor-pointer" [class.step-primary]="currentStep() >= 0" (click)="setStep(0)">{{ 'installationWizard.steps.welcome' | translate }}</li>
+      <li class="step cursor-pointer" [class.step-primary]="currentStep() >= 1" (click)="setStep(1)">{{ 'installationWizard.steps.user' | translate }}</li>
+      <li class="step cursor-pointer" [class.step-primary]="currentStep() >= 2" (click)="setStep(2)">{{ 'installationWizard.steps.company' | translate }}</li>
+      <li class="step cursor-pointer" [class.step-primary]="currentStep() >= 3" (click)="setStep(3)">{{ 'installationWizard.steps.suppliers' | translate }}</li>
+      <li class="step cursor-pointer" [class.step-primary]="currentStep() >= 4" (click)="setStep(4)">{{ 'installationWizard.steps.finish' | translate }}</li>
+    </ul>
+  </div>
+
+  <!-- Content Area -->
+  <div class="flex-1 overflow-y-auto px-1 min-h-[400px]">
+
+    <!-- Step 0: Willkommen -->
+    <div *ngIf="currentStep() === 0" class="animate-fade-in flex flex-col items-center text-center py-8">
+      <div class="w-32 h-32 bg-primary/10 rounded-full flex items-center justify-center mb-6 text-primary">
+         <i class="fa-solid fa-handshake text-5xl"></i>
+      </div>
+      <h2 class="text-3xl font-bold mb-4">{{ 'installationWizard.welcome.title' | translate }}</h2>
+      <p class="max-w-md text-base-content/70 mb-8 text-lg">
+        {{ 'installationWizard.welcome.description' | translate }}
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left w-full max-w-4xl mt-4">
+         <div class="card bg-base-200 border border-base-300">
+           <div class="card-body p-6 items-center text-center">
+             <i class="fa-solid fa-file-invoice-dollar text-3xl text-primary mb-3"></i>
+             <h3 class="font-bold">{{ 'installationWizard.welcome.features.invoices.title' | translate }}</h3>
+             <p class="text-sm">{{ 'installationWizard.welcome.features.invoices.desc' | translate }}</p>
+           </div>
+         </div>
+         <div class="card bg-base-200 border border-base-300">
+           <div class="card-body p-6 items-center text-center">
+             <i class="fa-solid fa-boxes-stacked text-3xl text-secondary mb-3"></i>
+             <h3 class="font-bold">{{ 'installationWizard.welcome.features.inventory.title' | translate }}</h3>
+             <p class="text-sm">{{ 'installationWizard.welcome.features.inventory.desc' | translate }}</p>
+           </div>
+         </div>
+         <div class="card bg-base-200 border border-base-300">
+           <div class="card-body p-6 items-center text-center">
+             <i class="fa-solid fa-users text-3xl text-accent mb-3"></i>
+             <h3 class="font-bold">{{ 'installationWizard.welcome.features.contacts.title' | translate }}</h3>
+             <p class="text-sm">{{ 'installationWizard.welcome.features.contacts.desc' | translate }}</p>
+           </div>
+         </div>
+      </div>
+    </div>
+
+    <!-- Step 1: Benutzerdaten -->
+    <div *ngIf="currentStep() === 1" class="animate-fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-3 bg-primary/10 rounded-lg text-primary">
+          <i class="fa-solid fa-user-circle text-2xl"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold">{{ 'installationWizard.userData.title' | translate }}</h2>
+          <p class="text-base-content/60 text-sm">{{ 'installationWizard.userData.description' | translate }}</p>
+        </div>
+      </div>
+
+      <form [formGroup]="userForm" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+          <!-- Profilbild Upload (Links oder Oben) -->
+          <div class="md:col-span-4 flex flex-col items-center justify-center p-6 border-2 border-dashed border-base-300 rounded-xl bg-base-100 h-full">
+            <div class="avatar placeholder mb-4">
+              <div class="bg-neutral-focus text-neutral-content rounded-full w-24 h-24 ring ring-primary ring-offset-base-100 ring-offset-2 flex items-center justify-center overflow-hidden">
+                <img *ngIf="userForm.get('profileImage')?.value" [src]="'assets/placeholder-user.png'" class="w-full h-full object-cover" /> <!-- Placeholder logic needed for preview -->
+                <span *ngIf="!userForm.get('profileImage')?.value" class="text-3xl"><i class="fa-solid fa-camera"></i></span>
+              </div>
+            </div>
+            <label class="btn btn-sm btn-outline btn-primary w-full max-w-xs">
+              {{ 'installationWizard.userData.uploadImage' | translate }}
+              <input type="file" class="hidden" (change)="onFileChange($event, 'profileImage', userForm)" accept="image/*" />
+            </label>
+            <p class="text-xs text-base-content/50 mt-2 text-center">{{ 'installationWizard.userData.imageHint' | translate }}</p>
+          </div>
+
+          <!-- Formularfelder -->
+          <div class="md:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4 content-start">
+            <div class="form-control">
+              <label class="label"><span class="label-text">{{ 'installationWizard.userData.salutation' | translate }}</span></label>
+              <select class="select select-bordered w-full" formControlName="salutation">
+                <option value="" disabled selected>{{ 'installationWizard.userData.salutationPlaceholder' | translate }}</option>
+                <option value="Herr">{{ 'installationWizard.userData.mr' | translate }}</option>
+                <option value="Frau">{{ 'installationWizard.userData.ms' | translate }}</option>
+                <option value="Divers">{{ 'installationWizard.userData.diverse' | translate }}</option>
+              </select>
+            </div>
+
+            <div class="form-control">
+              <label class="label"><span class="label-text">{{ 'installationWizard.userData.titleField' | translate }}</span></label>
+              <input type="text" placeholder="z.B. Dr., Prof." class="input input-bordered w-full" formControlName="title" />
+            </div>
+
+            <div class="form-control">
+              <label class="label"><span class="label-text font-medium">{{ 'installationWizard.userData.firstName' | translate }}</span><span class="text-error">*</span></label>
+              <div class="relative">
+                <i class="fa-solid fa-user absolute left-3 top-3.5 text-base-content/30 text-sm"></i>
+                <input type="text" class="input input-bordered w-full pl-9" formControlName="firstName"
+                  [class.input-error]="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched" />
+              </div>
+              @if (userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched) {
+                <div class="label pb-0">
+                  <span class="label-text-alt text-error">{{ 'installationWizard.userData.firstNameRequired' | translate }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="form-control">
+              <label class="label"><span class="label-text font-medium">{{ 'installationWizard.userData.lastName' | translate }}</span><span class="text-error">*</span></label>
+              <div class="relative">
+                <i class="fa-solid fa-user absolute left-3 top-3.5 text-base-content/30 text-sm"></i>
+                <input type="text" class="input input-bordered w-full pl-9" formControlName="lastName"
+                  [class.input-error]="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched" />
+              </div>
+              @if (userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched) {
+                <div class="label pb-0">
+                  <span class="label-text-alt text-error">{{ 'installationWizard.userData.lastNameRequired' | translate }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Step 2: Firmendaten -->
+    <div *ngIf="currentStep() === 2" class="animate-fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-3 bg-secondary/10 rounded-lg text-secondary">
+          <i class="fa-solid fa-building text-2xl"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold">{{ 'installationWizard.companyData.title' | translate }}</h2>
+          <p class="text-base-content/60 text-sm">{{ 'installationWizard.companyData.description' | translate }}</p>
+        </div>
+      </div>
+
+      <form [formGroup]="companyForm" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+        <!-- Logo -->
+        <div class="col-span-1 md:col-span-2 form-control mb-2">
+           <label class="label"><span class="label-text font-medium">{{ 'installationWizard.companyData.logo' | translate }}</span></label>
+           <input type="file" class="file-input file-input-bordered file-input-secondary w-full" (change)="onFileChange($event, 'logo', companyForm)" accept="image/*" />
+        </div>
+
+        <div class="form-control md:col-span-2">
+          <label class="label"><span class="label-text font-medium">{{ 'installationWizard.companyData.name' | translate }}</span><span class="text-error">*</span></label>
+          <div class="relative">
+            <i class="fa-solid fa-briefcase absolute left-3 top-3.5 text-base-content/30 text-sm"></i>
+            <input type="text" class="input input-bordered w-full pl-9" formControlName="name" [placeholder]="'installationWizard.companyData.namePlaceholder' | translate"
+              [class.input-error]="companyForm.get('name')?.invalid && companyForm.get('name')?.touched" />
+          </div>
+          @if (companyForm.get('name')?.invalid && companyForm.get('name')?.touched) {
+            <div class="label pb-0">
+              <span class="label-text-alt text-error">{{ 'installationWizard.companyData.nameRequired' | translate }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="form-control md:col-span-2 grid grid-cols-12 gap-4">
+           <div class="col-span-8">
+             <label class="label"><span class="label-text font-medium">{{ 'installationWizard.companyData.street' | translate }}</span><span class="text-error">*</span></label>
+             <input type="text" class="input input-bordered w-full" formControlName="street"
+               [class.input-error]="companyForm.get('street')?.invalid && companyForm.get('street')?.touched" />
+             @if (companyForm.get('street')?.invalid && companyForm.get('street')?.touched) {
+               <div class="label pb-0">
+                 <span class="label-text-alt text-error">{{ 'installationWizard.companyData.streetRequired' | translate }}</span>
+               </div>
+             }
+           </div>
+           <div class="col-span-4">
+            <label class="label"><span class="label-text font-medium">{{ 'installationWizard.companyData.streetNr' | translate }}</span></label>
+            <input type="text" class="input input-bordered w-full" placeholder="1 a" />
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label class="label"><span class="label-text font-medium">{{ 'installationWizard.companyData.zipCode' | translate }}</span><span class="text-error">*</span></label>
+          <input type="text" class="input input-bordered w-full" formControlName="zipCode"
+            [class.input-error]="companyForm.get('zipCode')?.invalid && companyForm.get('zipCode')?.touched" />
+          @if (companyForm.get('zipCode')?.invalid && companyForm.get('zipCode')?.touched) {
+            <div class="label pb-0">
+              <span class="label-text-alt text-error">{{ 'installationWizard.companyData.zipCodeRequired' | translate }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="form-control">
+          <label class="label"><span class="label-text font-medium">{{ 'installationWizard.companyData.city' | translate }}</span><span class="text-error">*</span></label>
+          <input type="text" class="input input-bordered w-full" formControlName="city"
+            [class.input-error]="companyForm.get('city')?.invalid && companyForm.get('city')?.touched" />
+          @if (companyForm.get('city')?.invalid && companyForm.get('city')?.touched) {
+            <div class="label pb-0">
+              <span class="label-text-alt text-error">{{ 'installationWizard.companyData.cityRequired' | translate }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="divider md:col-span-2 my-0">{{ 'installationWizard.companyData.contactLegal' | translate }}</div>
+
+        <div class="form-control">
+          <label class="label"><span class="label-text font-medium">{{ 'installationWizard.companyData.phone' | translate }}</span><span class="text-error">*</span></label>
+          <div class="relative">
+            <i class="fa-solid fa-phone absolute left-3 top-3.5 text-base-content/30 text-sm"></i>
+            <input type="tel" class="input input-bordered w-full pl-9" formControlName="phone"
+              [class.input-error]="companyForm.get('phone')?.invalid && companyForm.get('phone')?.touched" />
+          </div>
+          @if (companyForm.get('phone')?.invalid && companyForm.get('phone')?.touched) {
+            <div class="label pb-0">
+              <span class="label-text-alt text-error">{{ 'installationWizard.companyData.phoneRequired' | translate }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="form-control">
+          <label class="label"><span class="label-text font-medium">{{ 'installationWizard.companyData.email' | translate }}</span><span class="text-error">*</span></label>
+           <div class="relative">
+            <i class="fa-solid fa-envelope absolute left-3 top-3.5 text-base-content/30 text-sm"></i>
+            <input type="email" class="input input-bordered w-full pl-9" formControlName="email"
+              [class.input-error]="companyForm.get('email')?.invalid && companyForm.get('email')?.touched" />
+           </div>
+           @if (companyForm.get('email')?.invalid && companyForm.get('email')?.touched) {
+             <div class="label pb-0">
+               <span class="label-text-alt text-error">{{ 'installationWizard.companyData.emailRequired' | translate }}</span>
+             </div>
+           }
+        </div>
+
+        <div class="form-control">
+          <label class="label"><span class="label-text">{{ 'installationWizard.companyData.commercialRegister' | translate }}</span></label>
+          <input type="text" class="input input-bordered w-full" formControlName="commercialRegister" />
+        </div>
+
+        <div class="form-control">
+          <label class="label"><span class="label-text">{{ 'installationWizard.companyData.registerCourt' | translate }}</span></label>
+          <input type="text" class="input input-bordered w-full" formControlName="registerCourt" />
+        </div>
+
+        <div class="form-control">
+          <label class="label"><span class="label-text">{{ 'installationWizard.companyData.taxId' | translate }}</span></label>
+          <input type="text" class="input input-bordered w-full" formControlName="taxId" />
+        </div>
+
+        <div class="form-control">
+            <label class="label"><span class="label-text">{{ 'installationWizard.companyData.taxNumber' | translate }}</span></label>
+            <input type="text" class="input input-bordered w-full" formControlName="taxNumber" />
+        </div>
+
+        <div class="form-control md:col-span-2 mt-2">
+          <label class="label cursor-pointer justify-start gap-3 p-4 border border-base-200 rounded-lg hover:bg-base-100 transition-colors">
+            <input type="checkbox" class="checkbox checkbox-primary" formControlName="vatExemption" />
+            <div class="flex flex-col">
+              <span class="label-text font-semibold">{{ 'installationWizard.companyData.vatExemption' | translate }}</span>
+              <span class="label-text text-xs text-base-content/60">{{ 'installationWizard.companyData.vatExemptionHint' | translate }}</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="divider md:col-span-2 my-2">{{ 'installationWizard.companyData.bankDetails' | translate }}</div>
+
+        <div class="form-control md:col-span-2">
+          <label class="label"><span class="label-text">{{ 'installationWizard.companyData.bankName' | translate }}</span></label>
+          <div class="relative">
+            <i class="fa-solid fa-building-columns absolute left-3 top-3.5 text-base-content/30 text-sm"></i>
+            <input type="text" class="input input-bordered w-full pl-9" formControlName="bankName" placeholder="z.B. Sparkasse München" />
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label class="label"><span class="label-text">{{ 'installationWizard.companyData.iban' | translate }}</span></label>
+          <div class="relative">
+            <i class="fa-solid fa-credit-card absolute left-3 top-3.5 text-base-content/30 text-sm"></i>
+            <input type="text" class="input input-bordered w-full pl-9" formControlName="iban" placeholder="DE89 3704 0044 0532 0130 00" />
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label class="label"><span class="label-text">{{ 'installationWizard.companyData.bic' | translate }}</span></label>
+          <div class="relative">
+            <i class="fa-solid fa-credit-card absolute left-3 top-3.5 text-base-content/30 text-sm"></i>
+            <input type="text" class="input input-bordered w-full pl-9" formControlName="bic" placeholder="COBADEFFXXX" />
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Step 3: Lieferanten -->
+    <div *ngIf="currentStep() === 3" class="animate-fade-in h-full flex flex-col">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="p-3 bg-accent/10 rounded-lg text-accent">
+          <i class="fa-solid fa-truck-field text-2xl"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold">{{ 'installationWizard.suppliers.title' | translate }}</h2>
+          <p class="text-base-content/60 text-sm">{{ 'installationWizard.suppliers.description' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="flex gap-2 mb-4">
+        <div class="relative flex-1">
+          <i class="fa-solid fa-search absolute left-3 top-3.5 text-base-content/30"></i>
+          <input type="text" [placeholder]="'installationWizard.suppliers.searchPlaceholder' | translate" class="input input-bordered w-full pl-10 h-10" />
+        </div>
+        <button class="btn btn-outline btn-square h-10 min-h-0">
+          <i class="fa-solid fa-filter"></i>
+        </button>
+      </div>
+
+      <div class="overflow-x-auto border border-base-300 rounded-lg flex-1 min-h-[300px] relative">
+         <!-- Loading State Mockup if needed, otherwise data -->
+        <table class="table table-pin-rows">
+          <thead class="bg-base-200">
+            <tr>
+              <th class="w-10">
+                <label>
+                  <input type="checkbox" class="checkbox checkbox-sm" />
+                </label>
+              </th>
+              <th>{{ 'installationWizard.suppliers.name' | translate }} / {{ 'installationWizard.suppliers.company' | translate }}</th>
+              <th>{{ 'installationWizard.suppliers.city' | translate }}</th>
+              <th>Kontakt</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let provider of providers()" class="hover:bg-base-100 transition-colors cursor-pointer" (click)="toggleProvider(provider.id)">
+              <td>
+                <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" [checked]="selectedProviders().includes(provider.id)" (click)="$event.stopPropagation(); toggleProvider(provider.id)" />
+              </td>
+              <td>
+                <div class="flex items-center gap-3">
+                  <div class="avatar placeholder">
+                    <div class="bg-neutral text-neutral-content rounded-full w-8">
+                      <span class="text-xs">{{ provider.name.charAt(0) }}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="font-bold">{{ provider.company || provider.name }}</div>
+                    <div class="text-xs opacity-50" *ngIf="provider.company">{{ provider.name }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="flex items-center gap-1 text-sm bg-base-200 px-2 py-1 rounded w-fit">
+                   <i class="fa-solid fa-location-dot text-xs opacity-50"></i> {{ provider.city }}
+                </div>
+              </td>
+              <td class="text-sm">{{ provider.email }}</td>
+              <td class="text-right">
+                <button class="btn btn-ghost btn-xs btn-circle text-info">
+                   <i class="fa-solid fa-circle-info"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="providers().length === 0">
+              <td colspan="5" class="text-center py-8 text-base-content/50">
+                 <i class="fa-solid fa-inbox text-4xl mb-2 block"></i>
+                 {{ 'installationWizard.suppliers.empty' | translate }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="text-xs text-center mt-2 text-base-content/50">
+        {{ selectedProviders().length }} {{ 'installationWizard.suppliers.itemsSelected' | translate }}
+      </div>
+    </div>
+
+    <!-- Step 4: Los geht's -->
+    <div *ngIf="currentStep() === 4" class="animate-fade-in">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="p-3 bg-success/10 rounded-lg text-success">
+              <i class="fa-solid fa-rocket text-2xl"></i>
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold">{{ 'installationWizard.final.title' | translate }}</h2>
+              <p class="text-base-content/60 text-sm">{{ 'installationWizard.final.description' | translate }}</p>
+            </div>
+          </div>
+
+      <form [formGroup]="finalForm" class="space-y-6 max-w-2xl mx-auto py-4">
+        <div class="form-control">
+          <label class="label"><span class="label-text font-medium text-lg">{{ 'installationWizard.final.industry' | translate }}</span></label>
+          <div class="relative">
+             <i class="fa-solid fa-wrench absolute left-4 top-4 text-base-content/30"></i>
+             <input type="text" class="input input-lg input-bordered w-full pl-12" formControlName="industry" placeholder="z.B. Elektrotechnik, Sanitär..." required />
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label class="label"><span class="label-text font-medium text-lg">{{ 'installationWizard.final.referralSource' | translate }}</span></label>
+           <select class="select select-lg select-bordered w-full" formControlName="referralSource">
+                <option value="" disabled selected>{{ 'installationWizard.final.referralPlaceholder' | translate }}</option>
+                <option value="Google">Google Suche</option>
+                <option value="Empfehlung">Empfehlung</option>
+                <option value="SocialMedia">Social Media</option>
+                <option value="Messe">Messe / Veranstaltung</option>
+                <option value="Sonstiges">Sonstiges</option>
+           </select>
+           <!-- Fallback text input if needed could be added via *ngIf based on selection "Sonstiges" -->
+        </div>
+
+        <div class="alert bg-base-200 border-none mt-8">
+          <i class="fa-solid fa-shield-halved text-info text-xl"></i>
+          <div class="text-sm">
+            <h3 class="font-bold">{{ 'installationWizard.final.avvTitle' | translate }}</h3>
+            <p>{{ 'installationWizard.final.avvDesc' | translate }}</p>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer justify-start gap-4 p-4 border rounded-lg hover:border-primary transition-colors">
+            <input type="checkbox" class="checkbox checkbox-lg checkbox-success" formControlName="avAgreementAccepted" required />
+            <span class="label-text text-base font-semibold">{{ 'installationWizard.final.avAgreement' | translate }}</span>
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer Actions -->
+  <div class="modal-action mt-8 pt-4 border-t border-base-200 flex justify-between items-center">
+
+    <!-- Left Button (Back) -->
+    <div>
+        <button *ngIf="currentStep() > 0"
+                type="button"
+                class="btn btn-outline gap-2"
+                (click)="prevStep()">
+            <i class="fa-solid fa-arrow-left"></i> {{ 'installationWizard.buttons.back' | translate }}
+        </button>
+    </div>
+
+    <!-- Right Buttons (Save & Next) -->
+    <div class="flex gap-3">
+        <!-- Save Interim (available from step 1-3) -->
+        <button *ngIf="currentStep() > 0 && currentStep() < 4"
+                type="button"
+                class="btn btn-ghost text-base-content/70"
+                (click)="currentStep() === 1 ? saveUserData() : (currentStep() === 2 ? saveCompanyData() : saveSuppliers())">
+            <i class="fa-regular fa-save"></i> {{ 'installationWizard.buttons.save' | translate }}
+        </button>
+
+        <!-- Next / Finish Step 0 -->
+        <button *ngIf="currentStep() === 0"
+                class="btn btn-primary btn-lg gap-2 px-8"
+                (click)="nextStep()">
+            {{ 'installationWizard.buttons.start' | translate }} <i class="fa-solid fa-arrow-right"></i>
+        </button>
+
+        <!-- Next Step 1 -->
+        <button *ngIf="currentStep() === 1"
+                class="btn btn-primary px-6"
+                [disabled]="userForm.invalid"
+                (click)="submitUserData()">
+            {{ 'installationWizard.buttons.next' | translate }} <i class="fa-solid fa-arrow-right"></i>
+        </button>
+
+         <!-- Next Step 2 -->
+         <button *ngIf="currentStep() === 2"
+                class="btn btn-primary px-6"
+                [disabled]="companyForm.invalid"
+                (click)="submitCompanyData()">
+             {{ 'installationWizard.buttons.next' | translate }} <i class="fa-solid fa-arrow-right"></i>
+         </button>
+
+          <!-- Next Step 3 -->
+        <button *ngIf="currentStep() === 3"
+                class="btn btn-primary px-6"
+                (click)="submitSuppliers()">
+            {{ 'installationWizard.buttons.next' | translate }} <i class="fa-solid fa-arrow-right"></i>
+        </button>
+
+        <!-- Finish Step 4 -->
+        <button *ngIf="currentStep() === 4"
+                class="btn btn-success text-white px-8"
+                [disabled]="finalForm.invalid"
+                (click)="submitFinal()">
+            <i class="fa-solid fa-check"></i> {{ 'installationWizard.buttons.finish' | translate }}
+        </button>
+    </div>
+  </div>
+
+</div>

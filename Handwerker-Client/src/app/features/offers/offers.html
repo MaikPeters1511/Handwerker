@@ -1,0 +1,137 @@
+﻿<div class="container mx-auto p-6">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">Angebote</h1>
+    <button
+      (click)="onCreate()"
+      class="btn btn-primary"
+      type="button">
+      <i class="fa-solid fa-plus mr-2"></i>
+      Neues Angebot
+    </button>
+  </div>
+
+  <!-- Filter Tabs -->
+  <div class="tabs tabs-boxed mb-6" role="tablist">
+    <button
+      [class.tab-active]="filter() === 'all'"
+      (click)="onFilterChange('all')"
+      class="tab"
+      type="button"
+      role="tab"
+      [attr.aria-selected]="filter() === 'all'">
+      Alle
+    </button>
+    <button
+      [class.tab-active]="filter() === 'sent'"
+      (click)="onFilterChange('sent')"
+      class="tab"
+      type="button"
+      role="tab"
+      [attr.aria-selected]="filter() === 'sent'">
+      Geschrieben
+    </button>
+    <button
+      [class.tab-active]="filter() === 'received'"
+      (click)="onFilterChange('received')"
+      class="tab"
+      type="button"
+      role="tab"
+      [attr.aria-selected]="filter() === 'received'">
+      Empfangen
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="flex justify-center items-center py-12">
+      <span class="loading loading-spinner loading-lg"></span>
+    </div>
+  }
+
+  <!-- Table -->
+  @if (!loading() && filteredOffers().length > 0) {
+    <div class="overflow-x-auto">
+      <table class="table table-zebra w-full">
+        <thead>
+          <tr>
+            <th>Angebotsnummer</th>
+            <th>Datum</th>
+            <th>Gültig bis</th>
+            <th>Kunde</th>
+            <th>Betrag (Netto)</th>
+            <th>Betrag (Brutto)</th>
+            <th>Status</th>
+            <th>Typ</th>
+            <th class="text-right">Aktionen</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (offer of filteredOffers(); track offer.id) {
+            <tr>
+              <td class="font-semibold">{{ offer.offerNumber }}</td>
+              <td>{{ formatDate(offer.offerDate) }}</td>
+              <td>{{ formatDate(offer.validUntil) }}</td>
+              <td>{{ offer.customerName }}</td>
+              <td>{{ formatCurrency(offer.totalNet) }}</td>
+              <td>{{ formatCurrency(offer.totalGross) }}</td>
+              <td>
+                <span [class]="getStatusBadgeClass(offer.status)">
+                  {{ getStatusLabel(offer.status) }}
+                </span>
+              </td>
+              <td>
+                <span [class]="offer.isReceived ? 'badge badge-accent' : 'badge badge-secondary'">
+                  {{ offer.isReceived ? 'Empfangen' : 'Geschrieben' }}
+                </span>
+              </td>
+              <td class="text-right">
+                <div class="flex gap-2 justify-end">
+                  <button
+                    (click)="onEdit(offer.id)"
+                    class="btn btn-sm btn-ghost"
+                    type="button"
+                    [attr.aria-label]="'Angebot ' + offer.offerNumber + ' bearbeiten'">
+                    <i class="fa-solid fa-pen"></i>
+                  </button>
+
+                  @if (offer.status !== 'Converted') {
+                    <button
+                      (click)="onConvertToOrder(offer.id)"
+                      class="btn btn-sm btn-success"
+                      type="button"
+                      [attr.aria-label]="'Angebot ' + offer.offerNumber + ' in Auftrag umwandeln'">
+                      <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                  }
+
+                  <button
+                    (click)="onDelete(offer.id)"
+                    class="btn btn-sm btn-error"
+                    type="button"
+                    [attr.aria-label]="'Angebot ' + offer.offerNumber + ' löschen'">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!loading() && filteredOffers().length === 0) {
+    <div class="text-center py-12">
+      <i class="fa-solid fa-file-invoice text-6xl text-gray-300 mb-4"></i>
+      <p class="text-xl text-gray-500">Keine Angebote vorhanden</p>
+      <button
+        (click)="onCreate()"
+        class="btn btn-primary mt-4"
+        type="button">
+        Erstes Angebot erstellen
+      </button>
+    </div>
+  }
+</div>

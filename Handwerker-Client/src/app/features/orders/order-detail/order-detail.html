@@ -1,0 +1,250 @@
+<div class="container mx-auto p-4">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <div class="flex items-center gap-4">
+      <button class="btn btn-ghost btn-sm" (click)="onBack()">
+        ← Zurück
+      </button>
+      <h1 class="text-2xl font-bold">
+        @if (isNew()) {
+          Neuer Auftrag
+        } @else {
+          Auftrag: {{ order()?.orderNumber }}
+        }
+      </h1>
+    </div>
+    <div class="flex gap-2">
+      @if (!isEditMode() && !isNew()) {
+        <button class="btn btn-primary" (click)="onEdit()">
+          Bearbeiten
+        </button>
+        @if (order()?.status === 'Completed') {
+          <button class="btn btn-success" (click)="onConvertToInvoice()">
+            In Rechnung
+          </button>
+        }
+      }
+      @if (isEditMode()) {
+        <button class="btn btn-ghost" (click)="onCancel()">
+          Abbrechen
+        </button>
+        <button class="btn btn-primary" (click)="onSave()" [disabled]="saving()">
+          @if (saving()) {
+            <span class="loading loading-spinner loading-sm"></span>
+          }
+          Speichern
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="flex justify-center p-8">
+      <span class="loading loading-spinner loading-lg"></span>
+    </div>
+  }
+
+  <!-- Content -->
+  @if (!loading()) {
+    <!-- Tabs -->
+    <div class="tabs tabs-boxed mb-6">
+      <button class="tab" [class.tab-active]="activeTab() === 'overview'" (click)="setTab('overview')">
+        Übersicht
+      </button>
+      <button class="tab" [class.tab-active]="activeTab() === 'materials'" (click)="setTab('materials')">
+        Material
+      </button>
+      <button class="tab" [class.tab-active]="activeTab() === 'worktime'" (click)="setTab('worktime')">
+        Arbeitszeit
+      </button>
+    </div>
+
+    <!-- Overview Tab -->
+    @if (activeTab() === 'overview') {
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column: Form -->
+        <div class="lg:col-span-2 space-y-6">
+          <div class="card bg-base-200">
+            <div class="card-body">
+              <h2 class="card-title">Auftragsdetails</h2>
+              
+              <form [formGroup]="form" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text">Auftragsdatum *</span>
+                    </label>
+                    <input type="date" class="input input-bordered" formControlName="orderDate" [readonly]="!isEditMode()">
+                  </div>
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text">Kundennummer *</span>
+                    </label>
+                    <input type="text" class="input input-bordered" formControlName="customerNumber" [readonly]="!isEditMode()">
+                  </div>
+                </div>
+
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Kundenname *</span>
+                  </label>
+                  <input type="text" class="input input-bordered" formControlName="recipientName" [readonly]="!isEditMode()">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text">Straße</span>
+                    </label>
+                    <input type="text" class="input input-bordered" formControlName="recipientStreet" [readonly]="!isEditMode()">
+                  </div>
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text">PLZ</span>
+                    </label>
+                    <input type="text" class="input input-bordered" formControlName="recipientPostalCode" [readonly]="!isEditMode()">
+                  </div>
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text">Ort</span>
+                    </label>
+                    <input type="text" class="input input-bordered" formControlName="recipientCity" [readonly]="!isEditMode()">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text">Priorität</span>
+                    </label>
+                    <select class="select select-bordered" formControlName="priority" [disabled]="!isEditMode()">
+                      @for (p of availablePriorities; track p) {
+                        <option [value]="p">{{ getPriorityLabel(p) }}</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text">Status</span>
+                    </label>
+                    @if (isEditMode()) {
+                      <select class="select select-bordered" formControlName="status">
+                        @for (s of availableStatuses; track s) {
+                          <option [value]="s">{{ getStatusLabel(s) }}</option>
+                        }
+                      </select>
+                    } @else {
+                      <div class="flex items-center gap-2 h-12 px-4 bg-base-300 rounded-lg">
+                        <span class="badge" [class.badge-info]="getStatusColor($safeNavigationMigration(form.get('status')?.value)) === 'blue'">
+                          {{ getStatusLabel($safeNavigationMigration(form.get('status')?.value)) }}
+                        </span>
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text">Geplanter Start</span>
+                    </label>
+                    <input type="date" class="input input-bordered" formControlName="plannedStartDate" [readonly]="!isEditMode()">
+                  </div>
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text">Geplantes Ende</span>
+                    </label>
+                    <input type="date" class="input input-bordered" formControlName="plannedEndDate" [readonly]="!isEditMode()">
+                  </div>
+                </div>
+
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Geschätzte Stunden *</span>
+                  </label>
+                  <input type="number" class="input input-bordered" formControlName="estimatedHours" [readonly]="!isEditMode()">
+                </div>
+
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Beschreibung</span>
+                  </label>
+                  <textarea class="textarea textarea-bordered h-24" formControlName="description" [readonly]="!isEditMode()"></textarea>
+                </div>
+
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Interne Notizen</span>
+                  </label>
+                  <textarea class="textarea textarea-bordered h-24" formControlName="internalNotes" [readonly]="!isEditMode()"></textarea>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Summary -->
+        <div class="space-y-6">
+          @if (!isNew()) {
+            <div class="card bg-base-200">
+              <div class="card-body">
+                <h2 class="card-title">Übersicht</h2>
+                <div class="space-y-2">
+                  <div class="flex justify-between">
+                    <span class="text-gray-500">Netto:</span>
+                    <span class="font-bold">{{ formatCurrency(order()?.totalNet || 0) }}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-500">MwSt:</span>
+                    <span class="font-bold">{{ formatCurrency(order()?.totalTaxAmount || 0) }}</span>
+                  </div>
+                  <div class="flex justify-between text-lg">
+                    <span class="text-gray-500">Brutto:</span>
+                    <span class="font-bold text-primary">{{ formatCurrency(order()?.totalGross || 0) }}</span>
+                  </div>
+                  <div class="divider"></div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-500">Zeit (gebucht/geschätzt):</span>
+                    <span class="font-bold">{{ order()?.actualHours || 0 }}/{{ order()?.estimatedHours || 0 }}h</span>
+                  </div>
+                  @if (order()?.invoiceId) {
+                    <div class="alert alert-success mt-4">
+                      Abgerechnet (Rechnung #{{ order()?.invoiceId }})
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            @if (order()?.sourceOffers && order()!.sourceOffers!.length > 0) {
+              <div class="card bg-base-200">
+                <div class="card-body">
+                  <h2 class="card-title">Quellangebote</h2>
+                  <div class="space-y-2">
+                    @for (offer of order()?.sourceOffers; track offer.offerId) {
+                      <div class="flex justify-between items-center p-2 bg-base-300 rounded">
+                        <span>{{ offer.offerNumber }}</span>
+                        <span class="badge">{{ offer.portionPercentage }}%</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Materials Tab -->
+    @if (activeTab() === 'materials') {
+      <app-order-materials [order]="order()"></app-order-materials>
+    }
+
+    <!-- Worktime Tab -->
+    @if (activeTab() === 'worktime') {
+      <app-order-worktime [order]="order()"></app-order-worktime>
+    }
+  }
+</div>

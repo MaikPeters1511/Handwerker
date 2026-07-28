@@ -1,0 +1,54 @@
+:host {
+  display: block;
+  min-height: 100%;
+}
+
+.container {
+  animation: fadeIn 0.3s ease-in;
+  padding-bottom: 4rem; /* Extra Padding am Ende für Buttons */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.toast .alert {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.form-control {
+  margin-bottom: 0.5rem;
+}
+
+.card-title i {
+  color: hsl(var(--p));
+  font-size: 1.25rem;
+}
+

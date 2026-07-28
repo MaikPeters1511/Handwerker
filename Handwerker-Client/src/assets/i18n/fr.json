@@ -1,0 +1,1025 @@
+{
+  "app": {
+    "title": "Application Artisan",
+    "copyright": "Copyright © 2026 - Application Artisan"
+  },
+  "welcome": {
+    "title": "Bienvenue",
+    "description": "Bienvenue dans l'Application Artisan"
+  },
+  "general": {
+    "actions": "Actions",
+    "delete": "Supprimer",
+    "deleteRow": "Êtes-vous sûr de vouloir supprimer cette entrée",
+    "close": "Fermer"
+  },
+  "months": {
+    "1": "Janvier",
+    "2": "Février",
+    "3": "Mars",
+    "4": "Avril",
+    "5": "Mai",
+    "6": "Juin",
+    "7": "Juillet",
+    "8": "Août",
+    "9": "Septembre",
+    "10": "Octobre",
+    "11": "Novembre",
+    "12": "Décembre"
+  },
+  "nav": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "profile": "Profil",
+    "theme": "Thème",
+    "menu": "Menu",
+    "dashboard": "Tableau de bord",
+    "settings": "Paramètres",
+    "procurement": "Approvisionnement",
+    "suppliers": "Fournisseurs",
+    "provider": "Fournisseurs",
+    "assortment": "Assortiment",
+    "products": "Produits",
+    "services": "Services",
+    "wages": "Salaires",
+    "customerCare": "Service client",
+    "customers": "Clients",
+    "offers": "Offres",
+    "orders": "Commandes",
+    "invoices": "Factures",
+    "recipients": "Clients",
+    "employees": "Employés",
+    "team": "Équipe",
+    "company": "Entreprise",
+    "permissions": "Autorisations",
+    "documents": "Documents",
+    "masterData": "Paramètres",
+    "account": "Compte",
+    "roleDashboard": "Autorisations des rôles"
+  },
+  "dashboard": {
+    "welcome": "Bienvenue",
+    "subtitle": "Voici un aperçu de votre gestion d'artisan",
+    "stats": {
+      "offers": "Offres",
+      "invoices": "Factures",
+      "products": "Produits",
+      "recipients": "Clients",
+      "createOffer": "Créer une offre",
+      "createInvoice": "Créer une facture",
+      "createProduct": "Ajouter un produit",
+      "createRecipient": "Ajouter un client"
+    },
+    "tasks": {
+      "title": "Mes tâches",
+      "empty": "Aucune tâche ouverte pour le moment",
+      "create": "Créer une nouvelle tâche"
+    },
+    "chart": {
+      "title": "Documents créés au cours des 6 derniers mois",
+      "offers": "Offres",
+      "invoices": "Factures",
+      "empty": "Aucune donnée disponible pour les 6 derniers mois"
+    },
+    "amounts": {
+      "title": "Montants des factures des 6 derniers mois",
+      "empty": "Aucune facture pour le moment",
+      "totalNet": "Net",
+      "totalTax": "TVA",
+      "totalGross": "Brut"
+    },
+    "invoiceStats": {
+      "title": "Statistiques des factures",
+      "empty": "Aucune statistique disponible",
+      "paid": "Payées",
+      "unpaid": "Impayées",
+      "totalAmount": "Montant total",
+      "paidAmount": "Montant payé",
+      "unpaidAmount": "Montant impayé"
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Personnalisez votre application selon vos préférences",
+    "design": {
+      "title": "Design & Apparence",
+      "selectTheme": "Sélectionner un thème"
+    },
+    "language": {
+      "title": "Langue",
+      "select": "Sélectionner la langue"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "email": "Notifications par e-mail",
+      "emailDesc": "Recevoir des mises à jour par e-mail",
+      "push": "Notifications push",
+      "pushDesc": "Activer les notifications du navigateur",
+      "sms": "Notifications SMS",
+      "smsDesc": "Mises à jour importantes par SMS"
+    },
+    "email": {
+      "title": "Paramètres e-mail",
+      "to": "À (Destinataire)",
+      "toDesc": "Adresse e-mail du destinataire",
+      "subject": "Sujet",
+      "subjectPlaceholder": "E-mail de test de Handwerker App",
+      "body": "Message",
+      "bodyPlaceholder": "Entrez votre message ici...",
+      "send": "Envoyer l'e-mail",
+      "sending": "Envoi en cours...",
+      "sendSuccess": "E-mail envoyé avec succès! Vérifiez Mailpit (http://localhost:8025)",
+      "sendError": "Erreur lors de l'envoi de l'e-mail",
+      "requiredFields": "Veuillez remplir tous les champs",
+      "mailpitHint": "Les e-mails de test sont envoyés à Mailpit. Ouvrez http://localhost:8025 pour les voir."
+    },
+    "invoice": {
+      "title": "Paramètres de facturation",
+      "prefix": "Préfixe de facture",
+      "nextNumber": "Prochain numéro de facture",
+      "taxRate": "Taux de taxe (%)",
+      "currency": "Devise"
+    },
+    "actions": {
+      "save": "Enregistrer les paramètres",
+      "reset": "Réinitialiser",
+      "saved": "Paramètres enregistrés"
+    },
+    "saved": "Paramètres enregistrés",
+    "error": "Échec de l'enregistrement. Veuillez réessayer.",
+    "account": {
+      "title": "Informations du compte",
+      "username": "Nom d'utilisateur",
+      "email": "E-mail",
+      "name": "Nom",
+      "firstName": "Prénom",
+      "lastName": "Nom de famille"
+    },
+    "elasticsearch": {
+      "title": "Paramètres de recherche (Elasticsearch)",
+      "enabled": "Activer la recherche Elasticsearch",
+      "enabledDesc": "Utilisez Elasticsearch pour une recherche de produits plus rapide et plus précise",
+      "realtimeEnabled": "Activer la recherche en temps réel",
+      "realtimeDesc": "Recherche automatique pendant la saisie (Debounce 300ms)",
+      "fuzziness": "Flou (Fuzzy Matching)",
+      "fuzzinessDesc": "Tolérance pour les fautes de frappe dans la recherche",
+      "fuzziness0": "Correspondance exacte (0)",
+      "fuzziness1": "Tolérance de 1 caractère",
+      "fuzziness2": "Tolérance de 2 caractères",
+      "fuzzinessAuto": "Automatique (AUTO)",
+      "minScore": "Score de pertinence minimum",
+      "minScoreDesc": "Évaluation minimale pour les résultats de recherche (0-1, plus bas = plus de résultats)"
+    },
+    "profile": {
+      "title": "Modifier le profil",
+      "subtitle": "Gérer vos informations personnelles",
+      "profileImage": "Photo de profil",
+      "uploadImage": "Télécharger une image",
+      "changeImage": "Changer l'image",
+      "removeImage": "Supprimer l'image",
+      "accountDetails": "Détails du compte",
+      "firstName": "Prénom",
+      "firstNameRequired": "Le prénom est requis",
+      "lastName": "Nom de famille",
+      "lastNameRequired": "Le nom de famille est requis",
+      "email": "E-mail",
+      "emailRequired": "L'e-mail est requis",
+      "emailInvalid": "Adresse e-mail invalide",
+      "phoneNumber": "Numéro de téléphone",
+      "phoneNumberPlaceholder": "+33 1 23 45 67 89",
+      "gender": "Genre",
+      "genderPlaceholder": "Veuillez sélectionner",
+      "genderMale": "Homme",
+      "genderFemale": "Femme",
+      "genderOther": "Autre",
+      "genderPreferNot": "Préfère ne pas dire",
+      "country": "Pays",
+      "countryPlaceholder": "Veuillez sélectionner",
+      "countryDE": "Allemagne",
+      "countryAT": "Autriche",
+      "countryCH": "Suisse",
+      "countryUS": "États-Unis",
+      "countryGB": "Royaume-Uni",
+      "countryFR": "France",
+      "address": "Adresse",
+      "addressPlaceholder": "Rue, Code postal, Ville",
+      "updateProfile": "Mettre à jour le profil",
+      "updating": "Mise à jour...",
+      "updateSuccess": "Profil mis à jour avec succès",
+      "updateError": "Erreur lors de la mise à jour du profil",
+      "loadError": "Erreur lors du chargement du profil",
+      "noChanges": "Aucune modification à enregistrer"
+    },
+    "roleDashboard": {
+      "title": "Autorisations des rôles",
+      "subtitle": "Définissez quelles zones de navigation sont visibles pour chaque rôle utilisateur.",
+      "roles": "Rôles",
+      "selectRoleHint": "Sélectionnez un rôle dans la liste pour modifier ses autorisations.",
+      "sectionsFor": "Zones visibles pour",
+      "selectAll": "Tout sélectionner",
+      "selectNone": "Tableau de bord uniquement",
+      "addRole": "Ajouter un rôle",
+      "addFromKeycloak": "Ajouter un rôle depuis Keycloak",
+      "addManual": "Ajouter un rôle manuellement",
+      "selectRole": "Sélectionner un rôle",
+      "rolePlaceholder": "ex. employé",
+      "deleteRole": "Supprimer le rôle",
+      "adminHint": "Les administrateurs ont toujours accès à toutes les zones.",
+      "save": "Enregistrer les autorisations",
+      "saved": "Enregistré"
+    }
+  },
+  "profile": {
+    "title": "Profil d'utilisateur",
+    "name": "Nom",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "email": "E-mail",
+    "username": "Nom d'utilisateur",
+    "roles": "Rôles",
+    "notAvailable": "Non disponible",
+    "noRoles": "Aucun rôle attribué",
+    "noData": "Aucune donnée de profil disponible.",
+    "form": {
+      "title": "Modifier le profil",
+      "loading": "Chargement du profil...",
+      "saving": "Enregistrement...",
+      "profileImage": "Photo de profil",
+      "uploadImage": "Télécharger une image",
+      "imageHint": "Max. 2MB, JPG ou PNG",
+      "invalidImageType": "Veuillez sélectionner une image (JPG, PNG)",
+      "imageTooLarge": "L'image est trop grande (max. 2MB)",
+      "accountDetails": "Détails du compte",
+      "firstName": "Prénom",
+      "firstNameRequired": "Le prénom est obligatoire",
+      "firstNameMinLength": "Le prénom doit contenir au moins 2 caractères",
+      "lastName": "Nom de famille",
+      "lastNameRequired": "Le nom de famille est obligatoire",
+      "lastNameMinLength": "Le nom de famille doit contenir au moins 2 caractères",
+      "email": "E-mail",
+      "emailRequired": "L'e-mail est obligatoire",
+      "emailInvalid": "Adresse e-mail invalide",
+      "phoneNumber": "Numéro de téléphone",
+      "gender": "Genre",
+      "genderNotSpecified": "Non spécifié",
+      "genderMale": "Masculin",
+      "genderFemale": "Féminin",
+      "genderOther": "Autre",
+      "country": "Pays",
+      "countryPlaceholder": "Sélectionner un pays",
+      "countryHint": "Code ISO (par ex. DE, AT, CH)",
+      "address": "Adresse",
+      "addressPlaceholder": "Rue, Code postal, Ville",
+      "updateProfile": "Mettre à jour le profil",
+      "saveSuccess": "Profil enregistré avec succès",
+      "saveError": "Erreur lors de l'enregistrement du profil",
+      "loadError": "Erreur lors du chargement du profil"
+    }
+  },
+  "products": {
+    "title": "Gérer les produits",
+    "subtitle": "Rechercher, modifier et créer des produits.",
+    "newProduct": "Nouveau produit",
+    "editMode": "Modifier le produit",
+    "createMode": "Créer un nouveau produit",
+    "editBadge": "Mode édition",
+    "saving": "Enregistrement...",
+    "saved": "Enregistré",
+    "save": "Enregistrer",
+    "search": {
+      "label": "Rechercher un produit",
+      "placeholder": "Entrez le nom ou le numéro d'article..."
+    },
+    "masterData": {
+      "title": "Données de base",
+      "articleNumber": "Numéro d'article",
+      "articleNumberPlaceholder": "par ex. ART-001",
+      "name": "Nom",
+      "namePlaceholder": "Nom du produit",
+      "nameRequired": "Le nom est obligatoire",
+      "unit": "Unité",
+      "unitPlaceholder": "pièce, m, kg...",
+      "description": "Description",
+      "descriptionPlaceholder": "Description détaillée du produit..."
+    },
+    "pricing": {
+      "title": "Tarification",
+      "quantity": "Quantité",
+      "quantityRequired": "Quantité valide requise",
+      "unitPrice": "Prix unitaire (Net)",
+      "priceRequired": "Prix requis",
+      "position": "Position",
+      "taxRate": "Taux de taxe (%)",
+      "discount": "Remise (%)"
+    },
+    "calculation": {
+      "title": "Calcul",
+      "taxAmount": "Montant de la taxe",
+      "discountAmount": "Montant de la remise",
+      "totalNet": "Total net",
+      "totalGross": "Total brut"
+    },
+    "toast": {
+      "created": "Produit créé avec succès",
+      "updated": "Produit mis à jour avec succès",
+      "errorSave": "Erreur lors de l'enregistrement",
+      "errorCreate": "Erreur lors de la création",
+      "validationError": "Veuillez remplir correctement tous les champs obligatoires. Champs invalides"
+    },
+    "actions": {
+      "endEdit": "Terminer la modification",
+      "reset": "Réinitialiser",
+      "saveChanges": "Enregistrer les modifications",
+      "createProduct": "Créer un produit"
+    }
+  },
+  "recipients": {
+    "title": "Gestion des clients",
+    "subtitle": "Gérez vos clients et destinataires de factures",
+    "newRecipient": "Nouveau client",
+    "editMode": "Modifier le client",
+    "createMode": "Créer un nouveau client",
+    "editBadge": "Mode édition",
+    "saving": "Enregistrement...",
+    "saved": "Enregistré",
+    "deleting": "Suppression...",
+    "search": {
+      "label": "Rechercher un client",
+      "placeholder": "Rechercher par nom, numéro client ou e-mail..."
+    },
+    "masterData": {
+      "title": "Données de base",
+      "customerNumber": "Numéro de client",
+      "customerNumberPlaceholder": "par ex. C-12345",
+      "salutation": "Salutation",
+      "salutationPlaceholder": "Veuillez sélectionner...",
+      "salutationMr": "M.",
+      "salutationMs": "Mme",
+      "salutationCompany": "Entreprise",
+      "salutationDiverse": "Divers",
+      "name": "Nom / Entreprise",
+      "nameRequired": "Le nom est un champ obligatoire",
+      "namePlaceholder": "Jean Dupont ou Société Exemple SARL",
+      "contactPerson": "Personne de contact",
+      "contactPersonPlaceholder": "par ex. À l'attention de M. Martin"
+    },
+    "address": {
+      "title": "Adresse",
+      "street": "Rue",
+      "streetPlaceholder": "123 Rue Principale",
+      "addressLine2": "Complément d'adresse",
+      "addressLine2Placeholder": "par ex. Bâtiment arrière, c/o",
+      "zipCode": "Code postal",
+      "zipCodePlaceholder": "12345",
+      "city": "Ville",
+      "cityPlaceholder": "Ville Exemple",
+      "country": "Pays",
+      "countryPlaceholder": "Allemagne"
+    },
+    "contact": {
+      "title": "Coordonnées",
+      "email": "E-mail",
+      "emailPlaceholder": "mail@exemple.fr",
+      "emailInvalid": "Veuillez saisir une adresse e-mail valide",
+      "phone": "Téléphone",
+      "phonePlaceholder": "+49 123 456789"
+    },
+    "toast": {
+      "created": "Client créé avec succès",
+      "updated": "Client mis à jour avec succès",
+      "deleted": "Client supprimé avec succès",
+      "errorSave": "Erreur lors de l'enregistrement",
+      "errorCreate": "Erreur lors de la création",
+      "errorDelete": "Erreur lors de la suppression",
+      "validationError": "Veuillez remplir correctement tous les champs obligatoires. Champs invalides",
+      "close": "Fermer"
+    },
+    "actions": {
+      "save": "Enregistrer",
+      "saveChanges": "Enregistrer les modifications",
+      "create": "Créer un client",
+      "delete": "Supprimer",
+      "endEdit": "Terminer la modification",
+      "reset": "Réinitialiser"
+    }
+  },
+  "providers": {
+    "title": "Gestion des fournisseurs",
+    "subtitle": "Gérez vos fournisseurs et prestataires de services",
+    "newProvider": "Nouveau fournisseur",
+    "editMode": "Modifier le fournisseur",
+    "createMode": "Créer un nouveau fournisseur",
+    "editBadge": "Mode édition",
+    "saving": "Enregistrement...",
+    "saved": "Enregistré",
+    "deleting": "Suppression...",
+    "search": {
+      "label": "Rechercher un fournisseur",
+      "placeholder": "Rechercher par nom, entreprise ou e-mail...",
+      "results": "Résultats de recherche"
+    },
+    "masterData": {
+      "title": "Données de base",
+      "name": "Nom / Personne de contact",
+      "nameRequired": "Le nom est un champ obligatoire",
+      "namePlaceholder": "Jean Dupont",
+      "company": "Nom de l'entreprise",
+      "companyPlaceholder": "par ex. Société Exemple SARL"
+    },
+    "address": {
+      "title": "Adresse",
+      "street": "Rue",
+      "streetPlaceholder": "123 Rue Principale",
+      "zipCode": "Code postal",
+      "zipCodePlaceholder": "12345",
+      "city": "Ville",
+      "cityPlaceholder": "Ville Exemple"
+    },
+    "contact": {
+      "title": "Coordonnées",
+      "email": "E-mail",
+      "emailPlaceholder": "mail@exemple.fr",
+      "emailInvalid": "Veuillez saisir une adresse e-mail valide",
+      "phone": "Téléphone",
+      "phonePlaceholder": "+49 123 456789",
+      "website": "Site web",
+      "websitePlaceholder": "https://www.exemple.fr"
+    },
+    "tax": {
+      "title": "Informations fiscales",
+      "taxId": "N° TVA intracommunautaire",
+      "taxIdPlaceholder": "DE123456789",
+      "taxNumber": "Numéro fiscal",
+      "taxNumberPlaceholder": "12/345/67890",
+      "commercialRegister": "Registre du commerce",
+      "commercialRegisterPlaceholder": "HRB 12345",
+      "registerCourt": "Tribunal d'enregistrement",
+      "registerCourtPlaceholder": "Tribunal de district Ville Exemple"
+    },
+    "bank": {
+      "title": "Coordonnées bancaires",
+      "name": "Nom de la banque",
+      "namePlaceholder": "Banque Exemple",
+      "iban": "IBAN",
+      "ibanPlaceholder": "DE89 3704 0044 0532 0130 00",
+      "bic": "BIC",
+      "bicPlaceholder": "COBADEFFXXX",
+      "plz": "Code postal de la banque",
+      "plzPlaceholder": "12345",
+      "ort": "Ville de la banque",
+      "ortPlaceholder": "Ville Exemple"
+    },
+    "toast": {
+      "created": "Fournisseur créé avec succès",
+      "updated": "Fournisseur mis à jour avec succès",
+      "deleted": "Fournisseur supprimé avec succès",
+      "errorSave": "Erreur lors de l'enregistrement",
+      "errorCreate": "Erreur lors de la création",
+      "errorDelete": "Erreur lors de la suppression",
+      "validationError": "Veuillez remplir correctement tous les champs obligatoires. Champs invalides",
+      "close": "Fermer"
+    },
+    "actions": {
+      "save": "Enregistrer",
+      "saveChanges": "Enregistrer les modifications",
+      "create": "Créer un fournisseur",
+      "delete": "Supprimer",
+      "endEdit": "Terminer la modification",
+      "reset": "Réinitialiser"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "unread": "Non lues",
+    "markAllRead": "Tout marquer comme lu",
+    "showAll": "Tout afficher",
+    "empty": "Aucune notification",
+    "delete": "Supprimer la notification",
+    "deleteConfirm": "Vraiment supprimer cette notification ?",
+    "clearAll": "Tout effacer",
+    "clearAllConfirm": "Vraiment supprimer toutes les notifications ?"
+  },
+  "company": {
+    "title": "Gestion d'entreprise",
+    "subtitle": "Gérez les informations de votre entreprise et vos coordonnées bancaires",
+    "listTitle": "Entreprises",
+    "emptyList": "Aucune entreprise disponible",
+    "logoAndBasicInfo": "Logo & Informations de base",
+    "logo": "Logo de l'entreprise",
+    "noLogo": "Aucun logo téléchargé",
+    "removeLogo": "Supprimer",
+    "companyName": "Nom de l'entreprise *",
+    "companyNamePlaceholder": "ex. Exemple SARL",
+    "taxId": "Numéro fiscal / TVA",
+    "taxIdPlaceholder": "ex. FR123456789",
+    "address": "Adresse",
+    "street": "Rue & Numéro",
+    "streetPlaceholder": "ex. Rue Principale 123",
+    "zip": "Code postal",
+    "zipPlaceholder": "ex. 75000",
+    "city": "Ville",
+    "cityPlaceholder": "ex. Paris",
+    "country": "Pays",
+    "countryPlaceholder": "ex. France",
+    "contact": "Contact",
+    "email": "E-mail",
+    "emailPlaceholder": "info@entreprise.fr",
+    "phone": "Téléphone",
+    "phonePlaceholder": "+33 1 23 45 67 89",
+    "bankDetails": "Coordonnées bancaires",
+    "bankDetailsHint": "Ces informations apparaîtront sur vos factures et documents.",
+    "bankName": "Nom de la banque",
+    "bankNamePlaceholder": "ex. Banque Populaire",
+    "iban": "IBAN",
+    "ibanPlaceholder": "FR76 1234 5678 9012 3456 7890 123",
+    "ibanHint": "Numéro de compte bancaire international (27 caractères pour la France)",
+    "bic": "BIC / SWIFT",
+    "bicPlaceholder": "COBADEFFXXX",
+    "bicHint": "Code d'identification bancaire (8 ou 11 caractères)",
+    "actions": {
+      "new": "Nouveau",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "delete": "Supprimer l'entreprise"
+    }
+  },
+  "installationWizard": {
+    "title": "Assistant d'installation",
+    "steps": {
+      "welcome": "Bienvenue",
+      "user": "Utilisateur",
+      "company": "Entreprise",
+      "suppliers": "Fournisseurs",
+      "finish": "Terminer"
+    },
+    "welcome": {
+      "title": "Bienvenue chez Handwerker !",
+      "description": "Cette application vous aide à gérer efficacement votre entreprise artisanale. Configurez votre profil en quelques étapes pour commencer immédiatement.",
+      "features": {
+        "invoices": {
+          "title": "Factures",
+          "desc": "Créez et gérez des offres et des factures en un éclair."
+        },
+        "inventory": {
+          "title": "Stock & Produits",
+          "desc": "Gardez une vue d'ensemble de votre matériel et de votre assortiment."
+        },
+        "contacts": {
+          "title": "Clients & Fournisseurs",
+          "desc": "Gérez tous les contacts de manière centralisée."
+        }
+      }
+    },
+    "userData": {
+      "title": "Données utilisateur",
+      "description": "Saisissez vos informations personnelles.",
+      "salutation": "Salutation",
+      "salutationPlaceholder": "Veuillez sélectionner",
+      "mr": "M.",
+      "ms": "Mme",
+      "diverse": "Divers",
+      "firstName": "Prénom",
+      "firstNameRequired": "Le prénom est requis",
+      "lastName": "Nom",
+      "lastNameRequired": "Le nom est requis",
+      "email": "E-mail",
+      "emailPlaceholder": "Votre adresse e-mail",
+      "phone": "Téléphone",
+      "phonePlaceholder": "Votre numéro de téléphone",
+      "profileImage": "Photo de profil",
+      "uploadImage": "Télécharger une image",
+      "imageHint": "Max. 2 Mo (JPG, PNG)",
+      "titleField": "Titre"
+    },
+    "companyData": {
+      "title": "Données de l'entreprise",
+      "description": "Informations sur votre entreprise artisanale.",
+      "name": "Nom de l'entreprise",
+      "nameRequired": "Le nom de l'entreprise est requis",
+      "namePlaceholder": "ex. Exemple SARL",
+      "street": "Rue",
+      "streetRequired": "La rue est requise",
+      "streetNr": "N°",
+      "zipCode": "Code postal",
+      "zipCodeRequired": "Le code postal est requis",
+      "city": "Ville",
+      "cityRequired": "La ville est requise",
+      "phone": "Téléphone",
+      "phoneRequired": "Le téléphone est requis",
+      "email": "E-mail",
+      "emailRequired": "L'e-mail est requis",
+      "commercialRegister": "Registre du commerce",
+      "registerCourt": "Tribunal d'enregistrement",
+      "taxId": "Numéro de TVA intracommunautaire",
+      "taxNumber": "Numéro fiscal",
+      "logo": "Logo de l'entreprise",
+      "vatExemption": "Exonération de TVA",
+      "vatExemptionHint": "Régime de la micro-entreprise, etc.",
+      "contactLegal": "Contact & Juridique",
+      "bankDetails": "Coordonnées bancaires",
+      "bankName": "Nom de la banque",
+      "iban": "IBAN",
+      "bic": "BIC"
+    },
+    "suppliers": {
+      "title": "Fournisseurs",
+      "description": "Sélectionnez les fournisseurs avec lesquels vous souhaitez travailler.",
+      "itemsSelected": "Fournisseurs sélectionnés",
+      "searchPlaceholder": "Rechercher des fournisseurs...",
+      "empty": "Aucun fournisseur trouvé",
+      "select": "Sélectionner",
+      "name": "Nom",
+      "company": "Entreprise",
+      "city": "Ville",
+      "email": "E-mail"
+    },
+    "final": {
+      "title": "Presque terminé !",
+      "description": "Encore quelques détails.",
+      "industry": "Dans quel secteur d'activité êtes-vous ?",
+      "referralSource": "Comment avez-vous entendu parler de nous ?",
+      "referralPlaceholder": "Veuillez sélectionner...",
+      "avvTitle": "Accord de traitement des données (ATD)",
+      "avvDesc": "Pour utiliser notre service, nous avons besoin de votre consentement à l'ATD conformément au RGPD.",
+      "avAgreement": "J'ai lu et j'accepte l'ATD."
+    },
+    "buttons": {
+      "start": "C'est parti",
+      "next": "Suivant",
+      "back": "Retour",
+      "finish": "Terminer",
+      "save": "Enregistrer"
+    }
+  },
+  "offers": {
+    "status": {
+      "draft": "Brouillon",
+      "sent": "Envoyé",
+      "accepted": "Accepté",
+      "declined": "Refusé",
+      "converted": "Converti"
+    },
+    "detail": {
+      "title": "Offre",
+      "selectCompany": "Sélectionner la société",
+      "selectCompanyPlaceholder": "Votre société, Rue Exemple 1, 12345 Ville Exemple",
+      "change": "Modifier",
+      "searchCustomer": "+ Chercher client...",
+      "offerNumber": "Numéro d'offre",
+      "offerDate": "Date de l'offre",
+      "validUntil": "Valable jusqu'au",
+      "customer": "Client",
+      "customerNumber": "Numéro client",
+      "projectPlaceholder": "Projet client (Commission)",
+      "introPlaceholder": "Texte d'introduction...",
+      "table": {
+        "pos": "Pos.",
+        "quantity": "Qté",
+        "unit": "Unité",
+        "description": "Description",
+        "unitPrice": "Prix (HT)",
+        "discount": "Remise %",
+        "totalNet": "Montant (HT)",
+        "empty": "Aucun article enregistré pour le moment",
+        "itemPlaceholder": "Nom de l'article..."
+      },
+      "actions": {
+        "addPosition": "Ajouter une position",
+        "searchProduct": "Chercher produit",
+        "searchProductPlaceholder": "Nom du produit...",
+        "importShop": "Importer articles de la boutique",
+        "exportShop": "Exporter articles vers la boutique"
+      },
+      "totalGross": "Total",
+      "vatExempt": "*Prestations exonérées de TVA selon § 19 UStG",
+      "payment": {
+        "duePrefix": "La factures est due le ",
+        "dueSuffix": " (Montant de la facture : ",
+        "closeParen": ").",
+        "skontoPrefix": "Escompte de ",
+        "skontoMiddle": "% possible jusqu'au ",
+        "skontoSuffix": " (Montant de l'escompte : ",
+        "paymentAmount": " - Montant à payer : ",
+        "selectTerms": "Sélectionner les conditions de paiement"
+      },
+      "outroPlaceholder": "Texte de conclusion...",
+      "sidebar": {
+        "inProgress": "En cours",
+        "tracking": "Suivi de l'offre",
+        "createdOn": "Créé le",
+        "status": "Statut d'acceptation",
+        "statusRequired": "Le statut est requis",
+        "resubmission": "Relance",
+        "notes": "Remarques sur le document",
+        "customerInfo": "Informations client",
+        "noCustomer": "Aucun client sélectionné.",
+        "paymentTerms": "Conditions de paiement",
+        "orderInfo": "Informations de commande",
+        "deliveryDate": "Date de livraison",
+        "shippingMethod": "Mode de livraison"
+      },
+      "buttons": {
+        "save": "Enregistrer",
+        "print": "Imprimer",
+        "pdf": "PDF",
+        "more": "Plus",
+        "cancel": "Annuler"
+      }
+    }
+  },
+  "invoices": {
+    "paymentTerms": {
+      "immediate": "Payable immédiatement sans déduction",
+      "net14": "14 jours net",
+      "net30": "30 jours net",
+      "discount10": "10 jours 2% d'escompte, 30 jours net"
+    },
+    "list": {
+      "title": "Factures",
+      "actions": {
+        "convertFromOffer": "Depuis l'offre",
+        "newInvoice": "Nouvelle facture",
+        "createInvoice": "Créer une facture"
+      },
+      "search": {
+        "label": "Rechercher des factures",
+        "placeholder": "Rechercher par numéro de facture, client..."
+      },
+      "filters": {
+        "all": "Toutes",
+        "paid": "Payées",
+        "unpaid": "Ouvertes"
+      },
+      "loading": "Chargement des factures...",
+      "empty": {
+        "title": "Aucune facture trouvée",
+        "noResultsFor": "Aucune facture trouvée pour",
+        "createFirst": "Créez votre première facture"
+      },
+      "table": {
+        "invoiceNumber": "N° facture",
+        "date": "Date",
+        "dueDate": "Échéance",
+        "customer": "Client",
+        "amountNet": "Montant (HT)",
+        "amountGross": "Montant (TTC)",
+        "status": "Statut"
+      },
+      "badges": {
+        "overdue": "En retard",
+        "paid": "Payée",
+        "unpaid": "Ouverte"
+      },
+      "summary": {
+        "total": "Total",
+        "paid": "Payées",
+        "unpaid": "Ouvertes"
+      },
+      "aria": {
+        "view": "Voir la facture",
+        "edit": "Modifier la facture",
+        "delete": "Supprimer la facture"
+      },
+      "confirm": {
+        "deletePrefix": "Voulez-vous vraiment supprimer la facture",
+        "deleteSuffix": "?"
+      },
+      "prompt": {
+        "offerId": "Veuillez saisir l'ID de l'offre à convertir en facture :"
+      },
+      "success": {
+        "convertPrefix": "La facture",
+        "convertMiddle": "a été créée avec succès à partir de l'offre",
+        "convertSuffix": "."
+      },
+      "errors": {
+        "loadFailed": "Échec du chargement des factures",
+        "deleteFailed": "Échec de la suppression de la facture",
+        "invalidOfferId": "ID d'offre invalide",
+        "convertFailed": "Échec de la conversion. Veuillez vérifier l'ID de l'offre."
+      }
+    },
+    "detail": {
+      "title": {
+        "new": "Nouvelle facture",
+        "edit": "Modifier la facture",
+        "view": "Afficher la facture"
+      },
+      "idLabel": "ID :",
+      "loading": "Chargement...",
+      "sections": {
+        "invoiceInfo": "Informations de facture",
+        "recipient": "Destinataire de la facture",
+        "provider": "Prestataire",
+        "positions": "Lignes",
+        "texts": "Textes"
+      },
+      "fields": {
+        "invoiceNumber": "Numéro de facture",
+        "invoiceNumberPlaceholder": "Généré automatiquement...",
+        "invoiceNumberHelp": "Généré automatiquement à partir de vos paramètres",
+        "customerNumber": "Numéro client",
+        "customerNumberPlaceholder": "C-12345",
+        "invoiceDate": "Date de facture",
+        "dueDate": "Date d'échéance",
+        "servicePeriod": "Période de service",
+        "servicePeriodPlaceholder": "Janvier 2026",
+        "paymentTerms": "Conditions de paiement",
+        "isPaid": "La facture a été payée",
+        "recipientSearch": "Rechercher un client",
+        "recipientSearchPlaceholder": "Nom, numéro client ou e-mail",
+        "providerSelect": "Sélectionner une entreprise",
+        "providerPlaceholder": "-- Veuillez sélectionner --",
+        "productNamePlaceholder": "Nom du produit",
+        "productUnitPlaceholder": "pcs.",
+        "introText": "Texte d'introduction",
+        "introPlaceholder": "Texte d'introduction de la facture...",
+        "outroText": "Texte de conclusion",
+        "outroPlaceholder": "Texte de conclusion de la facture..."
+      },
+      "table": {
+        "position": "Pos.",
+        "name": "Désignation",
+        "quantity": "Qté",
+        "unit": "Unité",
+        "unitPrice": "Prix unitaire",
+        "taxRate": "TVA %",
+        "net": "HT",
+        "gross": "TTC"
+      },
+      "totals": {
+        "net": "Total HT :",
+        "tax": "TVA :",
+        "gross": "Montant total :"
+      },
+      "validation": {
+        "invoiceDate": "Veuillez saisir une date valide",
+        "dueDate": "Veuillez saisir une date",
+        "required": "Champ obligatoire",
+        "recipientRequired": "Veuillez sélectionner un destinataire",
+        "providerRequired": "Veuillez sélectionner un prestataire",
+        "minOnePosition": "Veuillez ajouter au moins une ligne."
+      },
+      "empty": {
+        "noPositions": "Aucune ligne ajoutée"
+      },
+      "actions": {
+        "edit": "Modifier",
+        "back": "Retour",
+        "cancel": "Annuler",
+        "addPosition": "Ajouter une ligne",
+        "create": "Créer la facture",
+        "saveChanges": "Enregistrer les modifications"
+      },
+      "aria": {
+        "removePosition": "Supprimer la ligne"
+      },
+      "defaults": {
+        "introText": "Merci pour votre commande. Nous nous permettons de facturer comme suit :"
+      },
+      "logs": {
+        "sendingInvoiceData": "Envoi des données de facture :",
+        "errorDetails": "Détails de l'erreur :",
+        "invoicePayload": "Les données de facture étaient :",
+        "validationErrors": "Erreurs de validation :"
+      },
+      "success": {
+        "created": "Facture créée avec succès",
+        "updated": "Facture mise à jour avec succès"
+      },
+      "errors": {
+        "loadNextNumberFailed": "Échec du chargement du prochain numéro de facture",
+        "loadFailed": "Échec du chargement de la facture",
+        "invalidForm": "Veuillez vérifier vos saisies. Les champs en rouge sont obligatoires.",
+        "missingRecipientOrProviderDebug": "Destinataire ou prestataire introuvable",
+        "selectRecipientAndProvider": "Veuillez sélectionner un destinataire et un prestataire",
+        "incompleteBankDataDebug": "Données bancaires incomplètes dans l'entreprise",
+        "incompleteBankData": "L'entreprise sélectionnée a des données bancaires incomplètes. Veuillez compléter les coordonnées bancaires dans les données de l'entreprise.",
+        "createFailed": "Échec de la création de la facture",
+        "updateFailed": "Échec de la mise à jour de la facture",
+        "validationPrefix": "Erreurs de validation :",
+        "unknown": "Erreur inconnue"
+      }
+    }
+  },
+  "users": {
+    "title": "Employés",
+    "subtitle": "Gérez vos employés et leurs accès",
+    "username": "Nom d'utilisateur",
+    "firstname": "Prénom",
+    "lastname": "Nom de famille",
+    "email": "E-mail",
+    "emailverified": "E-mail vérifié",
+    "enabled": "Actif",
+    "create": "Créer un employé",
+    "update": "Modifier l'employé",
+    "delete": "Supprimer l'employé",
+    "general": "Général",
+    "roles": "Rôles",
+    "close": "Fermer",
+    "save": "Enregistrer"
+  },
+  "validation": {
+    "required": "est obligatoire",
+    "email": "n'est pas une adresse e-mail valide"
+  },
+  "services": {
+    "title": "Prestations",
+    "subtitle": "Gérez votre catalogue de prestations",
+    "newService": "Nouvelle prestation",
+    "editMode": "Modifier la prestation",
+    "createMode": "Créer une nouvelle prestation",
+    "editBadge": "Édition",
+    "saving": "Enregistrement...",
+    "saved": "Enregistré",
+    "save": "Enregistrer",
+    "search": {
+      "label": "Rechercher une prestation",
+      "placeholder": "Saisir un nom ou un numéro de prestation..."
+    },
+    "masterData": {
+      "title": "Données de base",
+      "serviceNumber": "Numéro de prestation",
+      "name": "Désignation",
+      "namePlaceholder": "p.ex. Montage",
+      "nameRequired": "La désignation est requise",
+      "description": "Description",
+      "descriptionPlaceholder": "Description de la prestation",
+      "unit": "Unité",
+      "unitPlaceholder": "p.ex. h, forfait, m²",
+      "unitPrice": "Prix par unité",
+      "unitPriceRequired": "Le prix est requis",
+      "taxRate": "TVA %",
+      "isActive": "Actif"
+    },
+    "toast": {
+      "created": "La prestation a été créée avec succès",
+      "updated": "La prestation a été mise à jour avec succès",
+      "errorSave": "Erreur lors de l'enregistrement",
+      "errorCreate": "Erreur lors de la création",
+      "validationError": "Veuillez vérifier votre saisie",
+      "deleted": "La prestation a été supprimée",
+      "errorDelete": "Erreur lors de la suppression"
+    },
+    "actions": {
+      "endEdit": "Terminer l'édition",
+      "reset": "Réinitialiser",
+      "saveChanges": "Enregistrer les modifications",
+      "createService": "Créer la prestation",
+      "delete": "Supprimer"
+    },
+    "list": {
+      "title": "Toutes les prestations",
+      "empty": "Aucune prestation créée pour le moment.",
+      "inactive": "Inactif"
+    }
+  },
+  "wages": {
+    "title": "Salaires",
+    "subtitle": "Gérez votre catalogue de types de salaire",
+    "newWageType": "Nouveau type de salaire",
+    "editMode": "Modifier le type de salaire",
+    "createMode": "Créer un nouveau type de salaire",
+    "editBadge": "Édition",
+    "saving": "Enregistrement...",
+    "saved": "Enregistré",
+    "search": {
+      "label": "Rechercher un type de salaire",
+      "placeholder": "Saisir un nom ou un numéro de type de salaire..."
+    },
+    "masterData": {
+      "title": "Données de base",
+      "wageNumber": "Numéro de type de salaire",
+      "name": "Désignation",
+      "namePlaceholder": "p.ex. Ouvrier qualifié",
+      "nameRequired": "La désignation est requise",
+      "description": "Description",
+      "descriptionPlaceholder": "Description du type de salaire",
+      "hourlyRate": "Taux horaire",
+      "hourlyRateRequired": "Le taux horaire est requis",
+      "taxRate": "TVA %",
+      "isActive": "Actif"
+    },
+    "toast": {
+      "created": "Le type de salaire a été créé avec succès",
+      "updated": "Le type de salaire a été mis à jour avec succès",
+      "errorSave": "Erreur lors de l'enregistrement",
+      "errorCreate": "Erreur lors de la création",
+      "validationError": "Veuillez vérifier votre saisie",
+      "deleted": "Le type de salaire a été supprimé",
+      "errorDelete": "Erreur lors de la suppression"
+    },
+    "actions": {
+      "endEdit": "Terminer l'édition",
+      "reset": "Réinitialiser",
+      "saveChanges": "Enregistrer les modifications",
+      "createWageType": "Créer le type de salaire",
+      "delete": "Supprimer"
+    },
+    "list": {
+      "title": "Tous les types de salaire",
+      "empty": "Aucun type de salaire créé pour le moment.",
+      "inactive": "Inactif"
+    }
+  }
+}

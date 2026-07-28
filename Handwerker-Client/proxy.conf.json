@@ -1,0 +1,27 @@
+{
+  "/api": {
+    "target": "http://localhost:7001",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "warn"
+  },
+  "/hubs": {
+    "target": "http://localhost:7001",
+    "secure": false,
+    "changeOrigin": true,
+    "ws": true,
+    "logLevel": "warn"
+  },
+  "/uploads": {
+    "target": "http://localhost:7001",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "warn"
+  },
+  "/realms": {
+    "target": "https://localhost:8443",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "warn"
+  }
+}

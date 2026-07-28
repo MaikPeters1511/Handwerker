@@ -1,0 +1,315 @@
+<div class="container mx-auto p-6 max-w-7xl">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">{{ 'dashboard.welcome' | translate }} {{ userName() }}</h1>
+    <p class="text-base-content/60">{{ 'dashboard.subtitle' | translate }}</p>
+  </div>
+
+  <!-- Statistik-Kacheln -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <!-- Angebote -->
+    <div class="card bg-base-100 shadow-xl border-t-4 border-blue-500">
+      <div class="card-body">
+        <div class="flex justify-between items-start">
+          <div>
+            <h2 class="card-title text-4xl font-bold">{{ stats().offers }}</h2>
+            <p class="text-base-content/60 mt-2">{{ 'dashboard.stats.offers' | translate }}</p>
+          </div>
+          <div class="text-blue-500 text-3xl">
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="card-actions justify-end mt-4">
+          <button (click)="createOffer()" class="btn btn-sm btn-primary">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            {{ 'dashboard.stats.createOffer' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rechnungen -->
+    <div class="card bg-base-100 shadow-xl border-t-4 border-green-500">
+      <div class="card-body">
+        <div class="flex justify-between items-start">
+          <div>
+            <h2 class="card-title text-4xl font-bold">{{ stats().invoices }}</h2>
+            <p class="text-base-content/60 mt-2">{{ 'dashboard.stats.invoices' | translate }}</p>
+          </div>
+          <div class="text-green-500 text-3xl">
+            <i class="fa-solid fa-file-invoice" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="card-actions justify-end mt-4">
+          <button (click)="createInvoice()" class="btn btn-sm btn-success">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            {{ 'dashboard.stats.createInvoice' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Produkte -->
+    <div class="card bg-base-100 shadow-xl border-t-4 border-orange-500">
+      <div class="card-body">
+        <div class="flex justify-between items-start">
+          <div>
+            <h2 class="card-title text-4xl font-bold">{{ stats().products }}</h2>
+            <p class="text-base-content/60 mt-2">{{ 'dashboard.stats.products' | translate }}</p>
+          </div>
+          <div class="text-orange-500 text-3xl">
+            <i class="fa-solid fa-box" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="card-actions justify-end mt-4">
+          <button (click)="createProduct()" class="btn btn-sm btn-warning">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            {{ 'dashboard.stats.createProduct' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kunden -->
+    <div class="card bg-base-100 shadow-xl border-t-4 border-purple-500">
+      <div class="card-body">
+        <div class="flex justify-between items-start">
+          <div>
+            <h2 class="card-title text-4xl font-bold">{{ stats().recipients }}</h2>
+            <p class="text-base-content/60 mt-2">{{ 'dashboard.stats.recipients' | translate }}</p>
+          </div>
+          <div class="text-purple-500 text-3xl">
+            <i class="fa-solid fa-users" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="card-actions justify-end mt-4">
+          <button (click)="createRecipient()" class="btn btn-sm btn-secondary">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            {{ 'dashboard.stats.createRecipient' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zweite Reihe: Meine Aufgaben & Chart -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <!-- Meine Aufgaben -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title mb-4">
+          <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+          {{ 'dashboard.tasks.title' | translate }}
+        </h2>
+
+        @if (tasks().length === 0) {
+          <div class="text-center py-8">
+            <p class="text-base-content/60 mb-4">{{ 'dashboard.tasks.empty' | translate }}</p>
+            <button (click)="createTask()" class="btn btn-primary">
+              <i class="fa-solid fa-plus" aria-hidden="true"></i>
+              {{ 'dashboard.tasks.create' | translate }}
+            </button>
+          </div>
+        } @else {
+          <div class="space-y-2">
+            @for (task of tasks(); track task.id) {
+              <div class="p-4 bg-base-200 rounded-lg">
+                <p>{{ task.title }}</p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Erstellte Belege Chart -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="card-title">
+            <i class="fa-solid fa-chart-column" aria-hidden="true"></i>
+            {{ 'dashboard.chart.title' | translate }}
+          </h2>
+          <button class="btn btn-sm btn-ghost">
+            <i class="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <!-- Chart -->
+        @if (monthlyData().length > 0) {
+          <div class="h-64 flex items-end justify-around gap-2 px-4">
+            @for (data of monthlyData(); track data.month) {
+              <div class="flex-1 flex flex-col items-center gap-1">
+                <!-- Rechnungen (Rot) -->
+                <div
+                  class="w-full bg-red-500 rounded-t transition-all hover:opacity-80"
+                  [style.height.%]="getBarHeight(data.invoices)"
+                  [style.min-height.px]="data.invoices > 0 ? 4 : 0"
+                  [title]="data.invoices + ' ' + ('dashboard.chart.invoices' | translate)">
+                </div>
+                <!-- Angebote (Blau) -->
+                <div
+                  class="w-full bg-blue-500 rounded-t transition-all hover:opacity-80"
+                  [style.height.%]="getBarHeight(data.offers)"
+                  [style.min-height.px]="data.offers > 0 ? 4 : 0"
+                  [title]="data.offers + ' ' + ('dashboard.chart.offers' | translate)">
+                </div>
+                <!-- Monat -->
+                <span class="text-xs text-base-content/60 mt-2">{{ 'months.' + data.month | translate }}</span>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="h-64 flex items-center justify-center">
+            <div class="text-center">
+              <i class="fa-solid fa-chart-column text-4xl text-base-content/20 mb-4"></i>
+              <p class="text-base-content/60">{{ 'dashboard.chart.empty' | translate }}</p>
+            </div>
+          </div>
+        }
+
+        <!-- Legende -->
+        <div class="flex justify-center gap-6 mt-6">
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 bg-blue-500 rounded"></div>
+            <span class="text-sm">{{ 'dashboard.chart.offers' | translate }}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 bg-red-500 rounded"></div>
+            <span class="text-sm">{{ 'dashboard.chart.invoices' | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rechnungsbeträge & Statistik -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Rechnungsbeträge -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="card-title">
+            <i class="fa-solid fa-euro-sign" aria-hidden="true"></i>
+            {{ 'dashboard.amounts.title' | translate }}
+          </h2>
+          <button class="btn btn-sm btn-ghost">
+            <i class="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        @if (monthlyAmounts().length > 0) {
+          <div class="h-64 flex items-end justify-around gap-2 px-4">
+            @for (data of monthlyAmounts(); track data.month) {
+              <div class="flex-1 flex flex-col items-center gap-2">
+                <!-- Balken -->
+                <div
+                  class="w-full bg-gradient-to-t from-green-500 to-green-400 rounded-t transition-all hover:opacity-80 cursor-pointer"
+                  [style.height.%]="getAmountBarHeight(data.totalGross)"
+                  [style.min-height.px]="data.totalGross > 0 ? 8 : 0"
+                  [title]="formatCurrency(data.totalGross) + ' ' + ('dashboard.chart.invoices' | translate)">
+                </div>
+                <!-- Monat -->
+                <span class="text-xs text-base-content/60">{{ 'months.' + data.month | translate }}</span>
+                <!-- Betrag -->
+                <span class="text-xs font-semibold text-green-600">{{ formatCurrency(data.totalGross) }}</span>
+              </div>
+            }
+          </div>
+
+          <!-- Summen -->
+          <div class="mt-6 p-4 bg-base-200 rounded-lg">
+            <div class="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <p class="text-xs text-base-content/60">{{ 'dashboard.amounts.totalNet' | translate }}</p>
+                <p class="text-lg font-bold">{{ formatCurrency(getTotalNet()) }}</p>
+              </div>
+              <div>
+                <p class="text-xs text-base-content/60">{{ 'dashboard.amounts.totalTax' | translate }}</p>
+                <p class="text-lg font-bold">{{ formatCurrency(getTotalTax()) }}</p>
+              </div>
+              <div>
+                <p class="text-xs text-base-content/60">{{ 'dashboard.amounts.totalGross' | translate }}</p>
+                <p class="text-lg font-bold text-green-600">{{ formatCurrency(getTotalGross()) }}</p>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <div class="text-center py-8">
+            <i class="fa-solid fa-euro-sign text-4xl text-base-content/20 mb-4"></i>
+            <p class="text-base-content/60">{{ 'dashboard.amounts.empty' | translate }}</p>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Rechnungsstatistik -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title mb-4">
+          <i class="fa-solid fa-chart-pie" aria-hidden="true"></i>
+          {{ 'dashboard.invoiceStats.title' | translate }}
+        </h2>
+
+        @if (invoiceStats().totalInvoices > 0) {
+          <!-- Statistik-Übersicht -->
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="text-center p-4 bg-base-200 rounded-lg">
+              <p class="text-3xl font-bold text-success">{{ invoiceStats().paidInvoices }}</p>
+              <p class="text-sm text-base-content/60">{{ 'dashboard.invoiceStats.paid' | translate }}</p>
+              <p class="text-xs text-success">{{ paidPercentage() }}%</p>
+            </div>
+            <div class="text-center p-4 bg-base-200 rounded-lg">
+              <p class="text-3xl font-bold text-error">{{ invoiceStats().unpaidInvoices }}</p>
+              <p class="text-sm text-base-content/60">{{ 'dashboard.invoiceStats.unpaid' | translate }}</p>
+              <p class="text-xs text-error">{{ unpaidPercentage() }}%</p>
+            </div>
+          </div>
+
+          <!-- Balken-Darstellung -->
+          <div class="mb-6">
+            <div class="flex h-8 rounded-lg overflow-hidden">
+              @if (invoiceStats().paidInvoices > 0) {
+                <div
+                  class="bg-success flex items-center justify-center text-xs font-semibold text-white"
+                  [style.width.%]="paidPercentage()"
+                  [title]="invoiceStats().paidInvoices + ' ' + ('dashboard.invoiceStats.paid' | translate)">
+                  {{ paidPercentage() }}%
+                </div>
+              }
+              @if (invoiceStats().unpaidInvoices > 0) {
+                <div
+                  class="bg-error flex items-center justify-center text-xs font-semibold text-white"
+                  [style.width.%]="unpaidPercentage()"
+                  [title]="invoiceStats().unpaidInvoices + ' ' + ('dashboard.invoiceStats.unpaid' | translate)">
+                  {{ unpaidPercentage() }}%
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Beträge -->
+          <div class="space-y-3">
+            <div class="flex justify-between items-center p-3 bg-base-200 rounded-lg">
+              <span class="text-sm">{{ 'dashboard.invoiceStats.totalAmount' | translate }}</span>
+              <span class="font-bold">{{ formatCurrency(invoiceStats().totalAmount) }}</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-success/10 rounded-lg">
+              <span class="text-sm text-success">{{ 'dashboard.invoiceStats.paidAmount' | translate }}</span>
+              <span class="font-bold text-success">{{ formatCurrency(invoiceStats().paidAmount) }}</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-error/10 rounded-lg">
+              <span class="text-sm text-error">{{ 'dashboard.invoiceStats.unpaidAmount' | translate }}</span>
+              <span class="font-bold text-error">{{ formatCurrency(invoiceStats().unpaidAmount) }}</span>
+            </div>
+          </div>
+        } @else {
+          <div class="text-center py-8">
+            <i class="fa-solid fa-chart-pie text-4xl text-base-content/20 mb-4"></i>
+            <p class="text-base-content/60">{{ 'dashboard.invoiceStats.empty' | translate }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

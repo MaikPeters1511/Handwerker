@@ -1,0 +1,17 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 30" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">Handwerker</title>
+  <desc id="logoDesc">Logo: stylized hammer and wrench forming an H</desc>
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="30" rx="4" fill="none" />
+  <g transform="translate(6,4) scale(0.8)">
+    <path d="M6 20 L10 12 L14 20 Z" fill="url(#g)" opacity="0.95"/>
+    <rect x="18" y="6" width="6" height="14" rx="1.5" fill="#0ea5a4"/>
+    <path d="M34 8 L44 8 L40 18 Z" fill="#3b82f6"/>
+  </g>
+  <text x="60" y="20" font-family="Inter, Arial, sans-serif" font-size="12" fill="#0f172a">Handwerker</text>
+</svg>

@@ -1,0 +1,69 @@
+{
+  "name": "handwerker-client",
+  "version": "1.0.0",
+  "scripts": {
+    "ng": "ng",
+    "setup:cert": "npx -y mkcert -install && npx -y mkcert -key-file localhost-key.pem -cert-file localhost.pem localhost 127.0.0.1 ::1",
+    "start": "ng serve --port ${PORT:-4200}",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "a11y:axe": "node ./node_modules/@playwright/test/cli.js test tests/a11y/invoices.axe.spec.ts",
+    "a11y:axe:headed": "node ./node_modules/@playwright/test/cli.js test tests/a11y/invoices.axe.spec.ts --headed"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
+  "private": true,
+  "packageManager": "pnpm@11.17.0",
+  "dependencies": {
+    "@angular/common": "^22.0.8",
+    "@angular/compiler": "^22.0.8",
+    "@angular/core": "^22.0.8",
+    "@angular/forms": "^22.0.8",
+    "@angular/localize": "^22.0.8",
+    "@angular/platform-browser": "^22.0.8",
+    "@angular/router": "^22.0.8",
+    "@fortawesome/fontawesome-free": "^7.1.0",
+    "@microsoft/signalr": "^10.0.0",
+    "keycloak-js": "^26.2.3",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.2.2",
+    "@angular/build": "^22.0.8",
+    "@angular/cli": "^22.0.8",
+    "@angular/compiler-cli": "^22.0.8",
+    "@angular/platform-browser-dynamic": "^22.0.8",
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.55.0",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@vitest/browser": "^4.0.17",
+    "@vitest/ui": "^4.0.17",
+    "autoprefixer": "^10.4.23",
+    "daisyui": "^5.5.14",
+    "happy-dom": "^20.3.0",
+    "istanbul-lib-instrument": "^6.0.3",
+    "jsdom": "^27.4.0",
+    "playwright": "^1.58.2",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.18",
+    "typescript": "~6.0.3",
+    "vite": "^7.3.1",
+    "vite-tsconfig-paths": "^6.0.4",
+    "vitest": "^4.0.16"
+  }
+}

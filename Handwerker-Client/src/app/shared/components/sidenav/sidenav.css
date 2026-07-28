@@ -1,0 +1,12 @@
+:host {
+  display: contents;
+}
+
+/* Entferne die vertikale Linie bei Untermenüs */
+:host ::ng-deep details ul::before {
+  display: none !important;
+}
+
+:host ::ng-deep details ul::after {
+  display: none !important;
+}

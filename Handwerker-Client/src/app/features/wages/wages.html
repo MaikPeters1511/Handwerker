@@ -1,0 +1,229 @@
+<div class="w-full max-w-full">
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+    <div>
+      <h1 class="text-3xl font-bold tracking-tight">{{ 'wages.title' | translate }}</h1>
+      <p class="text-base-content/70 mt-1">{{ 'wages.subtitle' | translate }}</p>
+    </div>
+    <button class="btn btn-primary shadow-lg" (click)="addNewWageType()">
+      <i class="fa-solid fa-plus"></i> {{ 'wages.newWageType' | translate }}
+    </button>
+  </div>
+
+  <!-- Search Section -->
+  <div class="form-control w-full max-w-xl relative mb-8 z-20">
+    <label class="label">
+      <span class="label-text font-semibold">{{ 'wages.search.label' | translate }}</span>
+    </label>
+    <div class="flex gap-2">
+      <div class="relative flex-1">
+        <i class="fa-solid fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-base-content/50"></i>
+        <input
+          type="text"
+          placeholder="{{ 'wages.search.placeholder' | translate }}"
+          class="input input-bordered w-full pl-10 shadow-sm focus:input-primary transition-all"
+          (input)="onSearchInput($event)"
+          (keyup.enter)="manualSearch()"
+          [value]="searchTerm()"
+        />
+      </div>
+      <button type="button" class="btn btn-primary" (click)="manualSearch()" [disabled]="searchTerm().length < 2">
+        <i class="fa-solid fa-search"></i>
+      </button>
+    </div>
+
+    @if (showDropdown() && searchResults().length > 0) {
+      <ul class="menu bg-base-100 w-full rounded-box shadow-xl absolute top-full mt-2 z-50 max-h-60 overflow-y-auto border border-base-300">
+        @for (item of searchResults(); track item.id) {
+          <li>
+            <a (click)="selectWageType(item)" class="hover:bg-base-200">
+              <div class="flex flex-col">
+                <span class="font-bold">{{ item.name }}</span>
+                <span class="text-xs text-base-content/70">{{ item.wageNumber }}</span>
+              </div>
+            </a>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+  <!-- Lohnartenliste -->
+  <div class="card bg-base-100 shadow-xl border border-base-200 w-full mb-8">
+    <div class="card-body p-6 md:p-8">
+      <h2 class="card-title text-xl pb-4 border-b border-base-200 mb-4">
+        {{ 'wages.list.title' | translate }}
+      </h2>
+
+      @if (isLoadingList()) {
+        <div class="flex justify-center py-8">
+          <span class="loading loading-spinner loading-md text-primary"></span>
+        </div>
+      } @else if (wageTypes().length === 0) {
+        <p class="text-base-content/70 py-4">{{ 'wages.list.empty' | translate }}</p>
+      } @else {
+        <div class="overflow-x-auto">
+          <table class="table table-zebra">
+            <thead>
+              <tr>
+                <th>{{ 'wages.masterData.wageNumber' | translate }}</th>
+                <th>{{ 'wages.masterData.name' | translate }}</th>
+                <th>{{ 'wages.masterData.hourlyRate' | translate }}</th>
+                <th>{{ 'wages.masterData.isActive' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of wageTypes(); track item.id) {
+                <tr class="hover cursor-pointer" (click)="selectWageType(item)">
+                  <td>{{ item.wageNumber }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.hourlyRate }} &euro;</td>
+                  <td>
+                    @if (item.isActive) {
+                      <span class="badge badge-success badge-outline">{{ 'wages.masterData.isActive' | translate }}</span>
+                    } @else {
+                      <span class="badge badge-ghost badge-outline">{{ 'wages.list.inactive' | translate }}</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="card bg-base-100 shadow-xl border border-base-200 w-full">
+    <div class="card-body p-6 md:p-8">
+      <div class="flex justify-between items-center pb-4 border-b border-base-200 mb-6">
+        <h2 class="card-title text-xl">
+          {{ (isEditing() ? 'wages.editMode' : 'wages.createMode') | translate }}
+        </h2>
+        <div class="flex gap-2 items-center">
+          @if (isEditing()) {
+            <div class="badge badge-accent badge-outline">{{ 'wages.editBadge' | translate }}</div>
+            @if (isSaving()) {
+              <span class="loading loading-spinner loading-sm text-primary"></span>
+              <span class="text-sm text-base-content/70">{{ 'wages.saving' | translate }}</span>
+            }
+            @if (!isSaving() && lastSaved()) {
+              <div class="flex items-center gap-1 text-success text-sm">
+                <i class="fa-solid fa-check"></i>
+                <span>{{ 'wages.saved' | translate }}</span>
+              </div>
+            }
+          }
+        </div>
+      </div>
+
+      <form id="wage-form" [formGroup]="wageForm" (ngSubmit)="saveWageType()" class="space-y-8">
+        <div class="bg-base-50/50 rounded-xl p-2 md:p-0">
+          <h3 class="font-semibold text-lg mb-4 text-base-content/80 flex items-center gap-2">
+            <i class="fa-solid fa-money-bill-wave text-primary"></i> {{ 'wages.masterData.title' | translate }}
+          </h3>
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+            @if (isEditing()) {
+              <div class="form-control">
+                <label class="label"><span class="label-text font-medium">{{ 'wages.masterData.wageNumber' | translate }}</span></label>
+                <input type="text" formControlName="wageNumber" class="input input-bordered w-full bg-base-200" readonly tabindex="-1" />
+              </div>
+            }
+
+            <div class="form-control">
+              <label class="label"><span class="label-text font-medium">{{ 'wages.masterData.name' | translate }} *</span></label>
+              <input type="text" formControlName="name" class="input input-bordered focus:input-primary w-full"
+                [class.input-error]="wageForm.get('name')?.invalid && wageForm.get('name')?.touched"
+                placeholder="{{ 'wages.masterData.namePlaceholder' | translate }}" />
+              @if (wageForm.get('name')?.invalid && wageForm.get('name')?.touched) {
+                <div class="label pb-0">
+                  <span class="label-text-alt text-error">{{ 'wages.masterData.nameRequired' | translate }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="form-control">
+              <label class="label"><span class="label-text font-medium">{{ 'wages.masterData.hourlyRate' | translate }} *</span></label>
+              <div class="relative">
+                <input type="number" step="0.01" formControlName="hourlyRate" class="input input-bordered w-full pr-8 focus:input-primary"
+                  [class.input-error]="wageForm.get('hourlyRate')?.invalid && wageForm.get('hourlyRate')?.touched" />
+                <span class="absolute right-3 top-3 text-gray-500">€</span>
+              </div>
+              @if (wageForm.get('hourlyRate')?.invalid && wageForm.get('hourlyRate')?.touched) {
+                <div class="label pb-0">
+                  <span class="label-text-alt text-error">{{ 'wages.masterData.hourlyRateRequired' | translate }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="form-control">
+              <label class="label"><span class="label-text font-medium">{{ 'wages.masterData.taxRate' | translate }}</span></label>
+              <input type="number" formControlName="taxRate" class="input input-bordered focus:input-primary w-full" />
+            </div>
+
+            <div class="form-control">
+              <label class="label cursor-pointer justify-start gap-3">
+                <input type="checkbox" formControlName="isActive" class="checkbox checkbox-primary" />
+                <span class="label-text font-medium">{{ 'wages.masterData.isActive' | translate }}</span>
+              </label>
+            </div>
+
+            <div class="form-control xl:col-span-2">
+              <label class="label"><span class="label-text font-medium">{{ 'wages.masterData.description' | translate }}</span></label>
+              <textarea formControlName="description" class="textarea textarea-bordered h-24 focus:textarea-primary w-full" placeholder="{{ 'wages.masterData.descriptionPlaceholder' | translate }}"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-actions justify-end mt-8 pt-6 border-t border-base-200 gap-4">
+          @if (isEditing()) {
+            <button type="button" class="btn btn-error btn-outline mr-auto" (click)="deleteSelectedWageType()" [disabled]="isDeleting()">
+              <i class="fa-solid fa-trash mr-2"></i>
+              {{ 'wages.actions.delete' | translate }}
+            </button>
+          }
+          <button type="button" class="btn btn-ghost" (click)="addNewWageType()">
+            @if (isEditing()) {
+              <i class="fa-solid fa-times mr-2"></i>
+              {{ 'wages.actions.endEdit' | translate }}
+            } @else {
+              {{ 'wages.actions.reset' | translate }}
+            }
+          </button>
+          <button type="submit" class="btn btn-primary px-8 min-w-[150px] shadow-md" [disabled]="isSaving()">
+            <i class="fa-solid fa-save mr-2"></i>
+            @if (isEditing()) {
+              {{ 'wages.actions.saveChanges' | translate }}
+            } @else {
+              {{ 'wages.actions.createWageType' | translate }}
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-delete-component #deleteModal (deleteConfirmed)="onDeleteConfirmed($event)"></app-delete-component>
+
+<div class="toast toast-top toast-end z-50">
+  @if (saveSuccess()) {
+    <div class="alert alert-success shadow-lg flex gap-4" role="status" aria-live="polite">
+      <i class="fa-solid fa-circle-check text-xl"></i>
+      <span>{{ successMessage() }}</span>
+      <button class="btn btn-sm btn-ghost btn-circle" (click)="saveSuccess.set(false)" aria-label="Schließen">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  }
+
+  @if (saveError(); as err) {
+    <div class="alert alert-error shadow-lg flex gap-4" role="alert" aria-live="assertive">
+      <i class="fa-solid fa-circle-exclamation text-xl"></i>
+      <span>{{ err }}</span>
+      <button class="btn btn-sm btn-ghost btn-circle" (click)="saveError.set(null)" aria-label="Schließen">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  }
+</div>

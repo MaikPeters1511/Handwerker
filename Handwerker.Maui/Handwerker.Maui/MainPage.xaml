@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Handwerker.Maui.ViewModels;assembly=Handwerker.Maui"
+             xmlns:converters="clr-namespace:Handwerker.Maui.Converters;assembly=Handwerker.Maui"
+             x:Class="Handwerker.Maui.MainPage"
+             x:DataType="viewmodels:MainPageViewModel"
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
+            <converters:OnlineTextConverter x:Key="OnlineTextConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="*" Padding="20">
+        <!-- Status / Online Indicator -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *" VerticalOptions="Start" Margin="0,6,0,12">
+            <Border StrokeThickness="0" BackgroundColor="{AppThemeBinding Light=#F3F4F6, Dark={StaticResource Gray950}}" StrokeShape="RoundRectangle 16">
+                <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto" Padding="6">
+                    <Ellipse WidthRequest="12" HeightRequest="12" VerticalOptions="Center" HorizontalOptions="Start"
+                             Fill="{Binding IsOnline, Converter={StaticResource BoolToColorConverter}}"/>
+                    <Label Grid.Column="1" Text="{Binding OnlineStatusText}" Margin="8,0,0,0"
+                           VerticalOptions="Center" FontAttributes="Bold" FontSize="14" />
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Main content -->
+        <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="*" RowSpacing="18">
+            <Label Grid.Row="1" Text="{Binding Title}" Style="{StaticResource Headline}" HorizontalOptions="Center" />
+            <Label Grid.Row="2" Text="{Binding Subtitle}" Style="{StaticResource SubHeadline}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+            <Grid Grid.Row="3" ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,6,0,0">
+                <Button Text="{Binding Localization[NewTask]}" Command="{Binding StartJobCommand}" BackgroundColor="#0078D4" TextColor="White" CornerRadius="8" HeightRequest="48" />
+                <Button Grid.Column="1" Text="{Binding Localization[Synchronize]}" Command="{Binding SyncCommand}" BackgroundColor="#E5E7EB" TextColor="#111827" CornerRadius="8" HeightRequest="48" />
+            </Grid>
+        </Grid>
+
+        <!-- Quick info / Footer -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,*" RowDefinitions="Auto" ColumnSpacing="12" Margin="0,12,0,0">
+            <Border BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark={StaticResource Gray900}}" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="12">
+                <StackLayout Spacing="4">
+                    <Label Text="{Binding Localization[OpenTasks]}" FontAttributes="Bold" />
+                    <Label Text="3 auf der heutigen Liste" FontSize="13" TextColor="#6B7280" />
+                </StackLayout>
+            </Border>
+
+            <Border BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark={StaticResource Gray900}}" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="12">
+                <StackLayout Spacing="4">
+                    <Label Text="{Binding Localization[NextAppointment]}" FontAttributes="Bold" />
+                    <Label Text="{Binding Localization[AppointmentDetails]}" FontSize="13" TextColor="#6B7280" />
+                </StackLayout>
+            </Border>
+        </Grid>
+    </Grid>
+
+</ContentPage>

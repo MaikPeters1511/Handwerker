@@ -1,0 +1,25 @@
+@use "tailwindcss";
+@plugin "daisyui" {
+  themes: light, dark, cupcake, bumblebee, emerald, corporate, synthwave, retro, cyberpunk, valentine, halloween, garden, forest, aqua, lofi, pastel, fantasy, wireframe, black, luxury, dracula, cmyk, autumn, business, acid, lemonade, night, coffee, winter, dim, nord, sunset;
+}
+
+@media print {
+  // Hide standard app layout elements globally
+  nav, aside, .navbar, .sidebar, app-sidebar, app-navbar, .no-print {
+    display: none !important;
+  }
+
+  // Set background to white and reset scrolling
+  body, html {
+    background: white !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  // Ensure the app-root or main container allows printing
+  app-root {
+      display: block !important;
+      height: auto !important;
+      overflow: visible !important;
+  }
+}

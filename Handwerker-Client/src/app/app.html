@@ -1,0 +1,110 @@
+<div class="flex flex-col h-screen bg-base-100 font-sans">
+
+  <!-- Navbar -->
+  <div class="navbar bg-base-300 shadow-sm flex-none z-30">
+    @if (authService.isLoggedIn()) {
+      <div class="flex-none">
+        <button class="btn btn-square btn-ghost" (click)="toggleSidebar()">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+      </div>
+    }
+    <div class="flex-1">
+      <a class="btn btn-ghost text-xl normal-case">{{ title() }}</a>
+    </div>
+    <div class="flex-none gap-2 px-2">
+      <!-- Notifications (nur wenn eingeloggt) -->
+      @if (authService.isLoggedIn()) {
+        <app-notification-dropdown />
+      }
+
+      <!-- Theme Dropdown -->
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost m-1">
+          {{ 'nav.theme' | translate }}
+          <svg width="12px" height="12px" class="h-2 w-2 fill-current opacity-60 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048"><path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content z-[1] p-2 shadow-2xl bg-base-300 rounded-box w-52 max-h-96 overflow-y-auto">
+          @for (theme of availableThemes; track theme) {
+          <li>
+            <button
+              class="btn btn-sm btn-block btn-ghost justify-start capitalize"
+              [class.btn-active]="theme === currentTheme()"
+              (click)="setTheme(theme)">
+              {{ theme }}
+            </button>
+          </li>
+          }
+        </ul>
+      </div>
+
+      <!-- User Dropdown / Login -->
+      @if (authService.isLoggedIn()) {
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-ghost m-1">
+             {{ authService.userName() }}
+             <i class="fa-solid fa-user ml-2"></i>
+          </div>
+          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-300 rounded-box w-52">
+            <li><a routerLink="/profile">{{ 'nav.profile' | translate }}</a></li>
+            <li><a (click)="authService.logout()">{{ 'nav.logout' | translate }}</a></li>
+          </ul>
+        </div>
+      } @else {
+        <button class="btn btn-primary ml-2" (click)="authService.login()">{{ 'nav.login' | translate }}</button>
+      }
+    </div>
+  </div>
+
+  <!-- Content Area with Sidebar -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar -->
+    @if(authService.isLoggedIn()) {
+      <aside class="flex-none z-20 transition-all duration-300" [class.w-64]="sidebarOpen()" [class.w-20]="!sidebarOpen()">
+        <app-sidenav/>
+      </aside>
+    }
+
+    <!-- Main Content -->
+    <div class="flex flex-col flex-1 overflow-y-auto bg-base-100">
+       <main class="flex-1 p-4 md:p-8 w-full">
+        @if(!authService.isLoggedIn())
+        {
+          <app-welcom/>
+        }
+
+        @if(authService.isLoggedIn())
+        {
+           @if(isInitializing()) {
+             <div class="flex items-center justify-center h-full">
+                <span class="loading loading-spinner loading-lg text-primary"></span>
+             </div>
+           } @else {
+             <router-outlet />
+             <app-toast-component/>
+           }
+        }
+      </main>
+    </div>
+  </div>
+
+  <!-- Installation Modal -->
+  @if(installationModalOpen()) {
+    <div class="modal modal-open">
+      <div class="modal-box max-w-4xl">
+        <app-installation-wizard (close)="installationModalOpen.set(false)"></app-installation-wizard>
+      </div>
+    </div>
+  }
+
+  <!-- Footer -->
+  <footer class="footer footer-center p-4 bg-base-300 text-base-content flex-none z-30">
+    <aside>
+      <p>{{ 'app.copyright' | translate }}</p>
+    </aside>
+  </footer>
+
+  <!-- Realtime Notifications -->
+  <app-realtime-notifications />
+
+</div>

@@ -1,0 +1,29 @@
+<div class="toast toast-top toast-end z-50">
+
+  @if (toast.successMessage(); as msg) {
+    <div class="alert alert-success shadow-lg flex gap-4" role="status" aria-live="polite">
+      <i class="fa-solid fa-circle-check text-xl"></i>
+      <span>{{ msg }}</span>
+      <button
+        class="btn btn-sm btn-ghost btn-circle"
+        (click)="toast.successMessage.set(null)"
+        aria-label="Schließen">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  }
+
+  @if (toast.errorMessage(); as err) {
+    <div class="alert alert-error shadow-lg flex gap-4" role="alert" aria-live="assertive">
+      <i class="fa-solid fa-circle-exclamation text-xl"></i>
+      <span>{{ err }}</span>
+      <button
+        class="btn btn-sm btn-ghost btn-circle"
+        (click)="toast.errorMessage.set(null)"
+        aria-label="Schließen">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  }
+
+</div>

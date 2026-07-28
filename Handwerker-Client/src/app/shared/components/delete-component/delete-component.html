@@ -1,0 +1,16 @@
+<dialog #dialog class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">
+      {{'general.deleteRow' | translate }}
+    </h3>
+
+    <div>
+      {{'general.deleteRow' | translate }}
+    </div>
+    <div class="modal-action">
+      <button class="btn" (click)="close()">{{ 'general.close' | translate }}</button>
+      <button class="btn btn-error"
+              (click)="delete()">{{ 'general.delete' | translate }}</button>
+    </div>
+  </div>
+</dialog>

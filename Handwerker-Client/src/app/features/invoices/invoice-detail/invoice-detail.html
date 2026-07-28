@@ -1,0 +1,509 @@
+<div class="container mx-auto p-6 max-w-6xl">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h1 class="text-3xl font-bold">
+        @if (mode() === 'new') {
+          {{ 'invoices.detail.title.new' | translate }}
+        } @else if (mode() === 'edit') {
+          {{ 'invoices.detail.title.edit' | translate }}
+        } @else {
+          {{ 'invoices.detail.title.view' | translate }}
+        }
+      </h1>
+      @if (invoiceId()) {
+        <p class="text-base-content/70 mt-1">{{ 'invoices.detail.idLabel' | translate }} {{ invoiceId() }}</p>
+      }
+    </div>
+
+    <div class="flex gap-2">
+      @if (mode() === 'view') {
+        <button
+          (click)="enableEdit()"
+          class="btn btn-primary"
+          type="button">
+          <i class="fa-solid fa-pen mr-2"></i>
+          {{ 'invoices.detail.actions.edit' | translate }}
+        </button>
+      }
+      <button
+        (click)="onCancel()"
+        class="btn btn-ghost"
+        type="button">
+        @if (mode() === 'view') {
+          {{ 'invoices.detail.actions.back' | translate }}
+        } @else {
+          {{ 'invoices.detail.actions.cancel' | translate }}
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="flex justify-center items-center py-12" role="status">
+      <span class="loading loading-spinner loading-lg"></span>
+      <span class="sr-only">{{ 'invoices.detail.loading' | translate }}</span>
+    </div>
+  }
+
+  <!-- Form -->
+  @if (!loading()) {
+    <form [formGroup]="form" (ngSubmit)="onSave()" class="space-y-6">
+      <!-- Basic Info Card -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">{{ 'invoices.detail.sections.invoiceInfo' | translate }}</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Invoice Number -->
+            <div class="form-control">
+              <label for="invoiceNumber" class="label">
+                <span class="label-text">{{ 'invoices.detail.fields.invoiceNumber' | translate }} *</span>
+              </label>
+              <input
+                id="invoiceNumber"
+                formControlName="invoiceNumber"
+                type="text"
+                [placeholder]="'invoices.detail.fields.invoiceNumberPlaceholder' | translate"
+                class="input input-bordered"
+                [attr.aria-required]="true"
+                readonly />
+              @if (mode() === 'new') {
+                <label class="label">
+                  <span class="label-text-alt text-info">
+                    <i class="fa-solid fa-info-circle mr-1"></i>
+                    {{ 'invoices.detail.fields.invoiceNumberHelp' | translate }}
+                  </span>
+                </label>
+              }
+            </div>
+
+            <!-- Customer Number -->
+            <div class="form-control">
+              <label for="customerNumber" class="label">
+                <span class="label-text">{{ 'invoices.detail.fields.customerNumber' | translate }}</span>
+              </label>
+              <input
+                id="customerNumber"
+                formControlName="customerNumber"
+                type="text"
+                [placeholder]="'invoices.detail.fields.customerNumberPlaceholder' | translate"
+                class="input input-bordered" />
+            </div>
+
+            <!-- Invoice Date -->
+            <div class="form-control">
+              <label for="invoiceDate" class="label">
+                <span class="label-text">{{ 'invoices.detail.fields.invoiceDate' | translate }} *</span>
+              </label>
+              <input
+                id="invoiceDate"
+                formControlName="invoiceDate"
+                type="date"
+                class="input input-bordered"
+                [class.input-error]="form.get('invoiceDate')?.invalid && form.get('invoiceDate')?.touched"
+                [attr.aria-required]="true" />
+              @if (form.get('invoiceDate')?.invalid && form.get('invoiceDate')?.touched) {
+                <label class="label">
+                  <span class="label-text-alt text-error">{{ 'invoices.detail.validation.invoiceDate' | translate }}</span>
+                </label>
+              }
+            </div>
+
+            <!-- Due Date -->
+            <div class="form-control">
+              <label for="dueDate" class="label">
+                <span class="label-text">{{ 'invoices.detail.fields.dueDate' | translate }} *</span>
+              </label>
+              <input
+                id="dueDate"
+                formControlName="dueDate"
+                type="date"
+                class="input input-bordered"
+                [class.input-error]="form.get('dueDate')?.invalid && form.get('dueDate')?.touched"
+                [attr.aria-required]="true" />
+              @if (form.get('dueDate')?.invalid && form.get('dueDate')?.touched) {
+                <label class="label">
+                  <span class="label-text-alt text-error">{{ 'invoices.detail.validation.dueDate' | translate }}</span>
+                </label>
+              }
+            </div>
+
+            <!-- Service Period -->
+            <div class="form-control">
+              <label for="servicePeriod" class="label">
+                <span class="label-text">{{ 'invoices.detail.fields.servicePeriod' | translate }} *</span>
+              </label>
+              <input
+                id="servicePeriod"
+                formControlName="servicePeriod"
+                type="text"
+                [placeholder]="'invoices.detail.fields.servicePeriodPlaceholder' | translate"
+                class="input input-bordered"
+                [class.input-error]="form.get('servicePeriod')?.invalid && form.get('servicePeriod')?.touched"
+                [attr.aria-required]="true" />
+              @if (form.get('servicePeriod')?.invalid && form.get('servicePeriod')?.touched) {
+                <label class="label">
+                  <span class="label-text-alt text-error">{{ 'invoices.detail.validation.required' | translate }}</span>
+                </label>
+              }
+            </div>
+
+            <!-- Payment Terms -->
+            <div class="form-control">
+              <label for="paymentTerms" class="label">
+                <span class="label-text">{{ 'invoices.detail.fields.paymentTerms' | translate }}</span>
+              </label>
+              <select
+                id="paymentTerms"
+                formControlName="paymentTerms"
+                class="select select-bordered">
+                @for (term of paymentTermOptions; track term) {
+                  <option [value]="term.value">{{ term.labelKey | translate }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <!-- Payment Status -->
+          <div class="form-control">
+            <label class="label cursor-pointer justify-start gap-3">
+              <input
+                formControlName="isPaid"
+                type="checkbox"
+                class="checkbox" />
+              <span class="label-text">{{ 'invoices.detail.fields.isPaid' | translate }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipient & Provider -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Recipient -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title">{{ 'invoices.detail.sections.recipient' | translate }} *</h2>
+            <div class="form-control">
+              <label for="recipient-search" class="label">
+                <span class="label-text">{{ 'invoices.detail.fields.recipientSearch' | translate }}</span>
+              </label>
+              <div class="relative">
+                <input
+                  id="recipient-search"
+                  type="text"
+                  class="input input-bordered w-full"
+                  [class.input-error]="form.get('recipientId')?.invalid && form.get('recipientId')?.touched"
+                  [value]="recipientSearchTerm()"
+                  (input)="onRecipientSearchInput($event)"
+                  (focus)="onRecipientSearchFocus()"
+                  (blur)="onRecipientSearchBlur()"
+                  (keydown)="onRecipientSearchKeydown($event)"
+                  role="combobox"
+                  aria-autocomplete="list"
+                  [attr.aria-expanded]="showRecipientOptions()"
+                  aria-controls="recipient-options"
+                  [attr.aria-activedescendant]="activeRecipientOptionId()"
+                  [attr.aria-required]="true"
+                  [placeholder]="'invoices.detail.fields.recipientSearchPlaceholder' | translate" />
+
+                @if (showRecipientOptions() && filteredRecipients().length > 0) {
+                  <ul
+                    id="recipient-options"
+                    role="listbox"
+                    class="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-md border border-base-300 bg-base-100 shadow-lg">
+                    @for (recipient of filteredRecipients(); track recipient.id; let optionIndex = $index) {
+                      <li
+                        [id]="recipientOptionId(optionIndex)"
+                        role="option"
+                        [attr.aria-selected]="activeRecipientOptionIndex() === optionIndex"
+                        (mousedown)="selectRecipientFromAutocomplete(recipient)"
+                        class="cursor-pointer px-3 py-2"
+                        [class.bg-primary]="activeRecipientOptionIndex() === optionIndex"
+                        [class.text-primary-content]="activeRecipientOptionIndex() === optionIndex">
+                        <div class="font-medium">{{ recipient.name }}</div>
+                        <div class="text-xs opacity-70">{{ recipient.customerNumber || '-' }} • {{ recipient.email || '-' }}</div>
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+
+              <input type="hidden" formControlName="recipientId" />
+              @if (form.get('recipientId')?.invalid && form.get('recipientId')?.touched) {
+                <label class="label">
+                  <span class="label-text-alt text-error">{{ 'invoices.detail.validation.recipientRequired' | translate }}</span>
+                </label>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Provider -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title">{{ 'invoices.detail.sections.provider' | translate }} *</h2>
+            <div class="form-control">
+              <label for="providerId" class="label">
+                <span class="label-text">{{ 'invoices.detail.fields.providerSelect' | translate }}</span>
+              </label>
+              <select
+                id="providerId"
+                formControlName="providerId"
+                class="select select-bordered"
+                [class.select-error]="form.get('providerId')?.invalid && form.get('providerId')?.touched"
+                [attr.aria-required]="true">
+                <option [ngValue]="null">{{ 'invoices.detail.fields.providerPlaceholder' | translate }}</option>
+                @for (company of companies(); track company.id) {
+                  <option [ngValue]="company.id">{{ company.name }}</option>
+                }
+              </select>
+              @if (form.get('providerId')?.invalid && form.get('providerId')?.touched) {
+                <label class="label">
+                  <span class="label-text-alt text-error">{{ 'invoices.detail.validation.providerRequired' | translate }}</span>
+                </label>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products -->
+      <div class="card bg-base-100 shadow-xl" [class.border-error]="form.get('products')?.hasError('minLengthArray') && form.touched" [class.border]="form.get('products')?.hasError('minLengthArray') && form.touched">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="card-title">{{ 'invoices.detail.sections.positions' | translate }}</h2>
+            @if (mode() !== 'view') {
+              <button
+                (click)="addProduct()"
+                type="button"
+                class="btn btn-sm btn-primary">
+                <i class="fa-solid fa-plus mr-2"></i>
+                {{ 'invoices.detail.actions.addPosition' | translate }}
+              </button>
+            }
+          </div>
+
+          @if (form.get('products')?.hasError('minLengthArray') && form.touched) {
+            <div class="alert alert-error text-sm py-2 mb-4">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <span>{{ 'invoices.detail.validation.minOnePosition' | translate }}</span>
+            </div>
+          }
+
+          @if (productsArray.length === 0) {
+            <div class="text-center py-8 text-base-content/70">
+              {{ 'invoices.detail.empty.noPositions' | translate }}
+            </div>
+          } @else {
+            <div class="overflow-x-auto">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>{{ 'invoices.detail.table.position' | translate }}</th>
+                    <th>{{ 'invoices.detail.table.name' | translate }}</th>
+                    <th>{{ 'invoices.detail.table.quantity' | translate }}</th>
+                    <th>{{ 'invoices.detail.table.unit' | translate }}</th>
+                    <th>{{ 'invoices.detail.table.unitPrice' | translate }}</th>
+                    <th>{{ 'invoices.detail.table.taxRate' | translate }}</th>
+                    <th>{{ 'invoices.detail.table.net' | translate }}</th>
+                    <th>{{ 'invoices.detail.table.gross' | translate }}</th>
+                    @if (mode() !== 'view') {
+                      <th></th>
+                    }
+                  </tr>
+                </thead>
+                <tbody formArrayName="products">
+                  @for (productGroup of productsArray.controls; track $index; let rowIndex = $index) {
+                    <tr [formGroupName]="rowIndex">
+                      <td>{{ rowIndex + 1 }}</td>
+                      <td class="align-top">
+                        <div class="relative min-w-56">
+                          <input
+                            formControlName="name"
+                            type="text"
+                            [placeholder]="'invoices.detail.fields.productNamePlaceholder' | translate"
+                            class="input input-sm input-bordered w-full"
+                            [class.input-error]="productGroup.get('name')?.invalid && productGroup.get('name')?.touched"
+                            (input)="onProductSearchInput(rowIndex, $event); onProductChange(rowIndex)"
+                            (focus)="onProductSearchFocus(rowIndex)"
+                            (blur)="onProductSearchBlur(rowIndex)"
+                            (keydown)="onProductSearchKeydown(rowIndex, $event)"
+                            role="combobox"
+                            aria-autocomplete="list"
+                            [attr.aria-expanded]="isProductOptionsVisible(rowIndex)"
+                            [attr.aria-controls]="'product-options-' + rowIndex"
+                            [attr.aria-activedescendant]="activeProductOptionId(rowIndex)" />
+
+                          @if (isProductOptionsVisible(rowIndex) && getProductSuggestions(rowIndex).length > 0) {
+                            <ul
+                              [id]="'product-options-' + rowIndex"
+                              role="listbox"
+                              class="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-md border border-base-300 bg-base-100 shadow-lg">
+                              @for (suggestion of getProductSuggestions(rowIndex); track suggestion.id; let optionIndex = $index) {
+                                <li
+                                  [id]="productOptionId(rowIndex, optionIndex)"
+                                  role="option"
+                                  [attr.aria-selected]="getProductActiveOptionIndex(rowIndex) === optionIndex"
+                                  (mousedown)="selectSuggestedProduct(rowIndex, suggestion)"
+                                  class="cursor-pointer px-3 py-2"
+                                  [class.bg-primary]="getProductActiveOptionIndex(rowIndex) === optionIndex"
+                                  [class.text-primary-content]="getProductActiveOptionIndex(rowIndex) === optionIndex">
+                                  <div class="font-medium">{{ suggestion.name }}</div>
+                                  <div class="text-xs opacity-70">{{ suggestion.articleNumber || '-' }} • {{ formatCurrency(suggestion.unitPrice) }}</div>
+                                </li>
+                              }
+                            </ul>
+                          }
+                        </div>
+                      </td>
+                      <td class="align-top">
+                        <input
+                          formControlName="quantity"
+                          (input)="onProductChange(rowIndex)"
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          class="input input-sm input-bordered w-20"
+                          [class.input-error]="productGroup.get('quantity')?.invalid && productGroup.get('quantity')?.touched" />
+                      </td>
+                      <td class="align-top">
+                        <input
+                          formControlName="unit"
+                          type="text"
+                          [placeholder]="'invoices.detail.fields.productUnitPlaceholder' | translate"
+                          class="input input-sm input-bordered w-16" />
+                      </td>
+                      <td class="align-top">
+                        <input
+                          formControlName="unitPrice"
+                          (input)="onProductChange(rowIndex)"
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          class="input input-sm input-bordered w-24"
+                          [class.input-error]="productGroup.get('unitPrice')?.invalid && productGroup.get('unitPrice')?.touched" />
+                      </td>
+                      <td class="align-top">
+                        <input
+                          formControlName="taxRate"
+                          (input)="onProductChange(rowIndex)"
+                          type="number"
+                          step="1"
+                          min="0"
+                          max="100"
+                          class="input input-sm input-bordered w-16"
+                          [class.input-error]="productGroup.get('taxRate')?.invalid && productGroup.get('taxRate')?.touched" />
+                      </td>
+                      <td class="font-medium pt-3">
+                        {{ formatCurrency(productGroup.get('totalNet')?.value || 0) }}
+                      </td>
+                      <td class="font-semibold">
+                        {{ formatCurrency(productGroup.get('totalGross')?.value || 0) }}
+                      </td>
+                      @if (mode() !== 'view') {
+                        <td>
+                          <button
+                            (click)="removeProduct(rowIndex)"
+                            type="button"
+                            class="btn btn-sm btn-ghost btn-square text-error"
+                            [attr.aria-label]="('invoices.detail.aria.removePosition' | translate) + ' ' + (rowIndex + 1)">
+                            <i class="fa-solid fa-trash"></i>
+                          </button>
+                        </td>
+                      }
+                    </tr>
+                  }
+                </tbody>
+                <tfoot>
+                  <tr class="font-bold">
+                    <td colspan="6" class="text-right">{{ 'invoices.detail.totals.net' | translate }}</td>
+                    <td>{{ formatCurrency(totalNet()) }}</td>
+                    <td></td>
+                    @if (mode() !== 'view') {
+                      <td></td>
+                    }
+                  </tr>
+                  <tr class="font-bold">
+                    <td colspan="6" class="text-right">{{ 'invoices.detail.totals.tax' | translate }}</td>
+                    <td>{{ formatCurrency(totalTax()) }}</td>
+                    <td></td>
+                    @if (mode() !== 'view') {
+                      <td></td>
+                    }
+                  </tr>
+                  <tr class="font-bold text-lg">
+                    <td colspan="6" class="text-right">{{ 'invoices.detail.totals.gross' | translate }}</td>
+                    <td colspan="2" class="text-primary">{{ formatCurrency(totalGross()) }}</td>
+                    @if (mode() !== 'view') {
+                      <td></td>
+                    }
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Texts -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">{{ 'invoices.detail.sections.texts' | translate }}</h2>
+
+          <!-- Intro Text -->
+          <div class="form-control">
+            <label for="introText" class="label">
+              <span class="label-text">{{ 'invoices.detail.fields.introText' | translate }}</span>
+            </label>
+            <textarea
+              id="introText"
+              formControlName="introText"
+              rows="3"
+              [placeholder]="'invoices.detail.fields.introPlaceholder' | translate"
+              class="textarea textarea-bordered"></textarea>
+          </div>
+
+          <!-- Outro Text -->
+          <div class="form-control">
+            <label for="outroText" class="label">
+              <span class="label-text">{{ 'invoices.detail.fields.outroText' | translate }}</span>
+            </label>
+            <textarea
+              id="outroText"
+              formControlName="outroText"
+              rows="3"
+              [placeholder]="'invoices.detail.fields.outroPlaceholder' | translate"
+              class="textarea textarea-bordered"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      @if (mode() !== 'view') {
+        <div class="flex justify-end gap-3">
+          <button
+            (click)="onCancel()"
+            type="button"
+            class="btn btn-ghost">
+            {{ 'invoices.detail.actions.cancel' | translate }}
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="form.invalid || loading()">
+            @if (loading()) {
+              <span class="loading loading-spinner"></span>
+            }
+            @if (mode() === 'new') {
+              {{ 'invoices.detail.actions.create' | translate }}
+            } @else {
+              {{ 'invoices.detail.actions.saveChanges' | translate }}
+            }
+          </button>
+        </div>
+      }
+    </form>
+  }
+</div>

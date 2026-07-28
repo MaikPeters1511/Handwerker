@@ -1,0 +1,101 @@
+<dialog #dialog class="modal">
+  <div class="modal-box">
+
+    <form [formGroup]="userForm" class="space-y-4">
+      <div class="grid grid-cols-2 gap-2">
+        <h3 class="font-bold text-lg">
+          {{ isEditing() ? ('users.update' | translate)  : ('users.create' | translate) }}
+        </h3>
+
+        <div class="flex items-center justify-end gap-4">
+
+          <label class="label cursor-pointer gap-3">
+            <span class="label-text">{{ 'users.enabled' | translate }}</span>
+            <input
+              type="checkbox"
+              class="toggle toggle-success"
+              formControlName="enabled" />
+          </label>
+
+        </div>
+      </div>
+
+
+      <div class="tabs tabs-box">
+        <input type="radio" name="my_tabs_6" class="tab" aria-label="{{'users.general' | translate }}" checked="checked" />
+        <div class="tab-content bg-base-100 border-base-300 p-6">
+
+          <app-floating-field-component
+            [control]="userForm.controls.username"
+            label="users.username"
+            [readonly]="isEditing()"
+          >
+          </app-floating-field-component>
+
+          <div class="grid grid-cols-2 gap-2">
+              <app-floating-field-component
+                [control]="userForm.controls.firstName"
+                label="users.firstname">
+              </app-floating-field-component>
+
+              <app-floating-field-component
+                [control]="userForm.controls.lastName"
+                label="users.lastname">
+              </app-floating-field-component>
+          </div>
+          <div class="row">
+
+          </div>
+
+
+          <div class="row">
+            <app-floating-field-component
+              [control]="userForm.controls.email"
+              label="users.email"
+              type="email"
+            >
+            </app-floating-field-component>
+          </div>
+
+        </div>
+
+        @if (isEditing()) {
+          <input type="radio" name="my_tabs_6" class="tab" aria-label="{{ 'users.roles' | translate }}"  />
+          <div class="tab-content bg-base-100 border-base-300 p-6">
+            @if (loadingRoles()) {
+              <div class="flex justify-center py-4">
+                <span class="loading loading-spinner loading-lg"></span>
+              </div>
+            } @else if (availableRoles().length === 0) {
+              <p class="text-center text-gray-500">{{ 'users.no_roles_available' | translate }}</p>
+            } @else {
+              <div class="space-y-3">
+                @for (role of availableRoles(); track role.id) {
+                  <div class="form-control">
+                    <label class="label cursor-pointer">
+                      <input
+                        type="checkbox"
+                        class="checkbox checkbox-primary"
+                        [checked]="isRoleSelected(role)"
+                        (change)="toggleRole(role)" />
+                      <span class="label-text font-medium">{{ role.name }}</span>
+
+                    </label>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+    </form>
+
+    <div class="modal-action">
+      <button class="btn" (click)="close()">{{ 'users.close' | translate }}</button>
+      <button class="btn btn-primary"
+              [disabled]="userForm.invalid"
+              (click)="save()">{{ 'users.save' | translate }}</button>
+    </div>
+  </div>
+</dialog>

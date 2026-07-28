@@ -1,0 +1,279 @@
+﻿<div class="container mx-auto p-6 max-w-6xl">
+  @if (isLoading()) {
+    <div class="flex justify-center items-center py-16">
+      <span class="loading loading-spinner loading-lg"></span>
+      <span class="ml-4 text-lg">{{ 'profile.form.loading' | translate }}</span>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Left Column: Profile Picture -->
+      <div class="lg:col-span-1">
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title mb-4">{{ 'profile.form.profileImage' | translate }}</h2>
+
+            <div class="flex flex-col items-center">
+              <!-- Avatar -->
+              <div class="avatar">
+                <div class="w-48 h-48 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                  @if (profileImagePreviewUrl() || profileImageUrl()) {
+                    <img [src]="profileImagePreviewUrl() || profileImageUrl()!" [alt]="'profile.form.profileImage' | translate" class="object-cover" />
+                  } @else {
+                    <div class="bg-base-300 flex items-center justify-center w-full h-full">
+                      <i class="fa-solid fa-user text-7xl text-base-content/50" aria-hidden="true"></i>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Image Info -->
+              <p class="text-sm text-base-content/60 mt-4 text-center">
+                {{ 'profile.form.imageHint' | translate }}
+              </p>
+
+              <!-- File Input -->
+              <div class="form-control w-full mt-4">
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/jpg"
+                  class="file-input file-input-bordered w-full"
+                  (change)="onProfileImageSelected($event)"
+                  [attr.aria-label]="'profile.form.uploadImage' | translate" />
+              </div>
+
+              <!-- Update Button -->
+              <button
+                type="button"
+                class="btn btn-primary btn-outline w-full mt-4"
+                (click)="updateProfileImage()"
+                [disabled]="!selectedImageFile() || isSaving()">
+                <i class="fa-solid fa-upload" aria-hidden="true"></i>
+                {{ 'profile.form.uploadImage' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Account Details -->
+      <div class="lg:col-span-2">
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title mb-4">{{ 'profile.form.accountDetails' | translate }}</h2>
+
+            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- First Name -->
+                <div class="form-control">
+                  <label class="label" for="firstName">
+                    <span class="label-text font-semibold">
+                      {{ 'profile.form.firstName' | translate }}
+                      <span class="text-error" aria-label="required">*</span>
+                    </span>
+                  </label>
+                  <input
+                    id="firstName"
+                    type="text"
+                    formControlName="firstName"
+                    class="input input-bordered w-full"
+                    [class.input-error]="profileForm.controls.firstName.invalid && profileForm.controls.firstName.touched"
+                    aria-required="true"
+                    [attr.aria-invalid]="profileForm.controls.firstName.invalid && profileForm.controls.firstName.touched ? 'true' : null"
+                    aria-describedby="firstName-error" />
+                  @if (profileForm.controls.firstName.invalid && profileForm.controls.firstName.touched) {
+                    <label class="label">
+                      <span class="label-text-alt text-error" id="firstName-error">
+                        @if (profileForm.controls.firstName.errors?.['required']) {
+                          {{ 'profile.form.firstNameRequired' | translate }}
+                        }
+                        @if (profileForm.controls.firstName.errors?.['minlength']) {
+                          {{ 'profile.form.firstNameMinLength' | translate }}
+                        }
+                      </span>
+                    </label>
+                  }
+                </div>
+
+                <!-- Last Name -->
+                <div class="form-control">
+                  <label class="label" for="lastName">
+                    <span class="label-text font-semibold">
+                      {{ 'profile.form.lastName' | translate }}
+                      <span class="text-error" aria-label="required">*</span>
+                    </span>
+                  </label>
+                  <input
+                    id="lastName"
+                    type="text"
+                    formControlName="lastName"
+                    class="input input-bordered w-full"
+                    [class.input-error]="profileForm.controls.lastName.invalid && profileForm.controls.lastName.touched"
+                    aria-required="true"
+                    [attr.aria-invalid]="profileForm.controls.lastName.invalid && profileForm.controls.lastName.touched ? 'true' : null"
+                    aria-describedby="lastName-error" />
+                  @if (profileForm.controls.lastName.invalid && profileForm.controls.lastName.touched) {
+                    <label class="label">
+                      <span class="label-text-alt text-error" id="lastName-error">
+                        @if (profileForm.controls.lastName.errors?.['required']) {
+                          {{ 'profile.form.lastNameRequired' | translate }}
+                        }
+                        @if (profileForm.controls.lastName.errors?.['minlength']) {
+                          {{ 'profile.form.lastNameMinLength' | translate }}
+                        }
+                      </span>
+                    </label>
+                  }
+                </div>
+
+                <!-- Email -->
+                <div class="form-control">
+                  <label class="label" for="email">
+                    <span class="label-text font-semibold">
+                      {{ 'profile.form.email' | translate }}
+                      <span class="text-error" aria-label="required">*</span>
+                    </span>
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    formControlName="email"
+                    class="input input-bordered w-full"
+                    [class.input-error]="profileForm.controls.email.invalid && profileForm.controls.email.touched"
+                    aria-required="true"
+                    [attr.aria-invalid]="profileForm.controls.email.invalid && profileForm.controls.email.touched ? 'true' : null"
+                    aria-describedby="email-error" />
+                  @if (profileForm.controls.email.invalid && profileForm.controls.email.touched) {
+                    <label class="label">
+                      <span class="label-text-alt text-error" id="email-error">
+                        @if (profileForm.controls.email.errors?.['required']) {
+                          {{ 'profile.form.emailRequired' | translate }}
+                        }
+                        @if (profileForm.controls.email.errors?.['email']) {
+                          {{ 'profile.form.emailInvalid' | translate }}
+                        }
+                      </span>
+                    </label>
+                  }
+                </div>
+
+                <!-- Contact Number -->
+                <div class="form-control">
+                  <label class="label" for="phoneNumber">
+                    <span class="label-text font-semibold">{{ 'profile.form.phoneNumber' | translate }}</span>
+                  </label>
+                  <input
+                    id="phoneNumber"
+                    type="tel"
+                    formControlName="phoneNumber"
+                    class="input input-bordered w-full"
+                    placeholder="1221212121" />
+                </div>
+
+                <!-- Gender (Radio Buttons) -->
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text font-semibold">{{ 'profile.form.gender' | translate }}</span>
+                  </label>
+                  <div class="flex gap-4 mt-2">
+                    <label class="label cursor-pointer gap-2">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="male"
+                        formControlName="gender"
+                        class="radio radio-primary" />
+                      <span class="label-text">{{ 'profile.form.genderMale' | translate }}</span>
+                    </label>
+                    <label class="label cursor-pointer gap-2">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="female"
+                        formControlName="gender"
+                        class="radio radio-primary" />
+                      <span class="label-text">{{ 'profile.form.genderFemale' | translate }}</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Country (Dropdown) -->
+                <div class="form-control">
+                  <label class="label" for="country">
+                    <span class="label-text font-semibold">{{ 'profile.form.country' | translate }}</span>
+                  </label>
+                  <select
+                    id="country"
+                    formControlName="country"
+                    class="select select-bordered w-full">
+                    <option value="" disabled>{{ 'profile.form.countryPlaceholder' | translate }}</option>
+                    @for (country of countryOptions; track country.value) {
+                      <option [value]="country.value">{{ country.label }}</option>
+                    }
+                  </select>
+                </div>
+
+                <!-- Address (Full Width) -->
+                <div class="form-control md:col-span-2">
+                  <label class="label" for="address">
+                    <span class="label-text font-semibold">{{ 'profile.form.address' | translate }}</span>
+                  </label>
+                  <textarea
+                    id="address"
+                    formControlName="address"
+                    class="textarea textarea-bordered w-full"
+                    rows="3"
+                    [placeholder]="'profile.form.addressPlaceholder' | translate"></textarea>
+                </div>
+              </div>
+
+              <!-- Update Profile Button -->
+              <div class="mt-6">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  [disabled]="!profileForm.valid || isSaving()">
+                  @if (isSaving()) {
+                    <span class="loading loading-spinner loading-sm"></span>
+                    {{ 'profile.form.saving' | translate }}
+                  } @else {
+                    <i class="fa-solid fa-save" aria-hidden="true"></i>
+                    {{ 'profile.form.updateProfile' | translate }}
+                  }
+                </button>
+              </div>
+            </form>
+
+            <!-- Status Messages -->
+            @if (saveSuccess()) {
+              <div role="status" class="alert alert-success mt-4" aria-live="polite">
+                <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                <span>{{ 'profile.form.saveSuccess' | translate }}</span>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-ghost btn-circle"
+                  (click)="saveSuccess.set(false)"
+                  aria-label="Schließen">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+            }
+
+            @if (saveError(); as error) {
+              <div role="alert" class="alert alert-error mt-4" aria-live="assertive">
+                <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                <span>{{ error }}</span>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-ghost btn-circle"
+                  (click)="saveError.set(null)"
+                  aria-label="Schließen">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

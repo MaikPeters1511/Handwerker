@@ -1,0 +1,180 @@
+﻿<div class="container mx-auto p-6 max-w-4xl">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">
+      <i class="fa-solid fa-shield-halved mr-2" aria-hidden="true"></i>
+      {{ 'settings.roleDashboard.title' | translate }}
+    </h1>
+    <p class="text-base-content/70">{{ 'settings.roleDashboard.subtitle' | translate }}</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <!-- Linke Spalte: Rollenliste -->
+    <div class="md:col-span-1">
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body p-4">
+          <h2 class="card-title text-base mb-3">
+            <i class="fa-solid fa-users-gear" aria-hidden="true"></i>
+            {{ 'settings.roleDashboard.roles' | translate }}
+          </h2>
+
+          <!-- Rollenliste -->
+          <ul class="menu menu-sm p-0 space-y-1" role="listbox" aria-label="{{ 'settings.roleDashboard.roles' | translate }}">
+            @for (config of configs(); track config.role) {
+              <li>
+                <button
+                  type="button"
+                  role="option"
+                  [attr.aria-selected]="selectedRole() === config.role"
+                  [class.active]="selectedRole() === config.role"
+                  (click)="selectRole(config.role)"
+                  class="flex justify-between items-center w-full text-left">
+                  <span class="flex items-center gap-2">
+                    <i class="fa-solid fa-user-tag text-xs" aria-hidden="true"></i>
+                    {{ config.role }}
+                  </span>
+                  @if (config.role !== 'admin') {
+                    <button
+                      type="button"
+                      (click)="deleteRole(config.role, $event)"
+                      class="btn btn-ghost btn-xs text-error"
+                      [attr.aria-label]="'settings.roleDashboard.deleteRole' | translate">
+                      <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                    </button>
+                  }
+                </button>
+              </li>
+            }
+          </ul>
+
+          <div class="divider my-2"></div>
+
+          <!-- Rolle aus Keycloak hinzufügen -->
+          @if (unconfiguredRoles().length > 0) {
+            <div class="form-control">
+              <label class="label py-1">
+                <span class="label-text text-xs">{{ 'settings.roleDashboard.addFromKeycloak' | translate }}</span>
+              </label>
+              <select
+                class="select select-bordered select-sm w-full"
+                (change)="addRoleFromSelect($any($event.target).value); $any($event.target).value = ''"
+                [attr.aria-label]="'settings.roleDashboard.addFromKeycloak' | translate">
+                <option value="">— {{ 'settings.roleDashboard.selectRole' | translate }} —</option>
+                @for (role of unconfiguredRoles(); track role.name) {
+                  <option [value]="role.name">{{ role.name }}</option>
+                }
+              </select>
+            </div>
+          }
+
+          <!-- Manuelle Eingabe -->
+          <div class="form-control mt-2">
+            <label class="label py-1">
+              <span class="label-text text-xs">{{ 'settings.roleDashboard.addManual' | translate }}</span>
+            </label>
+            <div class="join w-full">
+              <input
+                type="text"
+                [formControl]="newRoleControl"
+                class="input input-bordered input-sm join-item flex-1"
+                [placeholder]="'settings.roleDashboard.rolePlaceholder' | translate"
+                (keydown.enter)="addRole()"
+                [attr.aria-label]="'settings.roleDashboard.addManual' | translate" />
+              <button
+                type="button"
+                (click)="addRole()"
+                [disabled]="!newRoleControl.value"
+                class="btn btn-primary btn-sm join-item"
+                [attr.aria-label]="'settings.roleDashboard.addRole' | translate">
+                <i class="fa-solid fa-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rechte Spalte: Berechtigungen der gewählten Rolle -->
+    <div class="md:col-span-2">
+      @if (selectedRole(); as role) {
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+              <h2 class="card-title">
+                <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+                {{ 'settings.roleDashboard.sectionsFor' | translate }} <span class="badge badge-primary ml-1">{{ role }}</span>
+              </h2>
+              <div class="flex gap-2">
+                <button type="button" (click)="selectAll()" class="btn btn-outline btn-xs">
+                  {{ 'settings.roleDashboard.selectAll' | translate }}
+                </button>
+                <button type="button" (click)="selectNone()" class="btn btn-outline btn-xs">
+                  {{ 'settings.roleDashboard.selectNone' | translate }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Hinweis für admin -->
+            @if (role === 'admin') {
+              <div role="note" class="alert alert-info mb-4">
+                <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+                <span>{{ 'settings.roleDashboard.adminHint' | translate }}</span>
+              </div>
+            }
+
+            <!-- Sektionen-Checkboxen -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              @for (section of allSections; track section.key) {
+                <label
+                  class="flex items-center gap-3 p-3 rounded-lg border border-base-300 cursor-pointer hover:bg-base-200 transition-colors"
+                  [class.opacity-50]="role === 'admin'"
+                  [class.cursor-not-allowed]="role === 'admin'">
+                  <input
+                    type="checkbox"
+                    class="checkbox checkbox-primary checkbox-sm"
+                    [checked]="isSectionEnabled(section.key)"
+                    [disabled]="role === 'admin'"
+                    (change)="toggleSection(section.key)"
+                    [attr.aria-label]="section.labelKey | translate" />
+                  <span class="flex items-center gap-2 flex-1">
+                    <i class="fa-solid {{ section.icon }} w-4 text-center text-sm" aria-hidden="true"></i>
+                    <span class="text-sm font-medium">{{ section.labelKey | translate }}</span>
+                  </span>
+                </label>
+              }
+            </div>
+
+            <!-- Speichern -->
+            <div class="mt-6 flex items-center gap-4">
+              <button
+                type="button"
+                (click)="saveRoleConfig()"
+                [disabled]="!isDirty() || role === 'admin'"
+                class="btn btn-primary"
+                [attr.aria-disabled]="(!isDirty() || role === 'admin') ? 'true' : null">
+                <i class="fa-solid fa-save" aria-hidden="true"></i>
+                {{ 'settings.roleDashboard.save' | translate }}
+              </button>
+
+              @if (saveSuccess()) {
+                <div role="status" aria-live="polite" class="flex items-center gap-2 text-success text-sm">
+                  <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                  {{ 'settings.roleDashboard.saved' | translate }}
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      } @else {
+        <!-- Placeholder wenn keine Rolle ausgewählt -->
+        <div class="card bg-base-100 shadow-xl h-full">
+          <div class="card-body flex items-center justify-center text-center text-base-content/40 min-h-48">
+            <i class="fa-solid fa-arrow-left text-3xl mb-3" aria-hidden="true"></i>
+            <p>{{ 'settings.roleDashboard.selectRoleHint' | translate }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+

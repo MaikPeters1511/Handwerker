@@ -1,0 +1,236 @@
+{
+  "realm": "handwerker",
+  "enabled": true,
+  "displayName": "Handwerker",
+  "registrationAllowed": true,
+  "registrationEmailAsUsername": false,
+  "rememberMe": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "verifyEmail": false,
+  "sslRequired": "external",
+  "internationalizationEnabled": true,
+  "bruteForceProtected": true,
+  "attributes": {
+    "userProfileEnabled": "true",
+    "userProfileConfig": "{\"attributes\": [{\"name\": \"phoneNumber\", \"displayName\": \"Telefonnummer\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}, {\"name\": \"gender\", \"displayName\": \"Geschlecht\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}, {\"name\": \"country\", \"displayName\": \"Land\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}, {\"name\": \"address\", \"displayName\": \"Adresse\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}]}"
+  },
+  "users": [
+    {
+      "username": "testuser",
+      "enabled": true,
+      "email": "test@handwerker.local",
+      "firstName": "Test",
+      "lastName": "User",
+      "attributes": {
+        "phoneNumber": ["+49123456789"],
+        "gender": ["diverse"],
+        "country": ["Germany"],
+        "address": ["Musterstraße 1"]
+      },
+      "credentials": [
+        { "type": "password", "value": "test123", "temporary": false }
+      ],
+      "realmRoles": ["user"]
+    },
+    {
+      "username": "admin",
+      "enabled": true,
+      "email": "admin@handwerker.local",
+      "firstName": "Admin",
+      "lastName": "User",
+      "credentials": [
+        { "type": "password", "value": "admin123", "temporary": false }
+      ],
+      "realmRoles": ["admin", "user"]
+    },
+    {
+      "username": "service-account-csharp-client",
+      "enabled": true,
+      "serviceAccountClientId": "csharp-client",
+      "clientRoles": {
+        "realm-management": [
+          "view-users",
+          "manage-users",
+          "query-users",
+          "view-realm"
+        ]
+      }
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "webfrontend",
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "redirectUris": [
+        "http://localhost:4200/*",
+        "https://localhost:5001/*"
+      ],
+      "webOrigins": [
+        "http://localhost:4200",
+        "https://localhost:5001"
+      ],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "protocolMappers": [
+        {
+          "name": "phoneNumber mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": { "user.attribute": "phoneNumber", "claim.name": "phone_number", "jsonType.label": "String", "id.token.claim": "true", "access.token.claim": "true" }
+        },
+        {
+          "name": "gender mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": { "user.attribute": "gender", "claim.name": "gender", "jsonType.label": "String", "id.token.claim": "true", "access.token.claim": "true" }
+        },
+        {
+          "name": "country mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": { "user.attribute": "country", "claim.name": "country", "jsonType.label": "String", "id.token.claim": "true", "access.token.claim": "true" }
+        },
+        {
+          "name": "address mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": { "user.attribute": "address", "claim.name": "address", "jsonType.label": "String", "id.token.claim": "true", "access.token.claim": "true" }
+        }
+      ]
+    },
+    {
+      "clientId": "angular-client",
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "authorizationServicesEnabled": false,
+      "redirectUris": [
+        "http://localhost:4200",
+        "http://localhost:4200/*",
+        "https://localhost:4200",
+        "https://localhost:4200/*"
+      ],
+      "webOrigins": [
+        "http://localhost:4200",
+        "https://localhost:4200"
+      ],
+      "protocolMappers": [
+        {
+          "name": "realm roles mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "config": {
+            "claim.name": "realm_access.roles",
+            "jsonType.label": "String",
+            "multivalued": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "usermodel.realmRoleMapping.rolePrefix": ""
+          }
+        },
+        {
+          "name": "phoneNumber mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": { "user.attribute": "phoneNumber", "claim.name": "phone_number", "jsonType.label": "String", "id.token.claim": "true", "access.token.claim": "true" }
+        },
+        {
+          "name": "gender mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": { "user.attribute": "gender", "claim.name": "gender", "jsonType.label": "String", "id.token.claim": "true", "access.token.claim": "true" }
+        },
+        {
+          "name": "country mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": { "user.attribute": "country", "claim.name": "country", "jsonType.label": "String", "id.token.claim": "true", "access.token.claim": "true" }
+        },
+        {
+          "name": "address mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": { "user.attribute": "address", "claim.name": "address", "jsonType.label": "String", "id.token.claim": "true", "access.token.claim": "true" }
+        }
+      ]
+    },
+    {
+      "clientId": "csharp-client",
+      "name": "",
+      "description": "Client für Benutzerverwaltung aus Angular",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "kHcFtBdwd4FPBWWnUexhPhC8jv5C6qJj",
+      "redirectUris": [
+        "/*"
+      ],
+      "webOrigins": [
+        "/*"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "realm_client": "false",
+        "oidc.ciba.grant.enabled": "false",
+        "client.secret.creation.time": "1769769471",
+        "backchannel.logout.session.required": "true",
+        "standard.token.exchange.enabled": "false",
+        "post.logout.redirect.uris": "+",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "pkce.code.challenge.method": "S256",
+        "backchannel.logout.revoke.offline.tokens": "false",
+        "dpop.bound.access.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": [
+        "web-origins",
+        "service_account",
+        "acr",
+        "roles",
+        "profile",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "organization",
+        "microprofile-jwt"
+      ],
+      "access": {
+        "view": true,
+        "configure": true,
+        "manage": true
+      }
+    }
+  ],
+  "roles": {
+    "realm": [
+      { "name": "user", "description": "Standardbenutzer" },
+      { "name": "admin", "description": "Administrator" }
+    ]
+  }
+}

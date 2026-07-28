@@ -1,0 +1,372 @@
+<div class="container mx-auto p-6 max-w-4xl">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">{{ 'settings.title' | translate }}</h1>
+    <p class="text-base-content/70">{{ 'settings.subtitle' | translate }}</p>
+  </div>
+
+
+  <!-- Theme Settings -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body">
+      <h2 class="card-title mb-4">
+        <i class="fa-solid fa-palette" aria-hidden="true"></i>
+        {{ 'settings.design.title' | translate }}
+      </h2>
+
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-semibold">{{ 'settings.design.selectTheme' | translate }}</span>
+        </label>
+        <select
+          class="select select-bordered w-full max-w-xs ml-[10px]"
+          [value]="selectedTheme()"
+          (change)="changeTheme($any($event.target).value)">
+          @for (theme of themes; track theme) {
+            <option [value]="theme">{{ theme }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Language Settings -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body">
+      <h2 class="card-title mb-4">
+        <i class="fa-solid fa-language" aria-hidden="true"></i>
+        {{ 'settings.language.title' | translate }}
+      </h2>
+
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-semibold">{{ 'settings.language.select' | translate }}</span>
+        </label>
+        <select
+          class="select select-bordered w-full max-w-xs ml-[10px]"
+          [value]="selectedLanguage()"
+          (change)="changeLanguage($any($event.target).value)">
+          @for (lang of languages; track lang.code) {
+            <option [value]="lang.code">{{ lang.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Settings -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body">
+      <h2 class="card-title mb-4">
+        <i class="fa-solid fa-bell" aria-hidden="true"></i>
+        {{ 'settings.notifications.title' | translate }}
+      </h2>
+
+      <div class="space-y-4">
+        <div class="form-control">
+          <label class="label cursor-pointer justify-start gap-4">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-primary"
+              [checked]="emailNotifications()"
+              (change)="toggleEmailNotifications()" />
+            <div>
+              <span class="label-text font-semibold block">{{ 'settings.notifications.email' | translate }}</span>
+              <span class="label-text-alt text-base-content/60">{{ 'settings.notifications.emailDesc' | translate }}</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer justify-start gap-4">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-primary"
+              [checked]="pushNotifications()"
+              (change)="togglePushNotifications()" />
+            <div>
+              <span class="label-text font-semibold block">{{ 'settings.notifications.push' | translate }}</span>
+              <span class="label-text-alt text-base-content/60">{{ 'settings.notifications.pushDesc' | translate }}</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer justify-start gap-4">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-primary"
+              [checked]="smsNotifications()"
+              (change)="toggleSmsNotifications()" />
+            <div>
+              <span class="label-text font-semibold block">{{ 'settings.notifications.sms' | translate }}</span>
+              <span class="label-text-alt text-base-content/60">{{ 'settings.notifications.smsDesc' | translate }}</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email Settings -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body">
+      <h2 class="card-title mb-4">
+        <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+        {{ 'settings.email.title' | translate }}
+      </h2>
+
+      <!-- An (Empfänger) -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-semibold">{{ 'settings.email.to' | translate }}</span>
+        </label>
+        <input
+          type="email"
+          [value]="testEmail()"
+          (input)="testEmail.set($any($event.target).value)"
+          placeholder="test@example.com"
+          class="input input-bordered w-full"
+          aria-describedby="testEmailToHint" />
+        <label class="label">
+          <span class="label-text-alt text-base-content/60" id="testEmailToHint">
+            {{ 'settings.email.toDesc' | translate }}
+          </span>
+        </label>
+      </div>
+
+      <!-- Betreff -->
+      <div class="form-control mt-2">
+        <label class="label">
+          <span class="label-text font-semibold">{{ 'settings.email.subject' | translate }}</span>
+        </label>
+        <input
+          type="text"
+          [value]="testEmailSubject()"
+          (input)="testEmailSubject.set($any($event.target).value)"
+          placeholder="{{ 'settings.email.subjectPlaceholder' | translate }}"
+          class="input input-bordered w-full" />
+      </div>
+
+      <!-- Text/Nachricht -->
+      <div class="form-control mt-2">
+        <label class="label">
+          <span class="label-text font-semibold">{{ 'settings.email.body' | translate }}</span>
+        </label>
+        <textarea
+          [value]="testEmailBody()"
+          (input)="testEmailBody.set($any($event.target).value)"
+          placeholder="{{ 'settings.email.bodyPlaceholder' | translate }}"
+          class="textarea textarea-bordered w-full h-32"
+          rows="5"></textarea>
+      </div>
+
+      <!-- Senden Button + Status Messages -->
+      <div class="mt-4">
+        <button
+          type="button"
+          (click)="sendTestEmail()"
+          [disabled]="isSendingEmail() || !testEmail() || !testEmailSubject() || !testEmailBody()"
+          class="btn btn-primary">
+          @if (isSendingEmail()) {
+            <span class="loading loading-spinner loading-sm"></span>
+            {{ 'settings.email.sending' | translate }}
+          } @else {
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+            {{ 'settings.email.send' | translate }}
+          }
+        </button>
+
+        <!-- Success Toast -->
+        @if (emailSendSuccess()) {
+          <div role="alert" class="alert alert-success mt-4">
+            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+            <span>{{ 'settings.email.sendSuccess' | translate }}</span>
+          </div>
+        }
+
+        <!-- Error Toast -->
+        @if (emailSendError()) {
+          <div role="alert" class="alert alert-error mt-4">
+            <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+            <span>{{ emailSendError() }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="divider mt-6"></div>
+
+      <p class="text-sm text-base-content/60">
+        <i class="fa-solid fa-info-circle" aria-hidden="true"></i>
+        {{ 'settings.email.mailpitHint' | translate }}
+      </p>
+    </div>
+  </div>
+
+
+  <!-- Invoice Settings -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body">
+      <h2 class="card-title mb-4">
+        <i class="fa-solid fa-file-invoice" aria-hidden="true"></i>
+        {{ 'settings.invoice.title' | translate }}
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">{{ 'settings.invoice.prefix' | translate }}</span>
+          </label>
+          <input
+            type="text"
+            [value]="invoicePrefix()"
+            (input)="invoicePrefix.set($any($event.target).value)"
+            placeholder="RE-"
+            class="input input-bordered w-full" />
+        </div>
+
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">{{ 'settings.invoice.nextNumber' | translate }}</span>
+          </label>
+          <input
+            type="number"
+            [value]="nextInvoiceNumber()"
+            (input)="nextInvoiceNumber.set(+$any($event.target).value)"
+            placeholder="1001"
+            class="input input-bordered w-full" />
+        </div>
+
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">{{ 'settings.invoice.taxRate' | translate }}</span>
+          </label>
+          <input
+            type="number"
+            [value]="taxRate()"
+            (input)="taxRate.set(+$any($event.target).value)"
+            placeholder="19"
+            step="0.01"
+            class="input input-bordered w-full" />
+        </div>
+
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">{{ 'settings.invoice.currency' | translate }}</span>
+          </label>
+          <select
+            class="select select-bordered w-full"
+            [value]="currency()"
+            (change)="currency.set($any($event.target).value)">
+            <option value="EUR">EUR (€)</option>
+            <option value="USD">USD ($)</option>
+            <option value="GBP">GBP (£)</option>
+            <option value="CHF">CHF (Fr.)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Info -->
+  @if (userProfile(); as profile) {
+    <div class="card bg-base-100 shadow-xl mb-6">
+      <div class="card-body">
+        <h2 class="card-title mb-4">
+          <i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+          {{ 'settings.account.title' | translate }}
+        </h2>
+
+        <div class="space-y-2">
+          @if (profile.info.preferred_username) {
+            <div class="flex justify-between">
+              <span class="text-base-content/70">{{ 'settings.account.username' | translate }}:</span>
+              <span class="font-semibold">{{ profile.info.preferred_username }}</span>
+            </div>
+          }
+          @if (profile.info.email) {
+            <div class="flex justify-between">
+              <span class="text-base-content/70">{{ 'settings.account.email' | translate }}:</span>
+              <span class="font-semibold">{{ profile.info.email }}</span>
+            </div>
+          }
+          @if (profile.info.name) {
+            <div class="flex justify-between">
+              <span class="text-base-content/70">{{ 'settings.account.name' | translate }}:</span>
+              <span class="font-semibold">{{ profile.info.name }}</span>
+            </div>
+          }
+          @if (profile.info.given_name) {
+            <div class="flex justify-between">
+              <span class="text-base-content/70">{{ 'settings.account.firstName' | translate }}:</span>
+              <span class="font-semibold">{{ profile.info.given_name }}</span>
+            </div>
+          }
+          @if (profile.info.family_name) {
+            <div class="flex justify-between">
+              <span class="text-base-content/70">{{ 'settings.account.lastName' | translate }}:</span>
+              <span class="font-semibold">{{ profile.info.family_name }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Action Buttons -->
+  <div class="sticky bottom-0 left-0 right-0 bg-base-100/95 backdrop-blur-sm border-t border-base-300 py-4 mt-8 z-10">
+    <div class="flex gap-4 justify-end items-center px-6">
+      @if (isDirty()) {
+        <span class="text-sm text-base-content/70">Ungespeicherte Änderungen</span>
+      }
+
+      <button class="btn btn-outline" type="button" (click)="resetSettings()">
+        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+        {{ 'settings.actions.reset' | translate }}
+      </button>
+
+      <button
+        class="btn btn-primary"
+        type="button"
+        (click)="saveSettings()"
+        [disabled]="!isDirty() || isSaving()"
+        [attr.aria-disabled]="(!isDirty() || isSaving()) ? 'true' : null">
+        <i class="fa-solid fa-save" aria-hidden="true"></i>
+        @if (isSaving()) {
+          <span>Speichert…</span>
+        } @else {
+          <span>{{ 'settings.actions.save' | translate }}</span>
+        }
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notifications -->
+<div class="toast toast-top toast-end z-50">
+  @if (saveSuccess()) {
+    <div class="alert alert-success shadow-lg flex gap-4" role="status" aria-live="polite">
+      <i class="fa-solid fa-circle-check text-xl"></i>
+      <span>{{ 'settings.actions.save' | translate }} erfolgreich</span>
+      <button
+        class="btn btn-sm btn-ghost btn-circle"
+        (click)="saveSuccess.set(false)"
+        aria-label="Schließen">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  }
+
+  @if (saveError(); as err) {
+    <div class="alert alert-error shadow-lg flex gap-4" role="alert" aria-live="assertive">
+      <i class="fa-solid fa-circle-exclamation text-xl"></i>
+      <span>{{ err }}</span>
+      <button
+        class="btn btn-sm btn-ghost btn-circle"
+        (click)="saveError.set(null)"
+        aria-label="Schließen">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  }
+</div>

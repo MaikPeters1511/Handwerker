@@ -1,0 +1,21 @@
+<div class="floating-label mt-3">
+
+  <span [class.text-error]="showError">
+    {{ (label) | translate }}
+    {{ (error ?? '') | translate }}
+  </span>
+
+  <input
+    [type]="type"
+    class="input input-bordered w-full"
+    [class.input-error]="showError"
+    [formControl]="control"
+    [attr.aria-invalid]="showError"
+    [attr.aria-describedby]="describedBy"
+    [placeholder]="error
+                  ? ((label | translate) + ' ' + (error | translate))
+                  : (label | translate)"
+    [readonly]="readonly"
+  />
+
+</div>

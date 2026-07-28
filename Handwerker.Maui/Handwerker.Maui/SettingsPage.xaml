@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Handwerker.Maui.ViewModels;assembly=Handwerker.Maui"
+             xmlns:local="clr-namespace:Handwerker.Maui.Extensions"
+             x:Class="Handwerker.Maui.SettingsPage"
+             x:DataType="viewmodels:SettingsViewModel"
+             Title="{Binding Localization[SettingsTitle]}">
+
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid Padding="20" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="20">
+
+                <!-- Dark Theme Section -->
+                <Grid RowDefinitions="Auto,Auto" RowSpacing="8">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <Label Text="{Binding Localization[DarkTheme]}"
+                               VerticalOptions="Center"
+                               FontAttributes="Bold"
+                               FontSize="16" />
+                        <Switch Grid.Column="1"
+                                IsToggled="{Binding IsDark}"
+                                VerticalOptions="Center" />
+                    </Grid>
+                    <Label Grid.Row="1"
+                           Text="{Binding Localization[DarkThemeDescription]}"
+                           FontSize="13"
+                           TextColor="#6B7280" />
+                </Grid>
+
+                <!-- Separator -->
+                <BoxView Grid.Row="1"
+                         HeightRequest="1"
+                         Color="#E5E7EB"
+                         Margin="0,10,0,0" />
+
+                <!-- Language Section -->
+                <Grid Grid.Row="2" RowDefinitions="Auto,Auto" RowSpacing="8">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <Label Text="{Binding Localization[Language]}"
+                               VerticalOptions="Center"
+                               FontAttributes="Bold"
+                               FontSize="16" />
+                    </Grid>
+                    <Label Grid.Row="1"
+                           Text="{Binding Localization[LanguageDescription]}"
+                           FontSize="13"
+                           TextColor="#6B7280" />
+                </Grid>
+
+                <!-- Language Picker -->
+                <Picker Grid.Row="3"
+                        Title="{Binding Localization[Language]}"
+                        ItemsSource="{Binding AvailableLanguages}"
+                        SelectedItem="{Binding SelectedLanguage}"
+                        FontSize="16"
+                        Margin="0,8,0,0">
+                    <Picker.ItemDisplayBinding>
+                        <Binding>
+                            <Binding.Converter>
+                                <local:LanguageDisplayConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </Picker.ItemDisplayBinding>
+                </Picker>
+
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+
+</ContentPage>

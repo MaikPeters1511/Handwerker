@@ -1,0 +1,192 @@
+﻿@if (authService.isLoggedIn() && authService.initialized()) {
+  <!-- Sidebar Menu -->
+  <ul class="menu p-4 h-full bg-base-200 text-base-content space-y-1">
+    <!-- Dashboard -->
+    @if (roleDashboard.visibleSections().has('dashboard')) {
+      <li class="mt-3 first:mt-0">
+        @if (sidebarOpen()) {
+          <a routerLink="/dashboard" routerLinkActive="active">
+            <i class="fa-solid fa-gauge w-5 text-center text-base"></i>
+            <span>{{ 'nav.dashboard' | translate }}</span>
+          </a>
+        } @else {
+          <a routerLink="/dashboard" routerLinkActive="active"
+             class="btn btn-ghost w-full justify-center tooltip tooltip-right"
+             [attr.data-tip]="'nav.dashboard' | translate">
+            <i class="fa-solid fa-gauge w-5 text-center text-base"></i>
+          </a>
+        }
+      </li>
+    }
+    <!-- Beschaffung (Procurement) -->
+    @if (roleDashboard.visibleSections().has('procurement')) {
+      <li class="mt-3">
+        @if (sidebarOpen()) {
+          <details [open]="isSubmenuOpen('procurement')">
+            <summary (click)="toggleSubmenu('procurement')" class="marker:content-['']">
+              <i class="fa-solid fa-cart-shopping w-5 text-center text-base"></i>
+              <span>{{ 'nav.procurement' | translate }}</span>
+            </summary>
+            <ul>
+              <li><a routerLink="/provider" routerLinkActive="active">{{ 'nav.provider' | translate }}</a></li>
+            </ul>
+          </details>
+        } @else {
+          <div class="dropdown dropdown-right w-full">
+            <label tabindex="0" class="btn btn-ghost w-full justify-center"
+                   [class.tooltip]="!sidebarOpen()" [class.tooltip-right]="!sidebarOpen()"
+                   [attr.data-tip]="'nav.procurement' | translate">
+              <i class="fa-solid fa-cart-shopping w-5 text-center text-base"></i>
+            </label>
+            <ul tabindex="0" class="dropdown-content z-[100] menu p-2 shadow bg-base-200 rounded-box w-52">
+              <li><a routerLink="/provider" routerLinkActive="active">{{ 'nav.provider' | translate }}</a></li>
+            </ul>
+          </div>
+        }
+      </li>
+    }
+    <!-- Sortiment (Assortment) -->
+    @if (roleDashboard.visibleSections().has('assortment')) {
+      <li class="mt-3">
+        @if (sidebarOpen()) {
+          <details [open]="isSubmenuOpen('assortment')">
+            <summary (click)="toggleSubmenu('assortment')" class="marker:content-['']">
+              <i class="fa-solid fa-boxes-stacked w-5 text-center text-base"></i>
+              <span>{{ 'nav.assortment' | translate }}</span>
+            </summary>
+            <ul>
+              <li><a routerLink="/product" routerLinkActive="active">{{ 'nav.products' | translate }}</a></li>
+              <li><a routerLink="/services" routerLinkActive="active">{{ 'nav.services' | translate }}</a></li>
+              <li><a routerLink="/wages" routerLinkActive="active">{{ 'nav.wages' | translate }}</a></li>
+            </ul>
+          </details>
+        } @else {
+          <div class="dropdown dropdown-right w-full">
+            <label tabindex="0" class="btn btn-ghost w-full justify-center"
+                   [class.tooltip]="!sidebarOpen()" [class.tooltip-right]="!sidebarOpen()"
+                   [attr.data-tip]="'nav.assortment' | translate">
+              <i class="fa-solid fa-boxes-stacked w-5 text-center text-base"></i>
+            </label>
+            <ul tabindex="0" class="dropdown-content z-[100] menu p-2 shadow bg-base-200 rounded-box w-52">
+              <li><a routerLink="/product" routerLinkActive="active">{{ 'nav.products' | translate }}</a></li>
+              <li><a routerLink="/services" routerLinkActive="active">{{ 'nav.services' | translate }}</a></li>
+              <li><a routerLink="/wages" routerLinkActive="active">{{ 'nav.wages' | translate }}</a></li>
+            </ul>
+          </div>
+        }
+      </li>
+    }
+    <!-- Kundenbetreuung (Customer Care) -->
+    @if (roleDashboard.visibleSections().has('customerCare')) {
+      <li class="mt-3">
+        @if (sidebarOpen()) {
+          <details [open]="isSubmenuOpen('customerCare')">
+            <summary (click)="toggleSubmenu('customerCare')" class="marker:content-['']">
+              <i class="fa-solid fa-handshake w-5 text-center text-base"></i>
+              <span>{{ 'nav.customerCare' | translate }}</span>
+            </summary>
+            <ul>
+              @if (roleDashboard.visibleSections().has('recipients')) {
+                <li><a routerLink="/recipients" routerLinkActive="active">{{ 'nav.customers' | translate }}</a></li>
+              }
+              @if (roleDashboard.visibleSections().has('offers')) {
+                <li><a routerLink="/offers" routerLinkActive="active">{{ 'nav.offers' | translate }}</a></li>
+              }
+              @if (roleDashboard.visibleSections().has('orders')) {
+                <li><a routerLink="/orders" routerLinkActive="active">{{ 'nav.orders' | translate }}</a></li>
+              }
+              @if (roleDashboard.visibleSections().has('invoices')) {
+                <li><a routerLink="/invoices" routerLinkActive="active">{{ 'nav.invoices' | translate }}</a></li>
+              }
+            </ul>
+          </details>
+        } @else {
+          <div class="dropdown dropdown-right w-full">
+            <label tabindex="0" class="btn btn-ghost w-full justify-center"
+                   [class.tooltip]="!sidebarOpen()" [class.tooltip-right]="!sidebarOpen()"
+                   [attr.data-tip]="'nav.customerCare' | translate">
+              <i class="fa-solid fa-handshake w-5 text-center text-base"></i>
+            </label>
+            <ul tabindex="0" class="dropdown-content z-[100] menu p-2 shadow bg-base-200 rounded-box w-52">
+              @if (roleDashboard.visibleSections().has('recipients')) {
+                <li><a routerLink="/recipients" routerLinkActive="active">{{ 'nav.customers' | translate }}</a></li>
+              }
+              @if (roleDashboard.visibleSections().has('offers')) {
+                <li><a routerLink="/offers" routerLinkActive="active">{{ 'nav.offers' | translate }}</a></li>
+              }
+              @if (roleDashboard.visibleSections().has('orders')) {
+                <li><a routerLink="/orders" routerLinkActive="active">{{ 'nav.orders' | translate }}</a></li>
+              }
+              @if (roleDashboard.visibleSections().has('invoices')) {
+                <li><a routerLink="/invoices" routerLinkActive="active">{{ 'nav.invoices' | translate }}</a></li>
+              }
+            </ul>
+          </div>
+        }
+      </li>
+    }
+    <!-- Mitarbeiter (Employees) -->
+    @if (roleDashboard.visibleSections().has('users')) {
+      <li class="mt-3">
+        @if (sidebarOpen()) {
+          <a routerLink="/users" routerLinkActive="active">
+            <i class="fa-solid fa-users w-5 text-center text-base"></i>
+            <span>{{ 'nav.employees' | translate }}</span>
+          </a>
+        } @else {
+          <a routerLink="/users" routerLinkActive="active"
+             class="btn btn-ghost w-full justify-center tooltip tooltip-right"
+             [attr.data-tip]="'nav.employees' | translate">
+            <i class="fa-solid fa-users w-5 text-center text-base"></i>
+          </a>
+        }
+      </li>
+    }
+    <!-- Einstellungen (Settings) -->
+    @if (roleDashboard.visibleSections().has('settings')) {
+      <li class="mt-3">
+        @if (sidebarOpen()) {
+          <details [open]="isSubmenuOpen('settings')">
+            <summary (click)="toggleSubmenu('settings')" class="marker:content-['']">
+              <i class="fa-solid fa-gear w-5 text-center text-base"></i>
+              <span>{{ 'nav.settings' | translate }}</span>
+            </summary>
+            <ul>
+              <li><a routerLink="/profile" routerLinkActive="active">{{ 'nav.profile' | translate }}</a></li>
+              <li><a routerLink="/company" routerLinkActive="active">{{ 'nav.company' | translate }}</a></li>
+              <li><a routerLink="/documents" routerLinkActive="active">{{ 'nav.documents' | translate }}</a></li>
+              <li><a routerLink="/settings" routerLinkActive="active">{{ 'nav.masterData' | translate }}</a></li>
+              @if (authService.isAdmin()) {
+                <li>
+                  <a routerLink="/settings/role-dashboard" routerLinkActive="active">
+                    {{ 'nav.roleDashboard' | translate }}
+                  </a>
+                </li>
+              }
+            </ul>
+          </details>
+        } @else {
+          <div class="dropdown dropdown-right w-full">
+            <label tabindex="0" class="btn btn-ghost w-full justify-center"
+                   [class.tooltip]="!sidebarOpen()" [class.tooltip-right]="!sidebarOpen()"
+                   [attr.data-tip]="'nav.settings' | translate">
+              <i class="fa-solid fa-gear w-5 text-center text-base"></i>
+            </label>
+            <ul tabindex="0" class="dropdown-content z-[100] menu p-2 shadow bg-base-200 rounded-box w-52">
+              <li><a routerLink="/profile" routerLinkActive="active">{{ 'nav.profile' | translate }}</a></li>
+              <li><a routerLink="/company" routerLinkActive="active">{{ 'nav.company' | translate }}</a></li>
+              <li><a routerLink="/settings" routerLinkActive="active">{{ 'nav.masterData' | translate }}</a></li>
+              @if (authService.isAdmin()) {
+                <li>
+                  <a routerLink="/settings/role-dashboard" routerLinkActive="active">
+                    {{ 'nav.roleDashboard' | translate }}
+                  </a>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </li>
+    }
+  </ul>
+}

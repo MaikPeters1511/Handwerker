@@ -1,0 +1,120 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex justify-between items-center">
+    <h3 class="text-xl font-bold">Material-Entnahme</h3>
+    <button class="btn btn-primary" (click)="showAddForm.set(true)" [disabled]="showAddForm()">
+      + Material hinzufügen
+    </button>
+  </div>
+
+  <!-- Add Form -->
+  @if (showAddForm()) {
+    <div class="card bg-base-200">
+      <div class="card-body">
+        <h4 class="card-title text-lg">Material hinzufügen</h4>
+        <form [formGroup]="form" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Artikel *</span>
+              </label>
+              <select class="select select-bordered" formControlName="articleId">
+                <option value="">Bitte wählen</option>
+                @for (article of articles(); track article.id) {
+                  <option [value]="article.id">{{ article.articleNumber }} - {{ article.name }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Lager *</span>
+              </label>
+              <select class="select select-bordered" formControlName="warehouseId">
+                <option value="">Bitte wählen</option>
+                @for (warehouse of warehouses(); track warehouse.id) {
+                  <option [value]="warehouse.id">{{ warehouse.name }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Geplante Menge *</span>
+              </label>
+              <input type="number" step="0.01" class="input input-bordered" formControlName="plannedQuantity">
+            </div>
+          </div>
+          <div class="flex gap-2 justify-end">
+            <button class="btn btn-ghost" (click)="showAddForm.set(false)">Abbrechen</button>
+            <button class="btn btn-primary" (click)="onAddMaterial()" [disabled]="loading()">
+              @if (loading()) {
+                <span class="loading loading-spinner loading-sm"></span>
+              }
+              Hinzufügen
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- Materials Table -->
+  <div class="card bg-base-200">
+    <div class="card-body">
+      <div class="overflow-x-auto">
+        <table class="table table-zebra">
+          <thead>
+            <tr>
+              <th>Artikel</th>
+              <th>Lager</th>
+              <th>Geplant</th>
+              <th>Tatsächlich</th>
+              <th>Status</th>
+              <th class="text-right">Aktionen</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (material of materials(); track material.id) {
+              <tr>
+                <td>
+                  <div class="font-medium">{{ getArticleName(material.articleId) }}</div>
+                  <div class="text-sm text-gray-500">{{ getArticleNumber(material.articleId) }}</div>
+                </td>
+                <td>{{ getWarehouseName(material.warehouseId) }}</td>
+                <td>{{ material.plannedQuantity }}</td>
+                <td>
+                  @if (material.isConfirmed) {
+                    {{ material.actualQuantity }}
+                  } @else {
+                    <span class="text-gray-400">-</span>
+                  }
+                </td>
+                <td>
+                  @if (material.isConfirmed) {
+                    <span class="badge badge-success">Entnommen</span>
+                  } @else if (material.isReserved) {
+                    <span class="badge badge-warning">Reserviert</span>
+                  } @else {
+                    <span class="badge badge-ghost">Geplant</span>
+                  }
+                </td>
+                <td class="text-right">
+                  @if (!material.isConfirmed) {
+                    <button class="btn btn-sm btn-primary" (click)="onConfirmMaterial(material.id, material.plannedQuantity)">
+                      Entnehmen
+                    </button>
+                  }
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="text-center py-8 text-gray-500">
+                  Keine Materialien vorhanden
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
