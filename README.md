@@ -3,7 +3,7 @@
 ## 📋 Überblick
 
 Handwerker ist eine moderne Full-Stack-Anwendung, die auf den neuesten Technologien basiert:
-- **Frontend:** Angular 21 (TypeScript, TailwindCSS 4, DaisyUI 5, Vite, Vitest, Playwright/Axe A11y)
+- **Frontend:** Angular 22 (TypeScript, TailwindCSS 4, DaisyUI 5, Vite, Vitest, Playwright/Axe A11y)
 - **Mobile:** .NET MAUI (C# 15, Community Toolkit)
 - **Backend:** .NET 10 (C# 15, ASP.NET Core, Entity Framework Core 10)
 - **Infrastruktur:** Docker, PostgreSQL 18.2, Redis 8.4.1, Keycloak 26.5.3, Mailpit 1.28.2
@@ -84,6 +84,13 @@ Handwerker/
 └── global.json                 # .NET SDK Versionierung (10.0.0)
 ```
 
+## 📦 Fachliche Kernmodule
+
+Neben Auth, Dashboard und Einstellungen deckt die Anwendung folgende Geschäftsbereiche ab:
+- **Stammdaten:** Firmen (`company`), Produkte (`product`), Anbieter (`provider`), Kunden (`recipients`), Leistungen (`services`) und Löhne (`wages`) — jeweils als eigenständiger Katalog mit Suche, Anlegen/Bearbeiten und Soft-Delete.
+- **Verkauf & Abrechnung:** Angebote (`offers`), Rechnungen (`invoices`), Aufträge (`orders`) mit jeweils eigener Detailansicht.
+- **Benutzerverwaltung:** Nutzerverwaltung (`users`, nur Admin) inkl. rollenbasiertem Dashboard-Zuschnitt (`settings/role-dashboard`).
+
 ## 🏗️ Architekturen & Patterns
 
 Das Projekt folgt bewährten Architekturprinzipien, um Wartbarkeit und Testbarkeit zu gewährleisten:
@@ -144,5 +151,5 @@ dotnet test
 (TODO: Lizenz einfügen, z. B. MIT)
 
 ---
-**Status:** 🏗️ In aktiver Entwicklung (.NET 10 / Angular 21 / MAUI)
-**Letztes Update:** 2. März 2026
+**Status:** 🏗️ In aktiver Entwicklung (.NET 10 / Angular 22 / MAUI)
+**Letztes Update:** 28. Juli 2026
